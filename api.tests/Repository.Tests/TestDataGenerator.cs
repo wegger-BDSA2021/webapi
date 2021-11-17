@@ -50,17 +50,17 @@ namespace Repository.Tests
             //     new Task { Id = 3, Title = "Hand in assignment 4", State = New,},
             // };
 
-            // var tags = new[] {
-            //     new Tag { Id = 1, Name = "task is urgent", Tasks = new List<Task>()},
-            //     new Tag { Id = 2, Name = "task can wait", Tasks = new List<Task>()},
-            // };
+            var tags = new[] {
+                new Tag { Id = 1, Name = "dotnet"},
+                // new Tag { Id = 2, Name = "task can wait", Tasks = new List<Task>()},
+            };
 
             // tags[1].Tasks.Add(tasks[1]);
             // tasks[1].Tags.Add(tags[1]);
 
             context.AddRange(users);
             // context.AddRange(tasks);
-            // context.AddRange(tags);
+            context.AddRange(tags);
 
             context.SaveChanges();
         }

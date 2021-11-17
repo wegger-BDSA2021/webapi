@@ -15,8 +15,9 @@ namespace Data
 
         public async Task<Tag> GetTagByIdAsync(int id)
         {
+            return await _context.Tags.FindAsync(id);
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
-            throw new System.Exception();
+            // throw new System.Exception();
         }
 
         public async Task<List<Tag>> GetAllTagsAsync()
