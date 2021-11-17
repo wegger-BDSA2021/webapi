@@ -5,19 +5,21 @@ using System.Linq;
 
 namespace Data
 {
-    public class EntityRepository : Repository<EntityT>, IEntityRepository
+    public class RatingRepository : IRatingRepository
     {
-        public EntityRepository(FooContext context) : base(context)
+        private readonly IWeggerContext _context;
+        public RatingRepository(IWeggerContext context)
         {
+            _context = context;
         }
 
-        public async Task<EntityT> GetEntityByIdAsync(int id)
+        public async Task<Tag> GetRatingByIdAsync(int id)
         {
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
             throw new System.Exception();
         }
 
-        public async Task<List<EntityT>> GetAllEntitiesAsync()
+        public async Task<List<Tag>> GetAllRatingsAsync()
         {
             // return await GetAll().ToListAsync();
             throw new System.Exception();
