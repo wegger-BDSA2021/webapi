@@ -1,14 +1,14 @@
-using System.Linq;
-using System.Threading.Tasks;
+// using System.Linq;
+// using System.Threading.Tasks;
 
-namespace Data
-{
-    public interface IRepository<TEntity> where TEntity : class, new()
-    {
-        IQueryable<TEntity> GetAll();
+// namespace Data
+// {
+//     public interface IRepository<T> where T : class, new()
+//     {
+//         IQueryable<T> GetAll();
 
-        Task<TEntity> AddAsync(TEntity entity);
+//         Task<T> AddAsync(T entity);
 
-        Task<TEntity> UpdateAsync(TEntity entity);
-    }
-}
+//         Task<T> UpdateAsync(T entity);
+//     }
+// }

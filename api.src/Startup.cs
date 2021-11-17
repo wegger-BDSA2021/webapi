@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +28,19 @@ namespace api.src
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IEntityRepository, EntityRepository>();
+            services.AddDbContext<WeggerContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+
+            services.AddScoped<IWeggerContext, WeggerContext>();
+            services.AddScoped<IResourceRepository, ResourceRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
+
+
+            // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            // services.AddTransient<IEntityRepository, EntityRepository>();
             // continue to use the servies for dependecy injection  
             //  - for repositories
             //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
@@ -50,7 +62,7 @@ namespace api.src
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.src v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
