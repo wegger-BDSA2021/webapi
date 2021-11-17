@@ -27,8 +27,8 @@ namespace api.src
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IEntityRepository, EntityRepository>();
+            // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            // services.AddTransient<IEntityRepository, EntityRepository>();
             // continue to use the servies for dependecy injection  
             //  - for repositories
             //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
