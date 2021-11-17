@@ -4,7 +4,7 @@
 
 // namespace Data
 // {
-//     public class Repository<Resource> : IRepository<Resource> where Resource : class, new()
+//     public class Repository<T> : IRepository<T> where T : class, new()
 //     {
 //         protected readonly IWeggerContext _context;
 
@@ -13,11 +13,11 @@
 //             _context = context;
 //         }
 
-//         public IQueryable<Resource> GetAll()
+//         public IQueryable<T> GetAll()
 //         {
 //             try
 //             {
-//                 return _context.Set<Resource>();
+//                 return _context.Set<T>();
 //             }
 //             catch (Exception ex)
 //             {
@@ -25,7 +25,7 @@
 //             }
 //         }
 
-//         public async Task<Resource> AddAsync(Resource entity)
+//         public async Task<T> AddAsync(T entity)
 //         {
 //             if (entity == null)
 //             {
@@ -45,7 +45,7 @@
 //             }
 //         }
 
-//         public async Task<Resource> UpdateAsync(Resource entity)
+//         public async Task<T> UpdateAsync(T entity)
 //         {
 //             if (entity == null)
 //             {

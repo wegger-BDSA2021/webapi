@@ -3,12 +3,12 @@
 
 // namespace Data
 // {
-//     public interface IRepository<TEntity> where TEntity : class, new()
+//     public interface IRepository<T> where T : class, new()
 //     {
-//         IQueryable<TEntity> GetAll();
+//         IQueryable<T> GetAll();
 
-//         Task<TEntity> AddAsync(TEntity entity);
+//         Task<T> AddAsync(T entity);
 
-//         Task<TEntity> UpdateAsync(TEntity entity);
+//         Task<T> UpdateAsync(T entity);
 //     }
 // }
