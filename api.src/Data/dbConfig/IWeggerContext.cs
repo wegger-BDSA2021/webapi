@@ -5,10 +5,12 @@ namespace Data
 {
     public interface IWeggerContext 
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
-        public DbSet<Resource> Resources { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        DbSet<User> Users { get; set; }
+        DbSet<Rating> Ratings { get; set; }
+        DbSet<Resource> Resources { get; set; }
+        DbSet<Tag> Tags { get; set; }
+        DbSet<Comment> Comments { get; set; }
+
+        int SaveChanges();
     }
 }
