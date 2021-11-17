@@ -37,11 +37,11 @@ namespace Repository.Tests
 
         protected void Seed(DbContext context)
         {
-            // var users = new[] {
-            //     new User { Id = 1, Name = "Rasmus Lystrøm", Email = "rasmus@itu.dk"},
-            //     new User { Id = 2, Name = "Paolo Tell", Email = "paolo@itu.dk"},
-            //     new User { Id = 3, Name = "Gustav Johansen", Email = "gujo@itu.dk", Tasks = new List<Task>(), },
-            // };
+            var users = new[] {
+                new User { Id = 1 },
+                // new User { Id = 2, Name = "Paolo Tell", Email = "paolo@itu.dk"},
+                // new User { Id = 3, Name = "Gustav Johansen", Email = "gujo@itu.dk", Tasks = new List<Task>(), },
+            };
 
 
             // var tasks = new[] {
@@ -58,7 +58,7 @@ namespace Repository.Tests
             // tags[1].Tasks.Add(tasks[1]);
             // tasks[1].Tags.Add(tags[1]);
 
-            // context.AddRange(users);
+            context.AddRange(users);
             // context.AddRange(tasks);
             // context.AddRange(tags);
 
