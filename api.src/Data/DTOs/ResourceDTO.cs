@@ -6,6 +6,8 @@ namespace Data
 {
     public record ResourceDTO(int Id, string Title, string Description, string Url, bool Deprecated);
 
+    public record ResourceDetailsDTO(int Id, string Title, string Description, DateTime TimeOfReference, DateTime TimeOfResourcePublication, string Url, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, IReadOnlyCollection<Comment> Comments, bool Deprecated, DateTime LastCheckedForDeprecation) : ResourceDTO(Id, Title, Description, Url, Deprecated);
+
     public record ResourceCreateDTO
     {
         [Required]
@@ -36,5 +38,14 @@ namespace Data
 
         [Required]
         public DateTime LastCheckedForDeprecation { get; init; }
+    }
+
+    public record ResourceUpdateDTO : ResourceCreateDTO
+    {
+        public int Id { get; init; }
+
+        public ICollection<Comment> Comments { get; init; }
+
+        public ICollection<Rating> Ratings { get; init; }
     }
 }

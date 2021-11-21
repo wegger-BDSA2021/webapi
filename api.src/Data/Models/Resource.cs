@@ -46,7 +46,5 @@ namespace Data
         [Required]
         public DateTime LastCheckedForDeprecation { get; set; }
 
-
-        
     }
 }
