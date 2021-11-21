@@ -24,5 +24,10 @@ namespace Data
             // return await GetAll().ToListAsync();
             throw new System.Exception();
         }
+
+        public Task<int> CreateResourceAsync(Resource resource)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

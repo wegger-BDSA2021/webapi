@@ -8,5 +8,8 @@ namespace Data
         Task<Resource> GetEntityByIdAsync(int id);
 
         Task<List<Resource>> GetAllEntitiesAsync();
+
+        Task<int> CreateResourceAsync(Resource resource);
+
     }
 }
