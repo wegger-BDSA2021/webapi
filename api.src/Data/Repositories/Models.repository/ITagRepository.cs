@@ -7,5 +7,6 @@ namespace Data
     {
         public Task<Tag> GetTagByIdAsync(int id);
         public Task<List<Tag>> GetAllTagsAsync();
+        public Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re);
     }
 }

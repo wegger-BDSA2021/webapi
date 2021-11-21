@@ -25,5 +25,19 @@ namespace Data
             // return await GetAll().ToListAsync();
             throw new System.Exception();
         }
+        //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( _context.Tags.Where(t => t.Resources == re).ToList<Tag>);
+        public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
+        {
+            return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
+        }
+        /*{
+            var tags = from t in _context.Tags
+                        where(t => t.Resources = re)
+                        select new TagDto;
+            return await tags.GetAll().ToListAsync();
+
+            // return await GetAll().ToListAsync();
+            throw new System.Exception();
+        }*/
     }
 }
