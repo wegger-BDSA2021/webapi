@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 // using Microsoft.EntityFrameworkCore;
+using static Data.Response;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
@@ -13,32 +15,17 @@ namespace Data
             _context = context;
         }
 
-        public async Task<Resource> GetEntityByIdAsync(int id)
-        {
-            // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
-            throw new System.Exception();
-        }
-
-        public async Task<List<Resource>> GetAllEntitiesAsync()
-        {
-            // return await GetAll().ToListAsync();
-            throw new System.Exception();
-        }
-
-        public async Task<int> CreateResourceAsync(Resource resource)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<(Response Response, Resource Resource)> ReadAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var resource = await _context.Resources.FindAsync(id);
+            if (resource is null)
+                return (NotFound, null);
+
+            return (OK, resource);
         }
 
         public async Task<IReadOnlyCollection<Resource>> ReadAllAsync()
-        {
-            throw new System.NotImplementedException();
-        }
+            => (await _context.Resources.ToListAsync()).AsReadOnly();
 
         public async Task<(Response Response, int ResourceId)> CreateAsync(Resource resource)
         {
@@ -47,7 +34,14 @@ namespace Data
 
         public async Task<Response> DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var resource = await _context.Resources.FindAsync(id);
+            if (resource is null)
+                return NotFound;
+
+            _context.Resources.Remove(resource);
+            await _context.SaveChangesAsync();
+
+            return Deleted;
         }
 
         public async Task<Response> UpdateAsync(Resource resource)
