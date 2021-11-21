@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using static Data.Response;
 using Microsoft.EntityFrameworkCore;
+using Utils;
 
 namespace Data
 {
@@ -92,14 +93,24 @@ namespace Data
             return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingAsync(int rating)
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to)
         {
-            throw new System.NotImplementedException();
+            return (await _context.Resources.Include(r => r.Ratings).Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to)).ToListAsync()).AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher)
         {
             return (await _context.Resources.Where(r => r.Title.Contains(matcher)).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId)
+        {
+            var exists = await _context.Resources.FindAsync(resourceId);
+            if (exists is null)
+                return (NotFound, -1);
+
+            var result = exists.Ratings.Select(r => r.Rated).Average();
+            return(OK, result);
         }
     }
 }

@@ -23,9 +23,11 @@ namespace Data
 
         Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags);
 
-        Task<IReadOnlyCollection<Resource>> GetAllWithRatingAsync(int rating);
-
+        Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to);
+        
         Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher);
+
+        Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId);
 
     }
 }
