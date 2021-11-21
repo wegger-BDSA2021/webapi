@@ -25,7 +25,62 @@ namespace Data
             throw new System.Exception();
         }
 
-        public Task<int> CreateResourceAsync(Resource resource)
+        public async Task<int> CreateResourceAsync(Resource resource)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<(Response Response, Resource Resource)> ReadAsync(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> ReadAllAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<(Response Response, int ResourceId)> CreateAsync(Resource resource)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<Response> DeleteAsync(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<Response> UpdateAsync(Resource resource)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllFromUserAsync(int userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingAsync(int rating)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher)
         {
             throw new System.NotImplementedException();
         }

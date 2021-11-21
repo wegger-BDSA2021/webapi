@@ -12,6 +12,8 @@ namespace Data
         [Required]
         public User User { get; set; }
 
+        public int UserId { get; set; }
+
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
