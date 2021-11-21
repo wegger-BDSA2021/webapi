@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-// using Microsoft.EntityFrameworkCore;
 using static Data.Response;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +28,30 @@ namespace Data
 
         public async Task<(Response Response, int ResourceId)> CreateAsync(Resource resource)
         {
-            throw new System.NotImplementedException();
+            var linkExists = await _context.Resources.FirstOrDefaultAsync(r => r.Url == resource.Url);
+
+            if (linkExists is not null)
+                return (Conflict, -1);
+
+            var _resource = new Resource
+            {
+                Title = resource.Title,
+                User = resource.User,
+                Description = resource.Description,
+                TimeOfReference = resource.TimeOfReference,
+                TimeOfResourcePublication = resource.TimeOfResourcePublication,
+                Url = resource.Url,
+                Deprecated = resource.Deprecated,
+                LastCheckedForDeprecation = resource.LastCheckedForDeprecation,
+                Tags = resource.Tags,
+                Ratings = resource.Ratings, 
+            };
+
+            await _context.Resources.AddAsync(_resource);
+            await _context.SaveChangesAsync();
+
+            return (Created, _resource.Id);
+
         }
 
         public async Task<Response> DeleteAsync(int id)
@@ -51,22 +73,23 @@ namespace Data
 
         public async Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync()
         {
-            throw new System.NotImplementedException();
+            return (await _context.Resources.Where(r => r.Deprecated == true).ToListAsync()).AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllFromUserAsync(int userId)
         {
-            throw new System.NotImplementedException();
+            return (await _context.Resources.Where(r => r.UserId == userId).ToListAsync()).AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain)
         {
-            throw new System.NotImplementedException();
+            return (await _context.Resources.Where(r => r.Url.Contains(domain)).ToListAsync()).AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags)
         {
-            throw new System.NotImplementedException();
+            // var stringTags = tags.Select(t => t.Name);
+            return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingAsync(int rating)
@@ -76,7 +99,7 @@ namespace Data
 
         public async Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher)
         {
-            throw new System.NotImplementedException();
+            return (await _context.Resources.Where(r => r.Title.Contains(matcher)).ToListAsync()).AsReadOnly();
         }
     }
 }
