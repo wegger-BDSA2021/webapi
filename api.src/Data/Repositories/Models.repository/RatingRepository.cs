@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using static Data.Response;
+using Microsoft.EntityFrameworkCore;
 // using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -13,16 +15,21 @@ namespace Data
             _context = context;
         }
 
-        public async Task<Tag> GetRatingByIdAsync(int id)
+        public async Task<Rating> GetRatingByIdAsync(int id)
         {
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
             throw new System.Exception();
         }
 
-        public async Task<List<Tag>> GetAllRatingsAsync()
+        public async Task<List<Rating>> GetAllRatingsAsync()
         {
             // return await GetAll().ToListAsync();
             throw new System.Exception();
         }
+        public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(Resource re)
+        {
+            return ( await _context.Ratings.Where(r => r.Resource == re).ToListAsync()).AsReadOnly();
+        }
+        
     }
 }

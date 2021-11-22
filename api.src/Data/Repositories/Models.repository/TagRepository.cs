@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using static Data.Response;
+using Microsoft.EntityFrameworkCore;
+//using Utils;
 // using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -26,6 +29,8 @@ namespace Data
             throw new System.Exception();
         }
         //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( _context.Tags.Where(t => t.Resources == re).ToList<Tag>);
+        //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly());
+
         public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
         {
             return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
