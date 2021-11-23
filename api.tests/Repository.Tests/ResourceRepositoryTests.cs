@@ -41,5 +41,24 @@ namespace Repository.Tests
             Assert.Null(resource.Comments.FirstOrDefault());
             Assert.Null(resource.Ratings.FirstOrDefault());
         }
+
+        [Fact]
+        public async void Given_seededDB_readAllAsync_returns_readonlylist_of_length_1()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var allResources = await _repo.ReadAllAsync();
+            Assert.Equal(allResources.Count(), 1);
+        }
+
+        [Fact]
+        public async void Given_empty_db_readAllAsync_returns_readonlylist_of_length_0()
+        {
+            var _repo = new ResourceRepository(_context);
+
+            var empty = await _repo.ReadAllAsync();
+            Assert.Equal(empty.Count(), 0);
+        }
     }
 }
