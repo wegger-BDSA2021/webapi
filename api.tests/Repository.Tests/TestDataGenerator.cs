@@ -15,6 +15,8 @@ namespace Repository.Tests
         private readonly SqliteConnection _connection;
         protected readonly WeggerContext _context;
 
+        protected readonly DateTime _dateForFirstResource;
+
         protected TestDataGenerator()
         {
             _connection = new SqliteConnection(_connectionString);
@@ -26,6 +28,8 @@ namespace Repository.Tests
 
             _context = new WeggerContext(options);
             _context.Database.EnsureCreated();
+
+            _dateForFirstResource = DateTime.Now;
         }
 
         public void Dispose()
@@ -43,12 +47,17 @@ namespace Repository.Tests
                 // new User { Id = 3, Name = "Gustav Johansen", Email = "gujo@itu.dk", Tasks = new List<Task>(), },
             };
 
-
-            // var tasks = new[] {
-            //     new Task { Id = 1, Title = "Complete assignment 4", Description = "Due date is this friday", State = Active, AssignedTo = 3},
-            //     new Task { Id = 2, Title = "Vask op", Description = "I dag", State = Active, AssignedTo = 3},
-            //     new Task { Id = 3, Title = "Hand in assignment 4", State = New,},
-            // };
+            var resources = new[] {
+                new Resource { 
+                    Id = 1,    
+                    Title = "resource_1", 
+                    Description = "test", 
+                    UserId = 1,
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
+                    LastCheckedForDeprecation = _dateForFirstResource
+                }
+            };
 
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
@@ -57,10 +66,11 @@ namespace Repository.Tests
 
             // tags[1].Tasks.Add(tasks[1]);
             // tasks[1].Tags.Add(tags[1]);
+            resources[0].Tags.Add(tags[0]);
 
             context.AddRange(users);
-            // context.AddRange(tasks);
             context.AddRange(tags);
+            context.AddRange(resources);
 
             context.SaveChanges();
         }

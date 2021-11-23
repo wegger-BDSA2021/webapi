@@ -34,13 +34,12 @@ namespace Data
         [Required]
         public string Url { get; set; }
 
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
         
         public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
         
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-        [Required]
         public Boolean Deprecated { get; set; } = false;
 
         [Required]
