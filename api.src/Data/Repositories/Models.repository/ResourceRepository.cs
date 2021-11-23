@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-// using Microsoft.EntityFrameworkCore;
+using static Data.Response;
+using Microsoft.EntityFrameworkCore;
+using Utils;
 
 namespace Data
 {
@@ -13,16 +15,102 @@ namespace Data
             _context = context;
         }
 
-        public async Task<Resource> GetEntityByIdAsync(int id)
+        public async Task<(Response Response, Resource Resource)> ReadAsync(int id)
         {
-            // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
-            throw new System.Exception();
+            var resource = await _context.Resources.FindAsync(id);
+            if (resource is null)
+                return (NotFound, null);
+
+            return (OK, resource);
         }
 
-        public async Task<List<Resource>> GetAllEntitiesAsync()
+        public async Task<IReadOnlyCollection<Resource>> ReadAllAsync()
+            => (await _context.Resources.ToListAsync()).AsReadOnly();
+
+        public async Task<(Response Response, int ResourceId)> CreateAsync(Resource resource)
         {
-            // return await GetAll().ToListAsync();
-            throw new System.Exception();
+            var linkExists = await _context.Resources.FirstOrDefaultAsync(r => r.Url == resource.Url);
+
+            if (linkExists is not null)
+                return (Conflict, -1);
+
+            var _resource = new Resource
+            {
+                Title = resource.Title,
+                User = resource.User,
+                Description = resource.Description,
+                TimeOfReference = resource.TimeOfReference,
+                TimeOfResourcePublication = resource.TimeOfResourcePublication,
+                Url = resource.Url,
+                Deprecated = resource.Deprecated,
+                LastCheckedForDeprecation = resource.LastCheckedForDeprecation,
+                Tags = resource.Tags,
+                Ratings = resource.Ratings, 
+            };
+
+            await _context.Resources.AddAsync(_resource);
+            await _context.SaveChangesAsync();
+
+            return (Created, _resource.Id);
+
+        }
+
+        public async Task<Response> DeleteAsync(int id)
+        {
+            var resource = await _context.Resources.FindAsync(id);
+            if (resource is null)
+                return NotFound;
+
+            _context.Resources.Remove(resource);
+            await _context.SaveChangesAsync();
+
+            return Deleted;
+        }
+
+        public async Task<Response> UpdateAsync(Resource resource)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync()
+        {
+            return (await _context.Resources.Where(r => r.Deprecated == true).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllFromUserAsync(int userId)
+        {
+            return (await _context.Resources.Where(r => r.UserId == userId).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain)
+        {
+            return (await _context.Resources.Where(r => r.Url.Contains(domain)).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags)
+        {
+            // var stringTags = tags.Select(t => t.Name);
+            return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to)
+        {
+            return (await _context.Resources.Include(r => r.Ratings).Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to)).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher)
+        {
+            return (await _context.Resources.Where(r => r.Title.Contains(matcher)).ToListAsync()).AsReadOnly();
+        }
+
+        public async Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId)
+        {
+            var exists = await _context.Resources.FindAsync(resourceId);
+            if (exists is null)
+                return (NotFound, -1);
+
+            var result = exists.Ratings.Select(r => r.Rated).Average();
+            return(OK, result);
         }
     }
 }

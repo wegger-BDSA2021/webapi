@@ -10,8 +10,12 @@ namespace Data
         [Required]
         public User User { get; set; }
 
+        public int UserId { get; set; }
+
         [Required]
         public Resource Resource { get; set; }
+
+        public int ResourceId { get; set; }
 
         [Required]
         [Range(0, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
