@@ -60,5 +60,35 @@ namespace Repository.Tests
             var empty = await _repo.ReadAllAsync();
             Assert.Equal(empty.Count(), 0);
         }
+
+        [Fact]
+        public async void Given_dotnet_tag_returns_list_with_all_entries_having_dotnet_tag()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var dotnetTag = await _context.Tags.FindAsync(1);
+            var tagsList = new []{dotnetTag};
+
+            var resourcesWithDotnet = await _repo.GetAllWithTagsAsyc(tagsList); 
+            Assert.Equal(resourcesWithDotnet.Count(), 1);
+
+            var acutalResource = resourcesWithDotnet.FirstOrDefault();
+            Assert.NotNull(acutalResource);
+            Assert.Equal(acutalResource.Title, "resource_1");
+        }
+
+        [Fact]
+        public async void Given_nonExisting_Tag_returns_no_entries()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var dotnetTag = new Tag{ Id = 2, Name = "dummy"};
+            var tagsList = new []{dotnetTag};
+
+            var resources = await _repo.GetAllWithTagsAsyc(tagsList);
+            Assert.Equal(resources.Count(), 0);
+        }
     }
 }
