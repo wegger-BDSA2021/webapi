@@ -9,7 +9,7 @@ namespace Repository.Tests
     public class TagRepositoryTests : TestDataGenerator
     {
         [Fact]
-        public async void Given_something_returns_something()
+        public async void Given_seeded_db_returns_tagname_dotnet()
         {
             // initiate the relevant repo for each unit test
             var _repo = new TagRepository(_context);
