@@ -1,11 +1,11 @@
-
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
-    public interface IWeggerContext 
+    public interface IWeggerContext : IDisposable
     {
         DbSet<User> Users { get; set; }
         DbSet<Rating> Ratings { get; set; }
@@ -14,7 +14,6 @@ namespace Data
         DbSet<Comment> Comments { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-
         int SaveChanges();
     }
 }
