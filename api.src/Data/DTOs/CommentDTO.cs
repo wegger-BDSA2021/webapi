@@ -1,9 +1,19 @@
+﻿using Data;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data
+namespace api.src.Data.DTOs
 {
-    public class Comment
+    public record CommentSimpleDTO 
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(300)]
+        public string Content { get; set; }
+    }
+
+    public record CommentDetailsDTO
     {
         public int Id { get; set; }
 

@@ -1,4 +1,6 @@
 
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -10,6 +12,8 @@ namespace Data
         DbSet<Resource> Resources { get; set; }
         DbSet<Tag> Tags { get; set; }
         DbSet<Comment> Comments { get; set; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         int SaveChanges();
     }
