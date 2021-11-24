@@ -42,6 +42,7 @@ namespace Data
 
     public record ResourceUpdateDTO : ResourceCreateDTO
     {
+        [Required]
         public int Id { get; init; }
 
         public ICollection<Comment> Comments { get; init; }

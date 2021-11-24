@@ -67,9 +67,25 @@ namespace Data
             return Deleted;
         }
 
-        public async Task<Response> UpdateAsync(Resource resource)
+        public async Task<Response> UpdateAsync(ResourceUpdateDTO resource)
         {
-            throw new System.NotImplementedException();
+            var entity = await _context.Resources.FirstOrDefaultAsync(r => r.Id == resource.Id);
+
+            if (entity is null)
+                return NotFound;
+
+            entity.Title = resource.Title;
+            entity.Description = resource.Description;
+            entity.TimeOfReference = resource.TimeOfReference;
+            entity.TimeOfResourcePublication = resource.TimeOfResourcePublication;
+            entity.Url = resource.Url;
+            entity.Deprecated = resource.Deprecated;
+            entity.LastCheckedForDeprecation = resource.LastCheckedForDeprecation;
+            entity.UserId = resource.UserId;
+
+            await _context.SaveChangesAsync();
+
+            return Updated;
         }
 
         public async Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync()
