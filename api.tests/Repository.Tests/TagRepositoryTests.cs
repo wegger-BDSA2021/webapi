@@ -27,12 +27,12 @@ namespace Repository.Tests
         public async void Given_something_returns_something()
         {
             // initiate the relevant repo for each unit test
-            var _repo = new TagRepository(_context);
-            Seed(_context);
+            //var _repo = new TagRepository(_context);
+            //Seed(_context);
             
-            var tag = await _repo.GetTagByIdAsync(1);
+            //var tag = await _repo.GetTagByIdAsync(1);
 
-            Assert.Equal("dotnet", tag.Name);
+            //Assert.Equal("dotnet", tag.);
             // optionally seed the in-memory sqlite database with some dummy data
             // see the Seed method in TestDataGenerator
             //      - in the seed method you can put any kind of data you want to test with 

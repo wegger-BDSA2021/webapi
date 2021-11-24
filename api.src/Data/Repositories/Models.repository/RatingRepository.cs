@@ -49,8 +49,8 @@ namespace Data
                 return Conflict;
             
             
-            entity.User = Rating.User; //maybe remove
-            entity.Resource = Rating.Resource; //maybe remove
+            //entity.User = Rating.User; //maybe remove
+            //entity.Resource = Rating.Resource; //maybe remove
             entity.Rated = newRating;
 
             await _context.SaveChangesAsync();
