@@ -5,8 +5,10 @@ namespace Data
 {
     public interface ICommentRepository
     {
-        Task<Comment> GetCommentByIdAsync(int id);
-
-        Task<List<Comment>> GetAllEntitiesAsync();
+        Task<List<Comment>> GetComments();
+        Task<Comment> GetCommentById(int id);
+        Task<Comment> AddComment(Comment comment);
+        Task<Comment> DeleteComment(int id);
+        Task<Comment> UpdateComment(Comment comment);
     }
 }
