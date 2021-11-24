@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace Data
 {
     public interface IWeggerContext 
@@ -10,7 +11,7 @@ namespace Data
         DbSet<Resource> Resources { get; set; }
         DbSet<Tag> Tags { get; set; }
         DbSet<Comment> Comments { get; set; }
-
         int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }
