@@ -7,21 +7,21 @@ using static Data.Response;
 
 namespace Repository.Tests
 {
-    public class TagRepositoryTests : TestDataGenerator
+    public class RatingRepositoryTests : TestDataGenerator
     {
         [Fact]
         public async void Given_no_entries_returns_NotFound()
         {
-            var _repo = new TagRepository(_context);
+            var _repo = new RatingRepository(_context);
 
-            var actual = await _repo.GetTagByIdAsync(1);
+            var actual = await _repo.ReadAsync(1);
             
             Assert.Equal(actual.Response, NotFound);       
         }
          [Fact]
         public async void Given_something_else_returns_something_else()
         {
-
+            
         }
         [Fact]
         public async void Given_something_returns_something()
