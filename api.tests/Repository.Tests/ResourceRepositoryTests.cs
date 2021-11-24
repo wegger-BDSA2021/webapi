@@ -67,8 +67,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var dotnetTag = await _context.Tags.FindAsync(1);
-            var tagsList = new []{dotnetTag};
+            var tagsList = new []{"dotnet"};
 
             var resourcesWithDotnet = await _repo.GetAllWithTagsAsyc(tagsList); 
             Assert.Equal(resourcesWithDotnet.Count(), 1);
@@ -84,8 +83,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var dotnetTag = new Tag{ Id = 2, Name = "dummy"};
-            var tagsList = new []{dotnetTag};
+            var tagsList = new []{"dummy"};
 
             var resources = await _repo.GetAllWithTagsAsyc(tagsList);
             Assert.Equal(resources.Count(), 0);

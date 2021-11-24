@@ -13,7 +13,7 @@ namespace Data
 
         Task<Response> DeleteAsync(int id);
 
-        Task<Response> UpdateAsync(Resource resource);
+        Task<Response> UpdateAsync(ResourceUpdateDTO resource);
 
         Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync();
 
@@ -21,7 +21,7 @@ namespace Data
 
         Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain);
 
-        Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags);
+        Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<string> stringTags);
 
         Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to);
         

@@ -103,9 +103,9 @@ namespace Data
             return (await _context.Resources.Where(r => r.Url.Contains(domain)).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<Tag> tags)
+        public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<string> stringTags)
         {
-            // var stringTags = tags.Select(t => t.Name);
+            var tags = await getTagsFromStringsAsync(stringTags);
             return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
         }
 
@@ -127,6 +127,16 @@ namespace Data
 
             var result = exists.Ratings.Select(r => r.Rated).Average();
             return(OK, result);
+        }
+
+
+        // private helper methods
+        private async Task<ICollection<Tag>> getTagsFromStringsAsync(IEnumerable<string> tags)
+        {
+            var lowerCaseLetters = tags.Select(t => t.ToLower());
+            var tagsFromString = await _context.Tags.Where(t => tags.Contains(t.Name.ToLower())).ToListAsync();
+
+            return tagsFromString;
         }
     }
 }
