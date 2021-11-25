@@ -42,7 +42,7 @@ namespace Data
             return Updated;
         }
 
-        public async Task<(Response Response,Tag)> GetTagByIdAsync(int id)
+        public async Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id)
         {
             var tag = await _context.Tags.FindAsync(id);
             if (tag is null)
