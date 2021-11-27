@@ -54,6 +54,15 @@ namespace Repository.Tests
                     TimeOfReference = _dateForFirstResource,
                     Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
                     LastCheckedForDeprecation = _dateForFirstResource
+                },
+                new Resource { 
+                    Id = 2,    
+                    Title = "resource_2", 
+                    Description = "test of another", 
+                    UserId = 1,
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/test2", 
+                    LastCheckedForDeprecation = _dateForFirstResource
                 }
             };
 
@@ -68,6 +77,12 @@ namespace Repository.Tests
                     Id = 2,
                     Rated = 5,
                     ResourceId = 1,
+                    UserId = 1
+                },
+                new Rating {
+                    Id = 3,
+                    Rated = 5,
+                    ResourceId = 2,
                     UserId = 1
                 }
             };

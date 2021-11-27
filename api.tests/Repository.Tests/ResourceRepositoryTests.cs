@@ -51,7 +51,7 @@ namespace Repository.Tests
             Seed(_context);
 
             var allResources = await _repo.ReadAllAsync();
-            Assert.Equal(allResources.Count(), 1);
+            Assert.Equal(allResources.Count(), 2);
             Assert.Equal(allResources.First().Title, "resource_1");
         }
 
@@ -142,7 +142,7 @@ namespace Repository.Tests
 
             Assert.Equal(Created, response);
 
-            Assert.Equal(2, createdDTO.Id);
+            Assert.Equal(3, createdDTO.Id);
             Assert.Equal("this is a new resource", createdDTO.Title);
             Assert.Equal("description", createdDTO.Description);
             Assert.Equal(_dateForFirstResource, createdDTO.TimeOfReference);
@@ -184,9 +184,9 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var allWithRatingInRange = await _repo.GetAllWithRatingInRangeAsync(4, 4);
+            var allWithRatingInRange = await _repo.GetAllWithRatingInRangeAsync(4, 5);
             Assert.NotEmpty(allWithRatingInRange);
-            Assert.Equal(1, allWithRatingInRange.Count()); 
+            Assert.Equal(2, allWithRatingInRange.Count()); 
             Assert.Equal(4, allWithRatingInRange.FirstOrDefault().AverageRating); 
 
             var rating = new Rating{
@@ -197,8 +197,10 @@ namespace Repository.Tests
             await _context.Ratings.AddAsync(rating);
             await _context.SaveChangesAsync();
 
-            var newQuery = await _repo.GetAllWithRatingInRangeAsync(4, 4);
-            Assert.Empty(newQuery);
+            var newQuery = await _repo.GetAllWithRatingInRangeAsync(5, 5);
+            Assert.NotEmpty(newQuery);
+            Assert.Equal(5, newQuery.FirstOrDefault().AverageRating); 
+            Assert.Equal("resource_2", newQuery.FirstOrDefault().Title); 
         }
     }
 }
