@@ -30,7 +30,7 @@ namespace Data
         [Required]
         public string Url { get; init; }
 
-        public ISet<string> Tags { get; init; }
+        public ISet<string> Tags { get; init; } = new HashSet<string>();
 
         [Required]
         public int InitialRating { get; init; }
@@ -46,13 +46,13 @@ namespace Data
     {
         [Required]
         public int Id { get; init; }
-        public string Title { get; init; }
-        public string Description { get; init; }
-        public int UserId { get; init; }
-        public DateTime TimeOfResourcePublication { get; init; }
-        public string Url { get; init; }
-        public ISet<string> Tags { get; init; }
-        public Boolean Deprecated { get; init; }
-        public DateTime LastCheckedForDeprecation { get; init; }
+        public string? Title { get; init; }
+        public string? Description { get; init; }
+        public int? UserId { get; init; }
+        public DateTime? TimeOfResourcePublication { get; init; }
+        public string? Url { get; init; }
+        public ISet<string>? Tags { get; init; }
+        public Boolean? Deprecated { get; init; }
+        public DateTime? LastCheckedForDeprecation { get; init; }
     }
 }

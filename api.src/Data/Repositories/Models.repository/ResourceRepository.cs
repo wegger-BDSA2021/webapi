@@ -124,13 +124,13 @@ namespace Data
 
             entity.Title = resource.Title;
             entity.Description = resource.Description;
-            entity.UserId = resource.UserId;
+            entity.UserId = (int)resource.UserId;
             // entity.TimeOfReference = resource.TimeOfReference;
-            entity.TimeOfResourcePublication = resource.TimeOfResourcePublication;
+            entity.TimeOfResourcePublication = (System.DateTime)resource.TimeOfResourcePublication;
             entity.Url = resource.Url;
             entity.Tags = await getTagsFromStringsAsync(resource.Tags);
-            entity.Deprecated = resource.Deprecated;
-            entity.LastCheckedForDeprecation = resource.LastCheckedForDeprecation;
+            entity.Deprecated = (bool)resource.Deprecated;
+            entity.LastCheckedForDeprecation = (System.DateTime)resource.LastCheckedForDeprecation;
 
             await _context.SaveChangesAsync();
 
