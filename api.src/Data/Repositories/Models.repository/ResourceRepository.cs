@@ -256,11 +256,5 @@ namespace Data
             return tagsFromString;
         }
 
-        private async Task<double> getAverageRatingHelper(int resourceId)
-        {
-            var entity = await _context.Resources.FindAsync(resourceId);
-            double average = entity.Ratings.Select(r => r.Rated).Average();
-            return average;
-        }
     }
 }
