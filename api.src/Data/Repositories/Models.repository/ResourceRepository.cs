@@ -175,8 +175,9 @@ namespace Data
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromDomainAsync(string domain)
         {
+            var lower = domain.ToLower();
             return (await _context.Resources
-                .Where(r => r.Url.Contains(domain))
+                .Where(r => r.Url.ToLower().Contains(domain))
                     .Select(
                         r => new ResourceDTO(
                             r.Id,

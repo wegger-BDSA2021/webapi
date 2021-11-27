@@ -202,5 +202,29 @@ namespace Repository.Tests
             Assert.Equal(5, newQuery.FirstOrDefault().AverageRating); 
             Assert.Equal("resource_2", newQuery.FirstOrDefault().Title); 
         }
+
+        [Fact]
+        public async void Given_non_existing_userId_returns_empty_list_of_resources()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.GetAllFromUserAsync(2);
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async void Given_existing_userId_returns_nonempty_list_of_resources()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.GetAllFromUserAsync(1);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Equal(2, result.Count());
+            Assert.Equal("resource_1", result.FirstOrDefault().Title);
+        }
     }
 }
