@@ -137,33 +137,33 @@ namespace Data
             return Updated;
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync()
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllDeprecatedAsync()
         {
             return (await _context.Resources.Where(r => r.Deprecated == true).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllFromUserAsync(int userId)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId)
         {
             return (await _context.Resources.Where(r => r.UserId == userId).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromDomainAsync(string domain)
         {
             return (await _context.Resources.Where(r => r.Url.Contains(domain)).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<string> stringTags)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags)
         {
             var tags = await getTagsFromStringsAsync(stringTags);
             return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithRatingInRangeAsync(int from, int to)
         {
             return (await _context.Resources.Include(r => r.Ratings).Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to)).ToListAsync()).AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWhereTitleContainsAsync(string matcher)
         {
             return (await _context.Resources.Where(r => r.Title.Contains(matcher)).ToListAsync()).AsReadOnly();
         }

@@ -15,17 +15,17 @@ namespace Data
 
         Task<Response> UpdateAsync(ResourceUpdateDTO resource);
 
-        Task<IReadOnlyCollection<Resource>> GetAllDeprecatedAsync();
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllDeprecatedAsync();
 
-        Task<IReadOnlyCollection<Resource>> GetAllFromUserAsync(int userId);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId);
 
-        Task<IReadOnlyCollection<Resource>> GetAllFromDomainAsync(string domain);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllFromDomainAsync(string domain);
 
-        Task<IReadOnlyCollection<Resource>> GetAllWithTagsAsyc(ICollection<string> stringTags);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags);
 
-        Task<IReadOnlyCollection<Resource>> GetAllWithRatingInRangeAsync(int from, int to);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllWithRatingInRangeAsync(int from, int to);
         
-        Task<IReadOnlyCollection<Resource>> GetAllWhereTitleContainsAsync(string matcher);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllWhereTitleContainsAsync(string matcher);
 
         Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId);
 
