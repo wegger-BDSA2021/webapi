@@ -222,7 +222,18 @@ namespace Data
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWhereTitleContainsAsync(string matcher)
         {
-            return (await _context.Resources.Where(r => r.Title.Contains(matcher)).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Where(r => r.Title.Contains(matcher))
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
         }
 
         public async Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId)
