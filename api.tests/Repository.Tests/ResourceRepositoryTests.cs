@@ -118,7 +118,7 @@ namespace Repository.Tests
         }
 
         [Fact]
-        public async void Given_new_resourceDTO_returns_Created()
+        public async void Given_new_resourceDTO_returns_Created_and_correct_DTO()
         {
             var _repo = new ResourceRepository(_context);
             Seed(_context);
@@ -136,10 +136,24 @@ namespace Repository.Tests
                 LastCheckedForDeprecation = _dateForFirstResource
             };
 
-            var actual = await _repo.CreateAsync(newResource);
-            var expected = Created;
+            var result = await _repo.CreateAsync(newResource);
+            var response = result.Response;
+            var createdDTO = result.CreatedResource;
 
-            Assert.Equal(expected, actual.Response);
+            Assert.Equal(Created, response);
+
+            Assert.Equal(2, createdDTO.Id);
+            Assert.Equal("this is a new resource", createdDTO.Title);
+            Assert.Equal("description", createdDTO.Description);
+            Assert.Equal(_dateForFirstResource, createdDTO.TimeOfReference);
+            Assert.Equal(_dateForFirstResource, createdDTO.TimeOfResourcePublication);
+            Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop/blabla", createdDTO.Url);
+            Assert.Equal(0, createdDTO.Tags.Count());
+            Assert.Equal(1, createdDTO.Ratings.Count());
+            Assert.Equal(4, createdDTO.AverageRating);
+            Assert.Equal(0, createdDTO.Comments.Count());
+            Assert.Equal(false, createdDTO.Deprecated);
+            Assert.Equal(_dateForFirstResource, createdDTO.LastCheckedForDeprecation);
         }
     }
 }
