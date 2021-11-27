@@ -15,18 +15,44 @@ namespace Data
             _context = context;
         }
 
-        public async Task<(Response Response, Resource Resource)> ReadAsync(int id)
+        public async Task<(Response Response, ResourceDetailsDTO ResourceDetails)> ReadAsync(int id)
         {
-            var resource = await _context.Resources.FindAsync(id);
-            if (resource is null)
+            var _resourceEntity = await _context.Resources.FindAsync(id);
+            if (_resourceEntity is null)
                 return (NotFound, null);
 
-            return (OK, resource);
+            var result = new ResourceDetailsDTO(
+                _resourceEntity.Id,
+                _resourceEntity.Title,
+                _resourceEntity.Description,
+                _resourceEntity.TimeOfReference,
+                _resourceEntity.TimeOfResourcePublication,
+                _resourceEntity.Url,
+                _resourceEntity.Tags.Select(t => t.Name).ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).Average(),
+                _resourceEntity.Comments.Select(c => c.Content).ToList(),
+                _resourceEntity.Deprecated,
+                _resourceEntity.LastCheckedForDeprecation
+            );
+
+            return (OK, result);
         }
 
-        public async Task<IReadOnlyCollection<Resource>> ReadAllAsync()
-            => (await _context.Resources.ToListAsync()).AsReadOnly();
-
+        public async Task<IReadOnlyCollection<ResourceDTO>> ReadAllAsync()
+           => (await _context.Resources
+                .Select(r => 
+                    new ResourceDTO(
+                        r.Id,
+                        r.Title,
+                        r.Description,
+                        r.Url,
+                        r.Ratings.Select(r => r.Rated).Average(),
+                        r.Deprecated
+                    ))
+                .ToListAsync())
+            .AsReadOnly();
+        
         public async Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource)
         {
             var linkExists = await _context.Resources.FirstOrDefaultAsync(r => r.Url == resource.Url);
@@ -98,12 +124,13 @@ namespace Data
 
             entity.Title = resource.Title;
             entity.Description = resource.Description;
-            entity.TimeOfReference = resource.TimeOfReference;
+            entity.UserId = resource.UserId;
+            // entity.TimeOfReference = resource.TimeOfReference;
             entity.TimeOfResourcePublication = resource.TimeOfResourcePublication;
             entity.Url = resource.Url;
+            entity.Tags = await getTagsFromStringsAsync(resource.Tags);
             entity.Deprecated = resource.Deprecated;
             entity.LastCheckedForDeprecation = resource.LastCheckedForDeprecation;
-            entity.UserId = resource.UserId;
 
             await _context.SaveChangesAsync();
 
@@ -159,6 +186,13 @@ namespace Data
             var tagsFromString = await _context.Tags.Where(t => tags.Contains(t.Name.ToLower())).ToListAsync();
 
             return tagsFromString;
+        }
+
+        private async Task<double> getAverageRatingHelper(int resourceId)
+        {
+            var entity = await _context.Resources.FindAsync(resourceId);
+            double average = entity.Ratings.Select(r => r.Rated).Average();
+            return average;
         }
     }
 }

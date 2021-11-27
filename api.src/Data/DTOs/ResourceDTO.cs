@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data
 {
-    public record ResourceDTO(int Id, string Title, string Description, string Url, bool Deprecated);
+    public record ResourceDTO(int Id, string Title, string Description, string Url, double AverageRating, bool Deprecated);
 
-    public record ResourceDetailsDTO(int Id, string Title, string Description, DateTime TimeOfReference, DateTime TimeOfResourcePublication, string Url, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, double AverageRating, IReadOnlyCollection<string> Comments, bool Deprecated, DateTime LastCheckedForDeprecation) : ResourceDTO(Id, Title, Description, Url, Deprecated);
+    public record ResourceDetailsDTO(int Id, string Title, string Description, DateTime TimeOfReference, DateTime TimeOfResourcePublication, string Url, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, double AverageRating, IReadOnlyCollection<string> Comments, bool Deprecated, DateTime LastCheckedForDeprecation) : ResourceDTO(Id, Title, Description, Url, AverageRating, Deprecated);
 
     public record ResourceCreateDTO
     {
@@ -42,13 +42,17 @@ namespace Data
         public DateTime LastCheckedForDeprecation { get; init; }
     }
 
-    public record ResourceUpdateDTO : ResourceCreateDTO
+    public record ResourceUpdateDTO 
     {
         [Required]
         public int Id { get; init; }
-
-        public ICollection<Comment> Comments { get; init; }
-
-        public ICollection<Rating> Ratings { get; init; }
+        public string Title { get; init; }
+        public string Description { get; init; }
+        public int UserId { get; init; }
+        public DateTime TimeOfResourcePublication { get; init; }
+        public string Url { get; init; }
+        public ISet<string> Tags { get; init; }
+        public Boolean Deprecated { get; init; }
+        public DateTime LastCheckedForDeprecation { get; init; }
     }
 }

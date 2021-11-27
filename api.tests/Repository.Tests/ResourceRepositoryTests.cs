@@ -27,19 +27,20 @@ namespace Repository.Tests
             var actual = await _repo.ReadAsync(1);
 
             var response = actual.Response;
-            var resource = actual.Resource;
+            var resource = actual.ResourceDetails;
 
             Assert.Equal(response, OK);
             Assert.Equal(resource.Title, "resource_1");
-            Assert.Equal(resource.Tags.First().Name, "dotnet");
+            Assert.Equal(resource.Tags.First(), "dotnet");
             Assert.Equal(resource.Description, "test");
             Assert.Equal(resource.Deprecated, false);
-            Assert.Equal(resource.UserId, 1);
+            // Assert.Equal(resource.UserId, 1);
             Assert.Equal(resource.Url, "https://github.com/wegger-BDSA2021/webapi/tree/develop");
             Assert.Equal(resource.TimeOfReference, _dateForFirstResource);
             Assert.Equal(resource.LastCheckedForDeprecation, _dateForFirstResource);
             Assert.Null(resource.Comments.FirstOrDefault());
-            Assert.Null(resource.Ratings.FirstOrDefault());
+            Assert.NotNull(resource.Ratings.FirstOrDefault());
+            Assert.Equal(resource.Ratings.FirstOrDefault(), 3);
         }
 
         [Fact]

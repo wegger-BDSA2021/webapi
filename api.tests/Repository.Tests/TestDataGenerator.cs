@@ -59,6 +59,15 @@ namespace Repository.Tests
                 }
             };
 
+            var ratings = new [] {
+                new Rating {
+                    Id = 1,
+                    Rated = 3,
+                    ResourceId = 1,
+                    UserId = 1
+                }
+            };
+
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
                 // new Tag { Id = 2, Name = "task can wait", Tasks = new List<Task>()},
@@ -70,6 +79,7 @@ namespace Repository.Tests
 
             context.AddRange(users);
             context.AddRange(tags);
+            context.AddRange(ratings);
             context.AddRange(resources);
 
             context.SaveChanges();

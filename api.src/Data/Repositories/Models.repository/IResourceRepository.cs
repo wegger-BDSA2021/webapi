@@ -5,9 +5,9 @@ namespace Data
 {
     public interface IResourceRepository 
     {
-        Task<(Response Response, Resource Resource)> ReadAsync(int id);
+        Task<(Response Response, ResourceDetailsDTO ResourceDetails)> ReadAsync(int id);
 
-        Task<IReadOnlyCollection<Resource>> ReadAllAsync();
+        Task<IReadOnlyCollection<ResourceDTO>> ReadAllAsync();
 
         Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource);
 
