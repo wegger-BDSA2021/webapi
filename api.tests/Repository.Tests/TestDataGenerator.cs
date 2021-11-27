@@ -43,8 +43,6 @@ namespace Repository.Tests
         {
             var users = new[] {
                 new User { Id = 1 },
-                // new User { Id = 2, Name = "Paolo Tell", Email = "paolo@itu.dk"},
-                // new User { Id = 3, Name = "Gustav Johansen", Email = "gujo@itu.dk", Tasks = new List<Task>(), },
             };
 
             var resources = new[] {
@@ -56,20 +54,48 @@ namespace Repository.Tests
                     TimeOfReference = _dateForFirstResource,
                     Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
                     LastCheckedForDeprecation = _dateForFirstResource
+                },
+                new Resource { 
+                    Id = 2,    
+                    Title = "resource_2", 
+                    Description = "test of another", 
+                    UserId = 1,
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/test2", 
+                    LastCheckedForDeprecation = _dateForFirstResource
+                }
+            };
+
+            var ratings = new [] {
+                new Rating {
+                    Id = 1,
+                    Rated = 3,
+                    ResourceId = 1,
+                    UserId = 1
+                },
+                new Rating {
+                    Id = 2,
+                    Rated = 5,
+                    ResourceId = 1,
+                    UserId = 1
+                },
+                new Rating {
+                    Id = 3,
+                    Rated = 5,
+                    ResourceId = 2,
+                    UserId = 1
                 }
             };
 
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
-                // new Tag { Id = 2, Name = "task can wait", Tasks = new List<Task>()},
             };
 
-            // tags[1].Tasks.Add(tasks[1]);
-            // tasks[1].Tags.Add(tags[1]);
             resources[0].Tags.Add(tags[0]);
 
             context.AddRange(users);
             context.AddRange(tags);
+            context.AddRange(ratings);
             context.AddRange(resources);
 
             context.SaveChanges();
