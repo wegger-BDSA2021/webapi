@@ -179,15 +179,26 @@ namespace Repository.Tests
         }
 
         [Fact]
-        public async void Given_range_returns_one_entry()
+        public async void Given_range_returns_correct_entries_and_computed_average()
         {
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var allWithRatingInRange = await _repo.GetAllWithRatingInRangeAsync(3, 4);
+            var allWithRatingInRange = await _repo.GetAllWithRatingInRangeAsync(4, 4);
             Assert.NotEmpty(allWithRatingInRange);
             Assert.Equal(1, allWithRatingInRange.Count()); 
             Assert.Equal(4, allWithRatingInRange.FirstOrDefault().AverageRating); 
+
+            var rating = new Rating{
+                UserId = 1,
+                ResourceId = 1, 
+                Rated = 1, 
+            };
+            await _context.Ratings.AddAsync(rating);
+            await _context.SaveChangesAsync();
+
+            var newQuery = await _repo.GetAllWithRatingInRangeAsync(4, 4);
+            Assert.Empty(newQuery);
         }
     }
 }
