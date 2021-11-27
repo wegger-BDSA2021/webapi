@@ -226,5 +226,29 @@ namespace Repository.Tests
             Assert.Equal(2, result.Count());
             Assert.Equal("resource_1", result.FirstOrDefault().Title);
         }
+
+        [Fact]
+        public async void Given_res_returns_all_resources_with_res_in_title()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.GetAllWhereTitleContainsAsync("res");
+
+            Assert.NotEmpty(result);
+            Assert.Equal("resource_1", result.FirstOrDefault().Title);
+        }
+
+        [Fact]
+        public async void Given_blob_returns_no_resources()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.GetAllWhereTitleContainsAsync("blob");
+
+            Assert.Empty(result);
+            Assert.Null(result.FirstOrDefault());
+        }
     }
 }
