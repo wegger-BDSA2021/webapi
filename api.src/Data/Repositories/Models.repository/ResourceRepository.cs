@@ -4,12 +4,16 @@ using System.Linq;
 using static Data.Response;
 using Microsoft.EntityFrameworkCore;
 using Utils;
+using System;
 
 namespace Data
 {
     public class ResourceRepository : IResourceRepository
     {
         private readonly IWeggerContext _context;
+
+        private Func<Resource, int, int, bool> inRange = (resource, from, to) => resource.Ratings.Select(r => r.Rated).Average() > from;// .IsWithin(from, to); 
+
         public ResourceRepository(IWeggerContext context)
         {
             _context = context;
@@ -205,9 +209,31 @@ namespace Data
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithRatingInRangeAsync(int from, int to)
         {
+
+            // computing the query client side (not optimal, and cannot be made async) 
+            // var toBeQueried = _context.Resources.AsEnumerable();
+            // return (toBeQueried
+            //     .Where(r => inRange(r, from, to))
+            //     .Select(
+            //         r => new ResourceDTO(
+            //             r.Id,
+            //             r.Title,
+            //             r.Description,
+            //             r.Url,
+            //             r.Ratings.Select(rt => rt.Rated).Average(),
+            //             r.Deprecated
+            //         )))
+            //     .ToList()
+            // .AsReadOnly();
+
+
+
+            // computing the query server side 
+            // (better solution, but stupid double where clause not using my hot extension methods ... ) 
             return (await _context.Resources
                 .Include(r => r.Ratings)
-                    .Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to))
+                    .Where(r => r.Ratings.Select(rt => rt.Rated).Average() >= from)
+                    .Where(r => r.Ratings.Select(rt => rt.Rated).Average() <= to)
                         .Select(
                             r => new ResourceDTO(
                                 r.Id,
@@ -216,7 +242,8 @@ namespace Data
                                 r.Url,
                                 r.Ratings.Select(rt => rt.Rated).Average(),
                                 r.Deprecated
-                    )).ToListAsync())
+                            ))
+                    .ToListAsync())
                 .AsReadOnly();
         }
 
@@ -236,7 +263,7 @@ namespace Data
             .AsReadOnly();
         }
 
-        public async Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId)
+        public async Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId)
         {
             var exists = await _context.Resources.FindAsync(resourceId);
             if (exists is null)

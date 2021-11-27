@@ -155,5 +155,39 @@ namespace Repository.Tests
             Assert.Equal(false, createdDTO.Deprecated);
             Assert.Equal(_dateForFirstResource, createdDTO.LastCheckedForDeprecation);
         }
+
+        [Fact]
+        public async void Given_new_rating_for_resource_returns_correct_average()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var rating = new Rating{
+                UserId = 1,
+                ResourceId = 1, 
+                Rated = 1, 
+            };
+
+            var oldAverage = await _repo.GetAverageRatingByIdAsync(1);
+            Assert.Equal(4, oldAverage.Average);
+
+            await _context.Ratings.AddAsync(rating);
+            await _context.SaveChangesAsync();
+
+            var newAverage = await _repo.GetAverageRatingByIdAsync(1);
+            Assert.Equal(3, newAverage.Average);
+        }
+
+        [Fact]
+        public async void Given_range_returns_one_entry()
+        {
+            var _repo = new ResourceRepository(_context);
+            Seed(_context);
+
+            var allWithRatingInRange = await _repo.GetAllWithRatingInRangeAsync(3, 4);
+            Assert.NotEmpty(allWithRatingInRange);
+            Assert.Equal(1, allWithRatingInRange.Count()); 
+            Assert.Equal(4, allWithRatingInRange.FirstOrDefault().AverageRating); 
+        }
     }
 }

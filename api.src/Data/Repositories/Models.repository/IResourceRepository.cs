@@ -27,7 +27,7 @@ namespace Data
         
         Task<IReadOnlyCollection<ResourceDTO>> GetAllWhereTitleContainsAsync(string matcher);
 
-        Task<(Response, double)> GetAverageRatingByIdAsync(int resourceId);
+        Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId);
 
     }
 }
