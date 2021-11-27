@@ -139,28 +139,85 @@ namespace Data
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllDeprecatedAsync()
         {
-            return (await _context.Resources.Where(r => r.Deprecated == true).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Where(r => r.Deprecated == true)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId)
         {
-            return (await _context.Resources.Where(r => r.UserId == userId).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Where(r => r.UserId == userId)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromDomainAsync(string domain)
         {
-            return (await _context.Resources.Where(r => r.Url.Contains(domain)).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Where(r => r.Url.Contains(domain))
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags)
         {
             var tags = await getTagsFromStringsAsync(stringTags);
-            return (await _context.Resources.Include(r => r.Tags).Where(r => r.Tags.Any(c => tags.Contains(c))).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Include(r => r.Tags)
+                    .Where(r => r.Tags.Any(c => tags.Contains(c)))
+                        .Select(
+                            r => new ResourceDTO(
+                                r.Id,
+                                r.Title,
+                                r.Description,
+                                r.Url,
+                                r.Ratings.Select(rt => rt.Rated).Average(),
+                                r.Deprecated
+                    )).ToListAsync())
+                .AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithRatingInRangeAsync(int from, int to)
         {
-            return (await _context.Resources.Include(r => r.Ratings).Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to)).ToListAsync()).AsReadOnly();
+            return (await _context.Resources
+                .Include(r => r.Ratings)
+                    .Where(r => r.Ratings.Select(rt => rt.Rated).Average().IsWithin(from, to))
+                        .Select(
+                            r => new ResourceDTO(
+                                r.Id,
+                                r.Title,
+                                r.Description,
+                                r.Url,
+                                r.Ratings.Select(rt => rt.Rated).Average(),
+                                r.Deprecated
+                    )).ToListAsync())
+                .AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWhereTitleContainsAsync(string matcher)
