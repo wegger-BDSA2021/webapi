@@ -7,11 +7,15 @@ namespace Data
     {
         public int Id { get; set; }
 
-        [Required]
         public User User { get; set; }
 
         [Required]
+        public int UserId { get; set; }
+
         public Resource Resource { get; set; }
+
+        [Required]
+        public int ResourceId { get; set; }
 
         [Required]
         public DateTime TimeOfComment { get; set; }
