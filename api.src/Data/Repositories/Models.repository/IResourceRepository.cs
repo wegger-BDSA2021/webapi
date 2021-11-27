@@ -9,7 +9,7 @@ namespace Data
 
         Task<IReadOnlyCollection<Resource>> ReadAllAsync();
 
-        Task<(Response Response, int ResourceId)> CreateAsync(Resource resource);
+        Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource);
 
         Task<Response> DeleteAsync(int id);
 

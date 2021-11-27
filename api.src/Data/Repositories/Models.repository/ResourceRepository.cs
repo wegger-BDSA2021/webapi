@@ -27,32 +27,54 @@ namespace Data
         public async Task<IReadOnlyCollection<Resource>> ReadAllAsync()
             => (await _context.Resources.ToListAsync()).AsReadOnly();
 
-        public async Task<(Response Response, int ResourceId)> CreateAsync(Resource resource)
+        public async Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource)
         {
             var linkExists = await _context.Resources.FirstOrDefaultAsync(r => r.Url == resource.Url);
 
             if (linkExists is not null)
-                return (Conflict, -1);
+                return (Conflict, null);
 
-            var _resource = new Resource
+            var _resourceEntity = new Resource
             {
                 Title = resource.Title,
-                User = resource.User,
+                UserId = resource.UserId,
                 Description = resource.Description,
                 TimeOfReference = resource.TimeOfReference,
                 TimeOfResourcePublication = resource.TimeOfResourcePublication,
                 Url = resource.Url,
                 Deprecated = resource.Deprecated,
                 LastCheckedForDeprecation = resource.LastCheckedForDeprecation,
-                Tags = resource.Tags,
-                Ratings = resource.Ratings, 
+                Tags = await getTagsFromStringsAsync(resource.Tags)
             };
 
-            await _context.Resources.AddAsync(_resource);
+            await _context.Resources.AddAsync(_resourceEntity);
             await _context.SaveChangesAsync();
 
-            return (Created, _resource.Id);
+            var _initialRating = new Rating {
+                UserId = _resourceEntity.UserId,
+                ResourceId = _resourceEntity.Id,
+                Rated =  resource.InitialRating
+            };
+            
+            await _context.Ratings.AddAsync(_initialRating);
+            await _context.SaveChangesAsync();
 
+            ResourceDetailsDTO result = new ResourceDetailsDTO(
+                _resourceEntity.Id,
+                _resourceEntity.Title,
+                _resourceEntity.Description,
+                _resourceEntity.TimeOfReference,
+                _resourceEntity.TimeOfResourcePublication,
+                _resourceEntity.Url,
+                _resourceEntity.Tags.Select(t => t.Name).ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
+                _initialRating.Rated,
+                _resourceEntity.Comments.Select(c => c.Content).ToList(),
+                _resourceEntity.Deprecated,
+                _resourceEntity.LastCheckedForDeprecation
+            );
+
+            return (Created, result);
         }
 
         public async Task<Response> DeleteAsync(int id)
