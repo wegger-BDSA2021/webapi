@@ -11,9 +11,9 @@ namespace Data
     {
         public int Id { get; set; }
 
-        [Required]
         public User User { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
         [Required]
@@ -27,9 +27,9 @@ namespace Data
         [Required]
         public DateTime TimeOfReference { get; set; }
 
+        [Required]
         public DateTime TimeOfResourcePublication { get; set; }
 
-        //public int AvaredgeRating { get; set; }
 
         [Required]
         public string Url { get; set; }

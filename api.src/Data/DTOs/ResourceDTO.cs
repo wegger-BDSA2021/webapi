@@ -24,6 +24,7 @@ namespace Data
         [Required]
         public DateTime TimeOfReference { get; init; }
 
+        [Required]
         public DateTime TimeOfResourcePublication { get; init; }
 
         [Required]
@@ -31,6 +32,7 @@ namespace Data
 
         public ISet<string> Tags { get; init; }
 
+        [Required]
         public int InitialRating { get; init; }
 
         [Required]
