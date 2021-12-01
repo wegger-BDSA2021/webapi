@@ -17,7 +17,7 @@ namespace Data
         {
             _context = context;
         }
-        public async Task<(Response Response, int RatingId)> CreateAsync(Tag Tag)
+        public async Task<(Response Response, int TagId)> CreateAsync(Tag Tag)
         {
             var entity = new Tag
             {
