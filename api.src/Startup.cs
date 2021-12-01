@@ -46,6 +46,10 @@ namespace api.src
             //  - for repositories
             //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
 
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ValidatorActionFilter));
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

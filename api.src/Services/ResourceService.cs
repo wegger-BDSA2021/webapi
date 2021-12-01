@@ -58,6 +58,18 @@ namespace Services
             }
         }
 
+        public async Task<Result> CreateAsync(ResourceCreateDTOClient resource)
+        {
+            // validation of client input :
+            // the actionFilter from MVC will take care of the properties of the DTOs
+            // in the servicelayer, we will handle responses from the repos and similar, 
+            // that can not be detected from the DTOs
+
+
+
+
+        }
+
 
 
     }
