@@ -57,7 +57,7 @@ namespace Data
                 .ToListAsync())
             .AsReadOnly();
         
-        public async Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource)
+        public async Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTOServer resource)
         {
             var linkExists = await _context.Resources.FirstOrDefaultAsync(r => r.Url == resource.Url);
 

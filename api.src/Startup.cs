@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.src.Controllers;
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,7 @@ namespace api.src
             // continue to use the servies for dependecy injection  
             //  - for repositories
             //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

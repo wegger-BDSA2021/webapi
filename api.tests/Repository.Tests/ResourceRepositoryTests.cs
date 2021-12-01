@@ -98,7 +98,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var newResource = new ResourceCreateDTO
+            var newResource = new ResourceCreateDTOServer
             {
                 Title = "this is a new resource",
                 UserId = 1,
@@ -123,7 +123,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var newResource = new ResourceCreateDTO
+            var newResource = new ResourceCreateDTOServer
             {
                 Title = "this is a new resource",
                 UserId = 1,

@@ -1,0 +1,64 @@
+using System;
+using System.Threading.Tasks;
+using Data;
+using static Data.Response;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Services
+{
+    public class ResourceService // : IResourceService
+    {
+        // should validate input from the ResourceController
+        // should use the parser component to create a new resource
+        // contains all business logic 
+
+        private IResourceRepository _repo;
+
+        public ResourceService(IResourceRepository repo)
+        {
+            _repo = repo;
+        }
+
+        public async Task<Result> ReadAsync(int id)
+        {
+            if (id < 0)
+            {
+                return new Result 
+                {
+                    Response = BadRequest,
+                    Message = "Id can only be a positive integer"
+                };
+            }
+
+            var result = await _repo.ReadAsync(id);
+
+            switch (result.Response)
+            {
+                case NotFound:
+                    return new Result
+                    {
+                        Response = NotFound,
+                        Message = "No resource found with the given entity"
+                    };
+                
+                case OK:
+                    return new Result
+                    {
+                        Response = OK,
+                        Message = $"Resource found at index {id}",
+                        DTO = result.ResourceDetails
+                    };
+
+                default:
+                    return new Result
+                    {
+                        Response = Conflict,
+                        Message = "An error occured"
+                    };
+            }
+        }
+
+
+
+    }
+}
