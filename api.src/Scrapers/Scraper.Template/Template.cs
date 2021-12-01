@@ -22,6 +22,7 @@ namespace ResourceBuilder
             "linq", "c", "c++"
         };
 
+        #pragma warning disable 1998
         public async Task Parse(string content, ResourceCreateDTOServer product)
         {
             HtmlDocument doc = new HtmlDocument();
@@ -32,6 +33,7 @@ namespace ResourceBuilder
             product.TitleFromSource = this.GetTitle(doc);
             product.TagsFoundInSource = this.GetTags(doc).ConfigureAwait(false).GetAwaiter().GetResult();
         }
+        #pragma warning restore 1998
 
         protected string GetTitle(HtmlDocument _doc)
         {

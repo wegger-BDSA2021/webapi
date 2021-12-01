@@ -75,6 +75,7 @@ namespace ResourceBuilder
 
         public void SetOfficialDocumentation()
         {
+            // TODO : read from repo of official links
             var officials = new List<string>();
             officials.Add("docs.microsoft.com");
             officials.Add("www.uml-diagrams.org");
