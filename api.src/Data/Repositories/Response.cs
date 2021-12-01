@@ -8,6 +8,7 @@ namespace Data
         NotFound,
         BadRequest,
         Conflict, 
-        OK
+        OK,
+        InternalError
     }
 }

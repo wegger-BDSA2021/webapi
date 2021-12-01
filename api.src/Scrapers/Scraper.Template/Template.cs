@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data;
 using HtmlAgilityPack;
 
 namespace ResourceBuilder
@@ -21,7 +22,7 @@ namespace ResourceBuilder
             "linq", "c", "c++"
         };
 
-        public async Task Parse(string content, ResourceProduct product)
+        public async Task Parse(string content, ResourceCreateDTOServer product)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(content);

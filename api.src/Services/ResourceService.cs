@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
+using ResourceBuilder;
 
 namespace Services
 {
@@ -83,7 +84,38 @@ namespace Services
                     };
             }
 
-            return null;
+            var builder = new Builder(resource);
+            var director = new Director(builder);
+
+            try
+            {
+                var product = await director.Make();
+                var created = await _repo.CreateAsync(product);
+                if (created.Response is Conflict)
+                {
+                    return new Result
+                        {
+                            Response = Conflict, 
+                            Message = "Another resource with the same URL has already been provided"
+                        };
+                }
+
+                return new Result
+                    {
+                        Response = Created,
+                        Message = "A new resource was succesfully created", 
+                        DTO = created.CreatedResource
+                    };
+
+            }
+            catch (System.Exception)
+            {
+                return new Result
+                    {
+                        Response = InternalError,
+                        Message = "Could not process the provided resource ... sorry about that. Try again later."
+                    };
+            }
 
         }
 

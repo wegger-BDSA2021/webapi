@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Data;
 
 namespace ResourceBuilder
 {
@@ -11,7 +12,7 @@ namespace ResourceBuilder
             this._builder = builder;
         }
         
-        public async Task<ResourceProduct> Make()
+        public async Task<ResourceCreateDTOServer> Make()
         {
             // _builder.CheckIfUrlIsValid();
             await _builder.RetrieveHtml();

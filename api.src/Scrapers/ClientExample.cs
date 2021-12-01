@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Data;
 
 namespace ResourceBuilder
 {
@@ -6,7 +7,7 @@ namespace ResourceBuilder
     {
         public static async Task Client()
         {
-            var input = new InputFromAPI{
+            var input = new ResourceCreateDTOClient{
                 Description = "test yo yo",
                 InitialRating = 3,
                 Title = "this is a test",

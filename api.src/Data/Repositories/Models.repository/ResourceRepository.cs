@@ -28,16 +28,19 @@ namespace Data
             var result = new ResourceDetailsDTO(
                 _resourceEntity.Id,
                 _resourceEntity.Title,
+                _resourceEntity.SourceTitle,
                 _resourceEntity.Description,
                 _resourceEntity.TimeOfReference,
-                _resourceEntity.TimeOfResourcePublication,
                 _resourceEntity.Url,
+                _resourceEntity.HostBaseUrl,
                 _resourceEntity.Tags.Select(t => t.Name).ToList(),
                 _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
                 _resourceEntity.Ratings.Select(r => r.Rated).Average(),
                 _resourceEntity.Comments.Select(c => c.Content).ToList(),
                 _resourceEntity.Deprecated,
-                _resourceEntity.LastCheckedForDeprecation
+                _resourceEntity.LastCheckedForDeprecation, 
+                _resourceEntity.IsVideo, 
+                _resourceEntity.IsOfficialDocumentation
             );
 
             return (OK, result);
@@ -71,15 +74,18 @@ namespace Data
 
             var _resourceEntity = new Resource
             {
-                Title = resource.Title,
                 UserId = resource.UserId,
+                Title = resource.TitleFromUser,
+                SourceTitle = resource.TitleFromSource,
                 Description = resource.Description,
                 TimeOfReference = resource.TimeOfReference,
-                TimeOfResourcePublication = resource.TimeOfResourcePublication,
                 Url = resource.Url,
+                HostBaseUrl = resource.HostBaseUrl,
                 Deprecated = resource.Deprecated,
                 LastCheckedForDeprecation = resource.LastCheckedForDeprecation,
-                Tags = await getTagsFromStringsAsync(resource.Tags)
+                IsVideo = resource.IsVideo,
+                IsOfficialDocumentation = resource.IsOfficialDocumentation,
+                Tags = await getTagsFromStringsAsync(resource.TagsFoundInSource)
             };
 
             await _context.Resources.AddAsync(_resourceEntity);
@@ -97,16 +103,19 @@ namespace Data
             ResourceDetailsDTO result = new ResourceDetailsDTO(
                 _resourceEntity.Id,
                 _resourceEntity.Title,
+                _resourceEntity.SourceTitle,
                 _resourceEntity.Description,
                 _resourceEntity.TimeOfReference,
-                _resourceEntity.TimeOfResourcePublication,
                 _resourceEntity.Url,
+                _resourceEntity.HostBaseUrl,
                 _resourceEntity.Tags.Select(t => t.Name).ToList(),
                 _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
                 _initialRating.Rated,
                 _resourceEntity.Comments.Select(c => c.Content).ToList(),
                 _resourceEntity.Deprecated,
-                _resourceEntity.LastCheckedForDeprecation
+                _resourceEntity.LastCheckedForDeprecation,
+                _resourceEntity.IsVideo,
+                _resourceEntity.IsOfficialDocumentation
             );
 
             return (Created, result);
@@ -124,6 +133,8 @@ namespace Data
             return Deleted;
         }
 
+
+        // TODO : this needs a serious overhaul ...
         public async Task<Response> UpdateAsync(ResourceUpdateDTO resource)
         {
             var entity = await _context.Resources.FirstOrDefaultAsync(r => r.Id == resource.Id);
@@ -135,7 +146,6 @@ namespace Data
             entity.Description = resource.Description;
             entity.UserId = (int)resource.UserId;
             // entity.TimeOfReference = resource.TimeOfReference;
-            entity.TimeOfResourcePublication = (System.DateTime)resource.TimeOfResourcePublication;
             entity.Url = resource.Url;
             entity.Tags = await getTagsFromStringsAsync(resource.Tags);
             entity.Deprecated = (bool)resource.Deprecated;
