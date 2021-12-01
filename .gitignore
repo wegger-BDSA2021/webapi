@@ -16,6 +16,9 @@
 # Mono auto generated files
 mono_crash.*
 
+# sqlite file created at runtime .. no need to include this in production
+:memory
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
