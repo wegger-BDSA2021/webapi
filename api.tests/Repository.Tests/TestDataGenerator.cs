@@ -48,21 +48,29 @@ namespace Repository.Tests
             var resources = new[] {
                 new Resource { 
                     Id = 1,    
-                    Title = "resource_1", 
-                    Description = "test", 
                     UserId = 1,
+                    Title = "resource_1", 
+                    SourceTitle = "some official title",
+                    Description = "test", 
                     TimeOfReference = _dateForFirstResource,
                     Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
-                    LastCheckedForDeprecation = _dateForFirstResource
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource, 
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
                 },
                 new Resource { 
                     Id = 2,    
-                    Title = "resource_2", 
-                    Description = "test of another", 
                     UserId = 1,
+                    Title = "resource_2", 
+                    SourceTitle = "another official title",
+                    Description = "test of another", 
                     TimeOfReference = _dateForFirstResource,
                     Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/test2", 
-                    LastCheckedForDeprecation = _dateForFirstResource
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource,
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
                 }
             };
 

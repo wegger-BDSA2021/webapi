@@ -131,7 +131,11 @@ namespace Repository.Tests
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/blabla",
                 InitialRating = 4,
                 Deprecated = false,
-                LastCheckedForDeprecation = _dateForFirstResource
+                LastCheckedForDeprecation = _dateForFirstResource, 
+                HostBaseUrl = "www.github.com",
+                IsVideo = false, 
+                IsOfficialDocumentation = false, 
+                TitleFromSource = "Some fancy title"
             };
 
             var result = await _repo.CreateAsync(newResource);
