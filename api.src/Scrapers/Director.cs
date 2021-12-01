@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Resource.Builder
+namespace ResourceBuilder
 {
     class Director
     {

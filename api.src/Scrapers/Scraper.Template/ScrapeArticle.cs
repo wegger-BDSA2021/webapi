@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace Resource.Builder
+namespace ResourceBuilder
 {
     class ScrapeArticle : Template
     {

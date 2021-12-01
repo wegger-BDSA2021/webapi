@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace Resource.Builder
+namespace ResourceBuilder
 {
     abstract class Template
     {

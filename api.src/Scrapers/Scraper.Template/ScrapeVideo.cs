@@ -7,7 +7,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using System.Web;
 
-namespace Resource.Builder
+namespace ResourceBuilder
 {
     class ScrapeVideo : Template
     {

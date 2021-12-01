@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Resource.Builder
+namespace ResourceBuilder
 {
     class InputFromAPI
     {
