@@ -64,10 +64,36 @@ namespace Services
             // the actionFilter from MVC will take care of the properties of the DTOs
             // in the servicelayer, we will handle responses from the repos and similar, 
             // that can not be detected from the DTOs
-            
+            if (await _repo.LinkExistsAsync(resource.Url))
+            {
+                return new Result
+                    {
+                        Response = Conflict,
+                        Message = "Another resource with the same URL has already been provided"
+                    };
+            }
 
+            var validUrl = ValidateUrl(resource.Url);
+            if (!validUrl)
+            {
+                return new Result
+                    {
+                        Response = BadRequest,
+                        Message = "The provided URL is not valid"
+                    };
+            }
 
+            return null;
 
+        }
+
+        private bool ValidateUrl(string _input)
+        {
+            Uri uriResult; 
+            bool isValid = Uri.TryCreate(_input, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            return isValid;
         }
 
 

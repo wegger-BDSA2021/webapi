@@ -13,7 +13,7 @@ namespace ResourceBuilder
         
         public async Task<ResourceProduct> Make()
         {
-            _builder.CheckIfUrlIsValid();
+            // _builder.CheckIfUrlIsValid();
             await _builder.RetrieveHtml();
             _builder.SetUrl();
             _builder.SetHostBaseUrl();

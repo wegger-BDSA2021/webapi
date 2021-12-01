@@ -29,5 +29,6 @@ namespace Data
 
         Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId);
 
+        Task<bool> LinkExistsAsync(string url);
     }
 }
