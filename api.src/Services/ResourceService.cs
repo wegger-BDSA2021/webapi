@@ -7,7 +7,7 @@ using ResourceBuilder;
 
 namespace Services
 {
-    public class ResourceService // : IResourceService
+    public class ResourceService : IResourceService
     {
         // should validate input from the ResourceController
         // should use the parser component to create a new resource
@@ -91,12 +91,12 @@ namespace Services
             {
                 var product = await director.Make();
                 var created = await _repo.CreateAsync(product);
-                if (created.Response is Conflict)
+                if (created.Response is NotFound)
                 {
                     return new Result
                         {
                             Response = Conflict, 
-                            Message = "Another resource with the same URL has already been provided"
+                            Message = "The user trying to create the resource does not exist in the current context"
                         };
                 }
 

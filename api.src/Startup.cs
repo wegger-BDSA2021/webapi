@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services;
 
 namespace api.src
 {
@@ -26,11 +28,19 @@ namespace api.src
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.AddDbContext<WeggerContext>(options =>
+            //     options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+
+            // for testing locally :
+            var _connection = new SqliteConnection("DataSource=:memory");
+            _connection.Open();
             services.AddDbContext<WeggerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+            {
+                options.UseSqlite(_connection);
+            });
+
 
             services.AddScoped<IWeggerContext, WeggerContext>();
             services.AddScoped<IResourceRepository, ResourceRepository>();
@@ -38,6 +48,8 @@ namespace api.src
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
+
+            services.AddScoped<IResourceService, ResourceService>();
 
 
             // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));

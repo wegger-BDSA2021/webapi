@@ -22,6 +22,13 @@ namespace api.src.Controllers
             var result = await _service.ReadAsync(id);
             return result.ToActionResult();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ResourceDetailsDTO>> CreateResource(ResourceCreateDTOClient resource)
+        {
+            var result = await _service.CreateAsync(resource);
+            return result.ToActionResult();
+        }
     
 
     }

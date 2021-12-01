@@ -72,6 +72,10 @@ namespace Data
             if (linkExists is not null)
                 return (Conflict, null);
 
+            var validUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == resource.UserId);
+            if (validUser is null)
+                return (NotFound, null);
+
             var _resourceEntity = new Resource
             {
                 UserId = resource.UserId,

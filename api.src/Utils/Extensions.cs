@@ -6,19 +6,18 @@ using System;
 
 namespace Utils
 {
-
-
     public static class Extensions
     {
         public static ActionResult ToActionResult(this Result result) => result.Response switch
         {
-            Updated     => new NoContentResult(),
-            Deleted     => new NoContentResult(),
-            NotFound    => new NotFoundObjectResult(result.Message),
-            Conflict    => new ConflictObjectResult(result.Message),
-            BadRequest  => new BadRequestObjectResult(result.Message),
-            OK          => new OkObjectResult(result.DTO),
-            _           => throw new NotSupportedException($"{result.Response} not supported")
+            Updated         => new NoContentResult(),
+            Deleted         => new NoContentResult(),
+            NotFound        => new NotFoundObjectResult(result.Message),
+            Conflict        => new ConflictObjectResult(result.Message),
+            BadRequest      => new BadRequestObjectResult(result.Message),
+            OK              => new OkObjectResult(result.DTO),
+            InternalError   => new ObjectResult(result.Message) {StatusCode = 500},
+            _               => throw new NotSupportedException($"{result.Response} not supported")
         };
 
         // public static ActionResult<T> ToActionResult<T>(this Option<T> option) where T : class
