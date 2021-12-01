@@ -19,6 +19,8 @@ namespace Data
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
+
+        public string SourceTitle { get; set; }
         
         [Required]
         [StringLength(500)]
@@ -28,11 +30,10 @@ namespace Data
         public DateTime TimeOfReference { get; set; }
 
         [Required]
-        public DateTime TimeOfResourcePublication { get; set; }
-
+        public string Url { get; set; }
 
         [Required]
-        public string Url { get; set; }
+        public string HostBaseUrl { get; set; }
 
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
         
@@ -44,6 +45,12 @@ namespace Data
 
         [Required]
         public DateTime LastCheckedForDeprecation { get; set; }
+
+        [Required]
+        public bool IsVideo { get; set; }
+
+        [Required]
+        public bool IsOfficialDocumentation { get; set; }
 
     }
 }

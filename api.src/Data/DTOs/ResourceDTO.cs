@@ -6,9 +6,53 @@ namespace Data
 {
     public record ResourceDTO(int Id, string Title, string Description, string Url, double AverageRating, bool Deprecated);
 
-    public record ResourceDetailsDTO(int Id, string Title, string Description, DateTime TimeOfReference, DateTime TimeOfResourcePublication, string Url, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, double AverageRating, IReadOnlyCollection<string> Comments, bool Deprecated, DateTime LastCheckedForDeprecation) : ResourceDTO(Id, Title, Description, Url, AverageRating, Deprecated);
+    public record ResourceDetailsDTO(int Id, string Title, string SourceTitle, string Description, DateTime TimeOfReference, string Url, string HostBaseUrl, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, double AverageRating, IReadOnlyCollection<string> Comments, bool Deprecated, DateTime LastCheckedForDeprecation, bool IsVideo, bool IsOfficialDocumentation) : ResourceDTO(Id, Title, Description, Url, AverageRating, Deprecated);
 
-    public record ResourceCreateDTO
+    // the one being built by the resourcebuilder, and consumed by the resource_repo
+    public record ResourceCreateDTOServer
+    {
+        [Required]
+        [StringLength(100)]
+        public string TitleFromUser { get; set; }
+
+        public string TitleFromSource { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string Description { get; set; }
+
+        [Required]
+        public DateTime TimeOfReference { get; set; }
+
+        [Required]
+        public string Url { get; set; }
+
+        [Required]
+        public string HostBaseUrl { get; set; }
+
+        public ICollection<string> TagsFoundInSource { get; set; } = new List<string>();
+
+        [Required]
+        public int InitialRating { get; set; }
+
+        [Required]
+        public Boolean Deprecated { get; set; }
+
+        [Required]
+        public DateTime LastCheckedForDeprecation { get; set; }
+
+        [Required]
+        public bool IsVideo { get; set; }
+
+        [Required]
+        public bool IsOfficialDocumentation { get; set; }
+    }
+
+    // the dto consumed by the api controller
+    public record ResourceCreateDTOClient
     {
         [Required]
         [StringLength(100)]
@@ -20,26 +64,13 @@ namespace Data
         [Required]
         [StringLength(500)]
         public string Description { get; init; }
-
-        [Required]
-        public DateTime TimeOfReference { get; init; }
-
-        [Required]
-        public DateTime TimeOfResourcePublication { get; init; }
-
+        
         [Required]
         public string Url { get; init; }
 
-        public ISet<string> Tags { get; init; } = new HashSet<string>();
-
         [Required]
+        [Range(0, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int InitialRating { get; init; }
-
-        [Required]
-        public Boolean Deprecated { get; init; }
-
-        [Required]
-        public DateTime LastCheckedForDeprecation { get; init; }
     }
 
     public record ResourceUpdateDTO 
