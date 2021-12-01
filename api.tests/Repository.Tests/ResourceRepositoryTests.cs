@@ -34,7 +34,6 @@ namespace Repository.Tests
             Assert.Equal(resource.Tags.First(), "dotnet");
             Assert.Equal(resource.Description, "test");
             Assert.Equal(resource.Deprecated, false);
-            // Assert.Equal(resource.UserId, 1);
             Assert.Equal(resource.Url, "https://github.com/wegger-BDSA2021/webapi/tree/develop");
             Assert.Equal(resource.TimeOfReference, _dateForFirstResource);
             Assert.Equal(resource.LastCheckedForDeprecation, _dateForFirstResource);
@@ -98,13 +97,12 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var newResource = new ResourceCreateDTO
+            var newResource = new ResourceCreateDTOServer
             {
-                Title = "this is a new resource",
+                TitleFromUser = "this is a new resource",
                 UserId = 1,
                 Description = "description",
                 TimeOfReference = _dateForFirstResource,
-                TimeOfResourcePublication = _dateForFirstResource,
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
                 InitialRating = 4,
                 Deprecated = false,
@@ -123,17 +121,20 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var newResource = new ResourceCreateDTO
+            var newResource = new ResourceCreateDTOServer
             {
-                Title = "this is a new resource",
+                TitleFromUser = "this is a new resource",
                 UserId = 1,
                 Description = "description",
                 TimeOfReference = _dateForFirstResource,
-                TimeOfResourcePublication = _dateForFirstResource,
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/blabla",
                 InitialRating = 4,
                 Deprecated = false,
-                LastCheckedForDeprecation = _dateForFirstResource
+                LastCheckedForDeprecation = _dateForFirstResource, 
+                HostBaseUrl = "www.github.com",
+                IsVideo = false, 
+                IsOfficialDocumentation = false, 
+                TitleFromSource = "Some fancy title"
             };
 
             var result = await _repo.CreateAsync(newResource);
@@ -146,7 +147,6 @@ namespace Repository.Tests
             Assert.Equal("this is a new resource", createdDTO.Title);
             Assert.Equal("description", createdDTO.Description);
             Assert.Equal(_dateForFirstResource, createdDTO.TimeOfReference);
-            Assert.Equal(_dateForFirstResource, createdDTO.TimeOfResourcePublication);
             Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop/blabla", createdDTO.Url);
             Assert.Equal(0, createdDTO.Tags.Count());
             Assert.Equal(1, createdDTO.Ratings.Count());
