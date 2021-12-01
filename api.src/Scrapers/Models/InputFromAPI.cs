@@ -8,7 +8,6 @@ namespace ResourceBuilder
         public string Title { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
-        public ICollection<string> TagsCategories { get; set; }
         public int InitialRating { get; set; }
     }
 
