@@ -73,10 +73,10 @@ namespace Data
             return Deleted;
         }
 
-        public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
-        {
-            return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
-        }
+        // public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
+        // {
+        //     return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
+        // }
         /*{
             var tags = from t in _context.Tags
                         where(t => t.Resources = re)

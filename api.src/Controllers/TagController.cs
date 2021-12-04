@@ -62,27 +62,27 @@ namespace api.src.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Tag>> GetfromRecourse(Resource Re)
-        {
-            try
-            {
-                var result = await tagRepository.GetAllTagsFormRepositoryAsync(Re);
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<Tag>> GetfromRecourse(Resource Re)
+        // {
+        //     try
+        //     {
+        //         var result = await tagRepository.GetAllTagsFormRepositoryAsync(Re);
 
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
-        }
+        //         if (result != null)
+        //         {
+        //             return Ok(result);
+        //         }
+        //         else
+        //         {
+        //             return NotFound();
+        //         }
+        //     }
+        //     catch (System.Exception)
+        //     {
+        //         return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+        //     }
+        // }
 
         [HttpPost]
         public async Task<ActionResult<Tag>> Post(Tag tag)

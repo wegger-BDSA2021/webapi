@@ -10,6 +10,6 @@ namespace Data
         public Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id);
         public Task<IReadOnlyCollection<Tag>> GetAllTagsAsync();
         public Task<Response> DeleteAsync(int id);
-        public Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re);
+        // public Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re);
     }
 }
