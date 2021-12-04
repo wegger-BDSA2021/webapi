@@ -4,6 +4,7 @@ using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using ResourceBuilder;
+using System.Linq;
 
 namespace Services
 {
@@ -14,10 +15,12 @@ namespace Services
         // contains all business logic 
 
         private IResourceRepository _repo;
+        private ITagRepository _tagRepo;
 
-        public ResourceService(IResourceRepository repo)
+        public ResourceService(IResourceRepository repo, ITagRepository tagRepo)
         {
             _repo = repo;
+            _tagRepo = tagRepo;
         }
 
         public async Task<Result> ReadAsync(int id)
@@ -84,7 +87,9 @@ namespace Services
                     };
             }
 
-            var builder = new Builder(resource);
+            var queryTerms = await _tagRepo.GetAllTagsAsStringCollectionAsync();
+
+            var builder = new Builder(resource, queryTerms.ToList());
             var director = new Director(builder);
 
             try

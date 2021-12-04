@@ -10,20 +10,22 @@ namespace ResourceBuilder
         protected string url;
 
         // instead of this, retrieve tags from tagRepository
-        protected static string[] QueryTerms { get; } =
-        {
-            "anglesharp", "docker",
-            "dotnet" , ".NET",
-            "web scraping", "syntax",
-            "xpath", "html",
-            "github", "htmlagilitypack",
-            "c#", "pascal", "DTO",
-            "design pattern", "stopwatch",
-            "linq", "c", "c++"
-        };
+        // protected static string[] QueryTerms { get; } =
+        // {
+        //     "anglesharp", "docker",
+        //     "dotnet" , ".NET",
+        //     "web scraping", "syntax",
+        //     "xpath", "html",
+        //     "github", "htmlagilitypack",
+        //     "c#", "pascal", "DTO",
+        //     "design pattern", "stopwatch",
+        //     "linq", "c", "c++"
+        // };
+
+        protected static ICollection<string> QueryTerms { get; }
 
         #pragma warning disable 1998
-        public async Task Parse(string content, ResourceCreateDTOServer product)
+        public async Task Parse(string content, ResourceCreateDTOServer product, ICollection<string> queryTerms)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(content);
