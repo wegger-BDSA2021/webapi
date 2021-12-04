@@ -13,7 +13,7 @@ namespace Repository.Tests
     {
         private const string _connectionString = "DataSource=:memory";
         private readonly SqliteConnection _connection;
-        protected readonly WeggerContext _context;
+        protected readonly WeggerTestContext _context;
 
         protected readonly DateTime _dateForFirstResource;
 
@@ -22,11 +22,11 @@ namespace Repository.Tests
             _connection = new SqliteConnection(_connectionString);
             _connection.Open();
 
-            var options = new DbContextOptionsBuilder<WeggerContext>()
+            var options = new DbContextOptionsBuilder<WeggerTestContext>()
                               .UseSqlite(_connection)
                               .Options;
 
-            _context = new WeggerContext(options);
+            _context = new WeggerTestContext(options);
             _context.Database.EnsureCreated();
 
             _dateForFirstResource = DateTime.Now;
@@ -124,5 +124,26 @@ namespace Repository.Tests
         {
             Assert.False(_context.Users.Any());
         }
+    }
+
+    public class WeggerTestContext : DbContext, IWeggerContext
+    {
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Resource> Resources => Set<Resource>();
+        public DbSet<Rating> Ratings => Set<Rating>();
+        public DbSet<Tag> Tags => Set<Tag>();
+        public DbSet<Comment> Comments => Set<Comment>();
+
+
+        public WeggerTestContext(DbContextOptions<WeggerTestContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            // ... the seeding method will handle this
+        }
+
     }
 }
