@@ -2,27 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Data;
 
 namespace ResourceBuilder
 {
 
     class Builder
     {
-        public ResourceProduct _product;
-        public InputFromAPI _input;
+        public ResourceCreateDTOServer _product;
+        public ResourceCreateDTOClient _input;
         private string _content; 
 
-        public Builder(InputFromAPI input)
+        public Builder(ResourceCreateDTOClient input)
         {
             this.Reset();
             this._input = input;
         }
 
-        public ResourceProduct GetResult() => this._product;
+        public ResourceCreateDTOServer GetResult() => this._product;
 
         public void Reset()
         {
-            this._product = new ResourceProduct();
+            this._product = new ResourceCreateDTOServer();
         }
 
         public void CheckIfUrlIsValid()
@@ -74,6 +75,7 @@ namespace ResourceBuilder
 
         public void SetOfficialDocumentation()
         {
+            // TODO : read from repo of official links
             var officials = new List<string>();
             officials.Add("docs.microsoft.com");
             officials.Add("www.uml-diagrams.org");
@@ -101,7 +103,7 @@ namespace ResourceBuilder
         }
 
         private bool IsVideo() => _product.IsVideo;
-        private async Task TemplateClient(Template template, string content, ResourceProduct product) => await template.Parse(content, product);
+        private async Task TemplateClient(Template template, string content, ResourceCreateDTOServer product) => await template.Parse(content, product);
 
         public async Task ScrapeTagsAndDate()
         {

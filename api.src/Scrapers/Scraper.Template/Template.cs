@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data;
 using HtmlAgilityPack;
 
 namespace ResourceBuilder
@@ -21,7 +22,8 @@ namespace ResourceBuilder
             "linq", "c", "c++"
         };
 
-        public async Task Parse(string content, ResourceProduct product)
+        #pragma warning disable 1998
+        public async Task Parse(string content, ResourceCreateDTOServer product)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(content);
@@ -31,6 +33,7 @@ namespace ResourceBuilder
             product.TitleFromSource = this.GetTitle(doc);
             product.TagsFoundInSource = this.GetTags(doc).ConfigureAwait(false).GetAwaiter().GetResult();
         }
+        #pragma warning restore 1998
 
         protected string GetTitle(HtmlDocument _doc)
         {

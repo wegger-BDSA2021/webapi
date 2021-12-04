@@ -7,7 +7,8 @@ namespace Data
         Deleted,
         NotFound,
         BadRequest,
-        Conflict,
-        OK
+        Conflict, 
+        OK,
+        InternalError
     }
 }

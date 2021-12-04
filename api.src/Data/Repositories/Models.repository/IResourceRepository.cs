@@ -9,7 +9,7 @@ namespace Data
 
         Task<IReadOnlyCollection<ResourceDTO>> ReadAllAsync();
 
-        Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTO resource);
+        Task<(Response Response, ResourceDetailsDTO CreatedResource)> CreateAsync(ResourceCreateDTOServer resource);
 
         Task<Response> DeleteAsync(int id);
 
@@ -29,5 +29,6 @@ namespace Data
 
         Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId);
 
+        Task<bool> LinkExistsAsync(string url);
     }
 }
