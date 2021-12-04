@@ -134,6 +134,51 @@ namespace Services
             return isValid;
         }
 
+        public async Task<Result> ReadAllAsync()
+        {
+            var collection = await _repo.ReadAllAsync();
+            var result = new Result 
+                {
+                    Response = OK,
+                    DTO = collection
+                };
+            return result;
+        }
+
+        public async Task<Result> DeleteByIdAsync(int id)
+        {
+            var response = await _repo.DeleteAsync(id);
+            if (response == NotFound)
+                return new Result
+                    {
+                        Response = NotFound,
+                        Message = $"No resource found with id {id}"
+                    };
+            
+            return new Result 
+                {
+                    Response = Deleted,
+                    Message = $"Resource with id {id} has succesfully benn deleted"
+                };
+        }
+
+        public async Task<Result> UpdateResourceAsync(ResourceUpdateDTO resource)
+        {
+            var response = await _repo.UpdateAsync(resource);
+            if (response == NotFound)
+                return new Result
+                    {
+                        Response = NotFound,
+                        Message = $"No resource found with the id {resource.Id}"
+                    };
+            return new Result
+                {
+                    Response = Updated,
+                    Message = $"Resource with id {resource.Id} has succefully been updated"
+                };
+        }
+
+
 
 
     }
