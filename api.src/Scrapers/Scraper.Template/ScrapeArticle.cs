@@ -13,7 +13,6 @@ namespace ResourceBuilder
         protected override async Task<ICollection<string>> GetTags(HtmlDocument _doc)
         {
             var foundTagsConcurrent = new ConcurrentBag<string>();
-            var foundTags = new List<string>();
 
             var paragraphs = _doc.DocumentNode.SelectNodes("//p");
             var bullets = _doc.DocumentNode.SelectNodes("//li");
