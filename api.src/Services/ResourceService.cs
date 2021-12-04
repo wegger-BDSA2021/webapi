@@ -113,8 +113,9 @@ namespace Services
                     };
 
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
+                System.Console.WriteLine(e);
                 return new Result
                     {
                         Response = InternalError,

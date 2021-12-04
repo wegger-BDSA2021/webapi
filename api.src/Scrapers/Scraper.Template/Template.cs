@@ -22,7 +22,7 @@ namespace ResourceBuilder
         //     "linq", "c", "c++"
         // };
 
-        protected static ICollection<string> QueryTerms { get; }
+        protected static ICollection<string> QueryTerms { get; set; }
 
         #pragma warning disable 1998
         public async Task Parse(string content, ResourceCreateDTOServer product, ICollection<string> queryTerms)
@@ -31,6 +31,7 @@ namespace ResourceBuilder
             doc.LoadHtml(content);
 
             url = product.Url;
+            QueryTerms = queryTerms;
 
             product.TitleFromSource = this.GetTitle(doc);
             product.TagsFoundInSource = this.GetTags(doc).ConfigureAwait(false).GetAwaiter().GetResult();

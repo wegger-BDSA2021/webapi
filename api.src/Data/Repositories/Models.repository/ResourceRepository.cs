@@ -21,7 +21,7 @@ namespace Data
 
         public async Task<(Response Response, ResourceDetailsDTO ResourceDetails)> ReadAsync(int id)
         {
-            var _resourceEntity = await _context.Resources.FindAsync(id);
+            var _resourceEntity = await _context.Resources.Include(r => r.Tags).Include(r => r.Ratings).Include(r => r.Comments).FirstOrDefaultAsync(r => r.Id == id);
             if (_resourceEntity is null)
                 return (NotFound, null);
 
@@ -33,10 +33,10 @@ namespace Data
                 _resourceEntity.TimeOfReference,
                 _resourceEntity.Url,
                 _resourceEntity.HostBaseUrl,
-                _resourceEntity.Tags.Select(t => t.Name).ToList(),
-                _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
-                _resourceEntity.Ratings.Select(r => r.Rated).Average(),
-                _resourceEntity.Comments.Select(c => c.Content).ToList(),
+                _resourceEntity.Tags.Select(t => t.Name).DefaultIfEmpty().ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).DefaultIfEmpty().ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).DefaultIfEmpty().Average(),
+                _resourceEntity.Comments.Select(c => c.Content).DefaultIfEmpty().ToList(),
                 _resourceEntity.Deprecated,
                 _resourceEntity.LastCheckedForDeprecation, 
                 _resourceEntity.IsVideo, 
