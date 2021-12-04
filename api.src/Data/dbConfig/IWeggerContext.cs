@@ -2,7 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace Data
 {
     public interface IWeggerContext : IDisposable
@@ -14,6 +15,7 @@ namespace Data
         DbSet<Comment> Comments { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
         int SaveChanges();
     }
 }
