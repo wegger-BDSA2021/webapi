@@ -4,6 +4,9 @@ using Services;
 
 public interface IResourceService
 {
-    public Task<Result> CreateAsync(ResourceCreateDTOClient resource);
-    public Task<Result> ReadAsync(int id);
+    Task<Result> CreateAsync(ResourceCreateDTOClient resource);
+    Task<Result> ReadAsync(int id);
+    Task<Result> ReadAllAsync();
+    Task<Result> DeleteByIdAsync(int id);
+    Task<Result> UpdateResourceAsync(ResourceUpdateDTO resource);
 }
