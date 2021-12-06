@@ -15,7 +15,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
 
             var actual = await _repo.ReadAsync(1);
-            Assert.Equal(actual.Response, NotFound);
+            Assert.Equal(NotFound, actual.Response);
         }
 
         [Fact]
@@ -29,18 +29,18 @@ namespace Repository.Tests
             var response = actual.Response;
             var resource = actual.ResourceDetails;
 
-            Assert.Equal(response, OK);
-            Assert.Equal(resource.Title, "resource_1");
-            Assert.Equal(resource.Tags.First(), "dotnet");
-            Assert.Equal(resource.Description, "test");
-            Assert.Equal(resource.Deprecated, false);
-            Assert.Equal(resource.Url, "https://github.com/wegger-BDSA2021/webapi/tree/develop");
-            Assert.Equal(resource.TimeOfReference, _dateForFirstResource);
-            Assert.Equal(resource.LastCheckedForDeprecation, _dateForFirstResource);
+            Assert.Equal(OK, response);
+            Assert.Equal("resource_1", resource.Title);
+            Assert.Equal("dotnet", resource.Tags.First());
+            Assert.Equal("test", resource.Description);
+            Assert.Equal(false, resource.Deprecated);
+            Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop", resource.Url);
+            Assert.Equal(_dateForFirstResource, resource.TimeOfReference);
+            Assert.Equal(_dateForFirstResource, resource.LastCheckedForDeprecation);
             Assert.Null(resource.Comments.FirstOrDefault());
             Assert.NotNull(resource.Ratings.FirstOrDefault());
-            Assert.Equal(resource.Ratings.FirstOrDefault(), 3);
-            Assert.Equal(resource.AverageRating, 4.0);
+            Assert.Equal(3, resource.Ratings.FirstOrDefault());
+            Assert.Equal(4.0, resource.AverageRating);
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace Repository.Tests
             Seed(_context);
 
             var allResources = await _repo.ReadAllAsync();
-            Assert.Equal(allResources.Count(), 2);
-            Assert.Equal(allResources.First().Title, "resource_1");
+            Assert.Equal(2, allResources.Count());
+            Assert.Equal("resource_1", allResources.First().Title);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
 
             var empty = await _repo.ReadAllAsync();
-            Assert.Equal(empty.Count(), 0);
+            Assert.Equal(0, empty.Count());
         }
 
         [Fact]
@@ -72,11 +72,11 @@ namespace Repository.Tests
             var tagsList = new[] { "dotnet" };
 
             var resourcesWithDotnet = await _repo.GetAllWithTagsAsyc(tagsList);
-            Assert.Equal(resourcesWithDotnet.Count(), 1);
+            Assert.Equal(1, resourcesWithDotnet.Count());
 
             var acutalResource = resourcesWithDotnet.FirstOrDefault();
             Assert.NotNull(acutalResource);
-            Assert.Equal(acutalResource.Title, "resource_1");
+            Assert.Equal("resource_1", acutalResource.Title);
         }
 
         [Fact]
@@ -85,10 +85,10 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var tagsList = new[] { "dummy" };
+            var tagsList = new[] { "dummy", "dotnet" };
 
             var resources = await _repo.GetAllWithTagsAsyc(tagsList);
-            Assert.Equal(resources.Count(), 0);
+            Assert.Equal(0, resources.Count());
         }
 
         [Fact]
