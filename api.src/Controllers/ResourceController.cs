@@ -18,13 +18,16 @@ namespace api.src.Controllers
         }
 
         [HttpPost]
+        [Route("Create")]
         public async Task<ActionResult<ResourceDetailsDTO>> CreateResource(ResourceCreateDTOClient resource)
         {
             var result = await _service.CreateAsync(resource);
             return result.ToActionResult();
         }
 
-        [HttpDelete("{id}")]
+        // [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("Delete")]
         public async Task<ActionResult> DeleteResource(int id)
         {
             var result = await _service.DeleteByIdAsync(id);
@@ -34,6 +37,7 @@ namespace api.src.Controllers
         // TODO : update resource endpoint ...
 
 
+        // [Route("ReadSingle")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ResourceDetailsDTO>> ReadSingleResource(int id)
         {
@@ -42,13 +46,15 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAll")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllResources()
         {
             var result = await _service.ReadAllAsync();
             return result.ToActionResult();
         }
 
-        [HttpGet("{id}")]
+        // [Route("ReadAllFromUser")]
+        [HttpGet("ReadAllFromUser/{id}")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromUser(int id)
         {
             var result = await _service.GetAllResourcesFromUserAsync(id);
@@ -56,6 +62,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllFromDomain")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromDomain([FromBody] string matcher)
         {
             var result = await _service.GetAllResourcesFromDomainAsync(matcher);
@@ -63,13 +70,15 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithAverageRatingInRange([FromBody] int from, [FromBody] int to)
+        [Route("ReadAllWithAverageRatingInRange")]
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithAverageRatingInRange([FromBody] int from, int to)
         {
             var result = await _service.GetAllResourcesWithinRangeAsync(from, to);
             return result.ToActionResult();
         }
 
         [HttpGet]
+        [Route("ReadAllWithTitle")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWhereTitleContians([FromBody] string matcher)
         {
             var result = await _service.GetAllResourcesWhereTitleContainsAsync(matcher);
@@ -77,6 +86,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllDeprecated")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllMarkedDeprecated()
         {
             var result = await _service.GetAllResourcesMarkedDeprecatedAsync();
@@ -84,6 +94,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllArticles")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllArticles()
         {
             var result = await _service.GetAllArticleResourcesAsync();
@@ -91,6 +102,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllVideos")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllVideos()
         {
             var result = await _service.GetAllVideoResourcesAsync();
@@ -98,6 +110,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllOfficialDocumentation")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromOfficialDocumentation()
         {
             var result = await _service.GetAllFromOfficialDocumentationAsync();
@@ -105,6 +118,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        [Route("ReadAllWithTags")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithProvidedTags([FromBody] ICollection<string> tags)
         {
             var result = await _service.GetAllResourcesWithProvidedTags(tags);
