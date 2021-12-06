@@ -17,6 +17,7 @@ public interface IResourceService
     Task<Result> GetAllResourcesMarkedDeprecatedAsync();
     Task<Result> GetAllArticleResourcesAsync();
     Task<Result> GetAllVideoResourcesAsync();
+    Task<Result> GetAllFromOfficialDocumentationAsync();
     Task<Result> GetAllResourcesWithProvidedTags(ICollection<string> stringTags);
     
 }

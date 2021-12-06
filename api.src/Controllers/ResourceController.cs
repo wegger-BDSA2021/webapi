@@ -98,6 +98,13 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromOfficialDocumentation()
+        {
+            var result = await _service.GetAllFromOfficialDocumentationAsync();
+            return result.ToActionResult();
+        }
+
+        [HttpGet]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithProvidedTags([FromBody] ICollection<string> tags)
         {
             var result = await _service.GetAllResourcesWithProvidedTags(tags);
