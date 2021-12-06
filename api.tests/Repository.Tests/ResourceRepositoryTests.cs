@@ -85,7 +85,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var tagsList = new[] { "dummy", "dotnet" };
+            var tagsList = new[] { "dummy", "dotnet", "linq" };
 
             var resources = await _repo.GetAllWithTagsAsyc(tagsList);
             Assert.Equal(0, resources.Count());

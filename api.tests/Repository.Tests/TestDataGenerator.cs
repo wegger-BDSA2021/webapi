@@ -97,6 +97,7 @@ namespace Repository.Tests
 
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
+                new Tag { Id = 2, Name = "linq"},
             };
 
             resources[0].Tags.Add(tags[0]);

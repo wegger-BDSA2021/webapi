@@ -215,6 +215,7 @@ namespace Data
             return (await _context.Resources
                 .Include(r => r.Tags)
                     .Where(r => r.Tags.Any(c => tags.Contains(c)))
+                    // .Where(r => tags.All(c => r.Tags.Contains(c)))
                         .Select(
                             r => new ResourceDTO(
                                 r.Id,
