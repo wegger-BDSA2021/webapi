@@ -346,7 +346,7 @@ namespace Data
         private async Task<ICollection<Tag>> getTagsFromStringsAsync(IEnumerable<string> tags)
         {
             var lowerCaseLetters = tags.Select(t => t.ToLower());
-            var tagsFromString = await _context.Tags.Where(t => tags.Contains(t.Name.ToLower())).ToListAsync();
+            var tagsFromString = await _context.Tags.Where(t => lowerCaseLetters.Contains(t.Name.ToLower())).ToListAsync();
 
             return tagsFromString;
         }

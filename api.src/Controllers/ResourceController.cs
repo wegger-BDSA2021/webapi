@@ -25,9 +25,8 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        // [HttpDelete("{id}")]
-        [HttpDelete]
         [Route("Delete")]
+        [HttpDelete]
         public async Task<ActionResult> DeleteResource(int id)
         {
             var result = await _service.DeleteByIdAsync(id);
@@ -37,7 +36,6 @@ namespace api.src.Controllers
         // TODO : update resource endpoint ...
 
 
-        // [Route("ReadSingle")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ResourceDetailsDTO>> ReadSingleResource(int id)
         {
@@ -53,7 +51,6 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        // [Route("ReadAllFromUser")]
         [HttpGet("ReadAllFromUser/{id}")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromUser(int id)
         {
@@ -62,24 +59,24 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        [Route("ReadAllFromDomain")]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromDomain([FromBody] string matcher)
+        [Route("ReadAllFromDomain/{matcher}")]
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromDomain(string matcher)
         {
             var result = await _service.GetAllResourcesFromDomainAsync(matcher);
             return result.ToActionResult();
         }
 
         [HttpGet]
-        [Route("ReadAllWithAverageRatingInRange")]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithAverageRatingInRange([FromBody] int from, int to)
+        [Route("ReadAllWithAverageRatingInRange/{from}/{to}")]
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithAverageRatingInRange(int from, int to)
         {
             var result = await _service.GetAllResourcesWithinRangeAsync(from, to);
             return result.ToActionResult();
         }
 
         [HttpGet]
-        [Route("ReadAllWithTitle")]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWhereTitleContians([FromBody] string matcher)
+        [Route("ReadAllWithTitle/{matcher}")]
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWhereTitleContians(string matcher)
         {
             var result = await _service.GetAllResourcesWhereTitleContainsAsync(matcher);
             return result.ToActionResult();
@@ -119,7 +116,7 @@ namespace api.src.Controllers
 
         [HttpGet]
         [Route("ReadAllWithTags")]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithProvidedTags([FromBody] ICollection<string> tags)
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllWithProvidedTags([FromQuery] string[] tags)
         {
             var result = await _service.GetAllResourcesWithProvidedTags(tags);
             return result.ToActionResult();

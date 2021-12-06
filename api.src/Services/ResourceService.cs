@@ -285,6 +285,8 @@ namespace Services
                         Response = BadRequest, 
                         Message = "You need to provide a minimum of one tag to search for",
                     };
+            
+            // TODO : check if all tags are valid via tagRepo
 
             var collection = await _resourceRepo.GetAllWithTagsAsyc(stringTags);
             return new Result
