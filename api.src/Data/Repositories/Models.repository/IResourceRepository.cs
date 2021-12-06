@@ -16,6 +16,8 @@ namespace Data
         Task<Response> UpdateAsync(ResourceUpdateDTO resource);
 
         Task<IReadOnlyCollection<ResourceDTO>> GetAllDeprecatedAsync();
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllVideosAsync();
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllArticlesAsync();
 
         Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId);
 
