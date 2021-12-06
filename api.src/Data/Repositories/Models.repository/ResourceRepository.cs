@@ -283,6 +283,54 @@ namespace Data
             .AsReadOnly();
         }
 
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllVideosAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsVideo == true)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllArticlesAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsVideo == false)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromOfficialDocumentaionAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsOfficialDocumentation == true)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
         public async Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId)
         {
             var exists = await _context.Resources.FindAsync(resourceId);
