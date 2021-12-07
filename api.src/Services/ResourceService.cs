@@ -289,6 +289,7 @@ namespace Services
             // TODO : check if all tags are valid via tagRepo
 
             var collection = await _resourceRepo.GetAllWithTagsAsyc(stringTags);
+            // System.Console.WriteLine(collection.Count());
             return new Result
                 {
                     Response = OK, 

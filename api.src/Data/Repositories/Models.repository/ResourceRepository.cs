@@ -228,18 +228,16 @@ namespace Data
             //     .AsReadOnly();
 
             // performing the query client side :
-            var resources = await _context.Resources.ToListAsync();
+            var resources = await _context.Resources.Include(r => r.Tags).Include(r => r.Ratings).ToListAsync();
             return (resources
-                // .Include(r => r.Tags)
-                    // .Where(r => r.Tags.Any(c => tags.Contains(c)))
-                    .Where(r => tags.All(c => r.Tags.Contains(c)))
+                    .Where(r => tags.Intersect(r.Tags).Count() == tags.Count())
                         .Select(
                             r => new ResourceDTO(
                                 r.Id,
                                 r.Title,
                                 r.Description,
                                 r.Url,
-                                r.Ratings.Select(rt => rt.Rated).Average(),
+                                r.Ratings.Select(rt => rt.Rated).DefaultIfEmpty().Average(),
                                 r.Deprecated
                     )).ToList())
                 .AsReadOnly();
@@ -363,7 +361,7 @@ namespace Data
         // private helper methods
         private async Task<ICollection<Tag>> getTagsFromStringsAsync(IEnumerable<string> tags)
         {
-            var lowerCaseLetters = tags.Select(t => t.ToLower());
+            var lowerCaseLetters = tags.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().Select(t => t.ToLower().Trim());
             var tagsFromString = await _context.Tags.Where(t => lowerCaseLetters.Contains(t.Name.ToLower())).ToListAsync();
 
             return tagsFromString;
