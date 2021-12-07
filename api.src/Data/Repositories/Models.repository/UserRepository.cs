@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 // using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -13,14 +15,18 @@ namespace Data
             _context = context;
         }
 
-        public Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var user = await _context.Users.FindAsync(id);
+                if (user is null)
+                    return null;
+
+                return user;
         }
 
-        public Task<List<User>> GetAllUsersAsync()
+        public async Task<IReadOnlyList<User>> GetAllUsersAsync()
         {
-            throw new System.NotImplementedException();
+            return (await _context.Users.ToListAsync()).AsReadOnly();
         }
     }
 }
