@@ -212,10 +212,27 @@ namespace Data
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags)
         {
             var tags = await getTagsFromStringsAsync(stringTags);
-            return (await _context.Resources
-                .Include(r => r.Tags)
-                    .Where(r => r.Tags.Any(c => tags.Contains(c)))
-                    // .Where(r => tags.All(c => r.Tags.Contains(c)))
+            // return (await _context.Resources
+            //     .Include(r => r.Tags)
+            //         // .Where(r => r.Tags.Any(c => tags.Contains(c)))
+            //         .Where(r => tags.All(c => r.Tags.Contains(c)))
+            //             .Select(
+            //                 r => new ResourceDTO(
+            //                     r.Id,
+            //                     r.Title,
+            //                     r.Description,
+            //                     r.Url,
+            //                     r.Ratings.Select(rt => rt.Rated).Average(),
+            //                     r.Deprecated
+            //         )).ToListAsync())
+            //     .AsReadOnly();
+
+            // performing the query client side :
+            var resources = await _context.Resources.ToListAsync();
+            return (resources
+                // .Include(r => r.Tags)
+                    // .Where(r => r.Tags.Any(c => tags.Contains(c)))
+                    .Where(r => tags.All(c => r.Tags.Contains(c)))
                         .Select(
                             r => new ResourceDTO(
                                 r.Id,
@@ -224,7 +241,7 @@ namespace Data
                                 r.Url,
                                 r.Ratings.Select(rt => rt.Rated).Average(),
                                 r.Deprecated
-                    )).ToListAsync())
+                    )).ToList())
                 .AsReadOnly();
         }
 
