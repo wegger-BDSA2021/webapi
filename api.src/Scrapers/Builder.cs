@@ -13,10 +13,13 @@ namespace ResourceBuilder
         public ResourceCreateDTOClient _input;
         private string _content; 
 
-        public Builder(ResourceCreateDTOClient input)
+        private ICollection<string> _queryTerms;
+
+        public Builder(ResourceCreateDTOClient input, ICollection<string> queryTerms)
         {
             this.Reset();
             this._input = input;
+            this._queryTerms = queryTerms;
         }
 
         public ResourceCreateDTOServer GetResult() => this._product;
@@ -103,7 +106,8 @@ namespace ResourceBuilder
         }
 
         private bool IsVideo() => _product.IsVideo;
-        private async Task TemplateClient(Template template, string content, ResourceCreateDTOServer product) => await template.Parse(content, product);
+        
+        private async Task TemplateClient(Template template, string content, ResourceCreateDTOServer product) => await template.Parse(content, product, _queryTerms);
 
         public async Task ScrapeTagsAndDate()
         {

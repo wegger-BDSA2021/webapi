@@ -33,7 +33,7 @@ namespace api.src
             // services.AddDbContext<WeggerContext>(options =>
             //     options.UseSqlServer(Configuration.GetConnectionString("wegger")));
 
-            // for testing locally :
+            // for testing the api locally :
             var _connection = new SqliteConnection("DataSource=:memory");
             _connection.Open();
             services.AddDbContext<WeggerContext>(options =>
