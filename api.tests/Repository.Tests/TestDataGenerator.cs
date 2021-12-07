@@ -42,7 +42,8 @@ namespace Repository.Tests
         protected void Seed(DbContext context)
         {
             var users = new[] {
-                new User { Id = 1 },
+                new User { Id = 1 }, 
+                new User { Id = 2 },
             };
 
             var resources = new[] {

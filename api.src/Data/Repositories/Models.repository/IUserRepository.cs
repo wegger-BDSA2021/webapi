@@ -7,6 +7,6 @@ namespace Data
      {
         Task<User> GetUserByIdAsync(int id);
 
-        Task<List<User>> GetAllUsersAsync();
+        Task<IReadOnlyList<User>> GetAllUsersAsync();
     }
 }
