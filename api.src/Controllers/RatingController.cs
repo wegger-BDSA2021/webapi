@@ -62,27 +62,27 @@ namespace api.src.Controllers
             }
         }
 
-        [HttpGet("{id}{id}")]
-        public async Task<ActionResult<Rating>> GetById(int Uid, int Rid)
-        {
-            try
-            {
-                var result = await ratingRepository.ReadAsync(Uid,Rid);
+        // [HttpGet("{id}{id}")]
+        // public async Task<ActionResult<Rating>> GetById(int Uid, int Rid)
+        // {
+        //     try
+        //     {
+        //         var result = await ratingRepository.ReadAsync(Uid,Rid);
 
-                if (result.Rating != null)
-                {
-                    return result.Rating;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
-        }
+        //         if (result.Rating != null)
+        //         {
+        //             return result.Rating;
+        //         }
+        //         else
+        //         {
+        //             return NotFound();
+        //         }
+        //     }
+        //     catch (System.Exception)
+        //     {
+        //         return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+        //     }
+        // }
 
         [HttpPost]
         public async Task<ActionResult<Rating>> Post(Rating rating)

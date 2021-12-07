@@ -5,11 +5,15 @@ namespace Data
 {
     public interface ITagRepository
     {
-        public Task<(Response Response, int TagId)> CreateAsync(Tag Tag);
-        public Task<Response> UpdateAsync(Tag Tag , string newName);
-        public Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id);
-        public Task<IReadOnlyCollection<Tag>> GetAllTagsAsync();
-        public Task<Response> DeleteAsync(int id);
+        Task<(Response Response, int TagId)> CreateAsync(Tag Tag);
+        Task<Response> UpdateAsync(Tag Tag , string newName);
+        Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id);
+        Task<IReadOnlyCollection<Tag>> GetAllTagsAsync();
+        Task<Response> DeleteAsync(int id);
+
+        // TODO : this needs to be implemented correctly, either with DTOs or just returing the name of the tag, like the method below 
         // public Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re);
+
+        Task<IReadOnlyCollection<string>> GetAllTagsAsStringCollectionAsync();
     }
 }
