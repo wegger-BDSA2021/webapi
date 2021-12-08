@@ -1,8 +1,11 @@
-﻿using Data;
+﻿using api.src.Data.DTOs;
+using Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Utils;
 
 namespace api.src.Controllers
 {
@@ -18,7 +21,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> Comments()
+        public async Task<ActionResult<IEnumerable<Comment>>> Get()
         {
             try
             {
@@ -26,44 +29,41 @@ namespace api.src.Controllers
 
                 if (result != null)
                 {
-                    return result;
+                    return Ok(result);
                 }
                 else
                 {
                     return NotFound();
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<CommentDTO>> GetById(int id)
         {
             try
             {
                 var result = await commentRepository.GetCommentById(id);
 
-                if (result != null)
-                {
-                    return result;
-                }
-                else
+                if (result.comment == null)
                 {
                     return NotFound();
                 }
+
+                return result.comment.AsCommentDTO();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<Comment>> Post(Comment comment)
+        public async Task<ActionResult<CommentDTO>> Post(Comment comment)
         {
             try
             {
@@ -74,57 +74,59 @@ namespace api.src.Controllers
 
                 var result = await commentRepository.AddComment(comment);
 
-                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+                return CreatedAtAction(nameof(GetById), new { id = result.comment.Id }, result.comment.AsCommentDTO());
 
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error creating data to the database");
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Comment>> Put(int id, Comment comment)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<CommentDTO>> Put(int id, Comment comment)
         {
             try
             {
                 if (id != comment.Id)
                 {
-                    return BadRequest("Id mismatch");
+                    return BadRequest("Comment id mismatch");
                 }
 
                 var result = await commentRepository.GetCommentById(id);
 
-                if (result == null)
+                if (result.comment == null)
                 {
                     return NotFound("Comment not found");
                 }
 
-                return await commentRepository.UpdateComment(comment);
+                var updatedUser = await commentRepository.UpdateComment(comment);
+
+                return updatedUser.comment.AsCommentDTO();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data from the database");
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Comment>> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<CommentDTO>> Delete(int id)
         {
             try
             {
-                var result = await commentRepository.GetCommentById(id);
+                var commentToDelete = await commentRepository.GetCommentById(id);
 
-                if (result != null)
-                {
-                    return await commentRepository.DeleteComment(id);
-                }
-                else
+                if (commentToDelete.comment == null)
                 {
                     return NotFound("Comment not found");
                 }
+
+                var deletedComment = await commentRepository.DeleteComment(id);
+
+                return deletedComment.comment.AsCommentDTO();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data from the database");
             }
