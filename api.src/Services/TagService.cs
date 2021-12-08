@@ -73,7 +73,7 @@ namespace Services
 
             var result = await _repo.UpdateAsync(tag);
 
-            switch (result.Response)
+            switch (result)
             {
                 case NotFound:
                     return new Result
@@ -87,8 +87,7 @@ namespace Services
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Tag has been updated at index {tag.Id}",
-                        DTO = result.TagDetailsDTO
+                        Message = $"Tag at index {tag.Id} has been updated form having the name {tag.Name} to have {tag.NewName}"
                     };
 
                 default:
