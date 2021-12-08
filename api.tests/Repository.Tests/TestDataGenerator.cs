@@ -12,6 +12,7 @@ namespace Repository.Tests
     public abstract class TestDataGenerator : IDisposable
     {
         private const string _connectionString = "DataSource=:memory";
+
         private readonly SqliteConnection _connection;
         protected readonly WeggerTestContext _context;
 
@@ -19,6 +20,13 @@ namespace Repository.Tests
 
         protected TestDataGenerator()
         {
+            // var connectionStringBuilder = new SqliteConnectionStringBuilder
+            // { DataSource = ":memory:" };
+            // var connectionString = connectionStringBuilder.ToString();
+
+            // _connection = new SqliteConnection(_connectionString);
+            // _connection.Open();
+
             _connection = new SqliteConnection(_connectionString);
             _connection.Open();
 
@@ -96,6 +104,16 @@ namespace Repository.Tests
                 }
             };
 
+            var comments = new[] {
+                new Comment {
+                    Id = 1,
+                    UserId = 1, 
+                    ResourceId = 1,
+                    TimeOfComment = DateTime.Now,
+                    Content = "Content description"
+                }
+            };
+
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
                 new Tag { Id = 2, Name = "linq"},
@@ -107,6 +125,7 @@ namespace Repository.Tests
             context.AddRange(tags);
             context.AddRange(ratings);
             context.AddRange(resources);
+            context.AddRange(comments);
 
             context.SaveChanges();
         }

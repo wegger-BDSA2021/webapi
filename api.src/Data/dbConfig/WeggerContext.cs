@@ -20,7 +20,9 @@ namespace Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // ...
+           
+            //builder.ApplyConfigurationsFromAssembly(typeof(WeggerContext).Assembly);
+
             builder.Entity<User>().HasData(
                 new User { Id = 1 },
                 new User { Id = 2 }, 

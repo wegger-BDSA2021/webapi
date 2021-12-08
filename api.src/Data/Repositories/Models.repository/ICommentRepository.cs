@@ -5,10 +5,10 @@ namespace Data
 {
     public interface ICommentRepository
     {
-        Task<List<Comment>> GetComments();
-        Task<Comment> GetCommentById(int id);
-        Task<Comment> AddComment(Comment comment);
-        Task<Comment> DeleteComment(int id);
-        Task<Comment> UpdateComment(Comment comment);
+        Task<IReadOnlyCollection<Comment>> GetComments();
+        Task<(Response Response, Comment comment)> GetCommentById(int id);
+        Task<(Response Response, Comment comment)> AddComment(Comment comment);
+        Task<(Response Response, Comment comment)> DeleteComment(int id);
+        Task<(Response Response, Comment comment)> UpdateComment(Comment comment);
     }
 }
