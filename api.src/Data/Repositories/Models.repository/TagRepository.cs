@@ -42,13 +42,13 @@ namespace Data
             return (Created, result);
         }
 
-        public async Task<Response> UpdateAsync(Tag Tag , string newName)
+        public async Task<Response> UpdateAsync(TagUpdateDTO tagUpdateDTO)
         {
-            var entity = await _context.Tags.FindAsync(Tag.Id);
+            var entity = await _context.Tags.FindAsync(tagUpdateDTO.Id);
             if (entity == null)
                 return NotFound;
             
-            entity.Name = newName;
+            entity.Name = tagUpdateDTO.NewName;
 
             await _context.SaveChangesAsync();
 

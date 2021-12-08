@@ -95,7 +95,7 @@ namespace api.src.Controllers
 
                 var result = await tagRepository.GetTagByIdAsync(id);
 
-                if (result.Tag == null)
+                if (result.TagDetailsDTO == null)
                 {
                     return NotFound("Comment not found");
                 }
@@ -111,23 +111,8 @@ namespace api.src.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Response>> Delete(int id)
         {
-            try
-            {
-                var result = await tagRepository.GetTagByIdAsync(id);
-
-                if (result.Tag != null)
-                {
-                    return await tagRepository.DeleteAsync(id);
-                }
-                else
-                {
-                    return NotFound("Comment not found");
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data from the database");
-            }
+            var result = await _service.CreateAsync(id);
+            return result.ToActionResult();
         }
     }
 }

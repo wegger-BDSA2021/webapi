@@ -32,6 +32,6 @@ namespace Data
     {
         public int Id { get; init; }
         [Required]
-        public int NewName { get; init; }
+        public String NewName { get; init; }
     }
 }

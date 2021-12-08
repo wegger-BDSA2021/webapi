@@ -60,7 +60,78 @@ namespace Services
                     };
             }
         }
+        public async Task<Result> UpdateAsync(TagUpdateDTO tag)
+        {
+            if (tag.Id < 0)
+            {
+                return new Result 
+                {
+                    Response = BadRequest,
+                    Message = "Id can only be a positive integer"
+                };
+            }
 
+            var result = await _repo.UpdateAsync(tag);
+
+            switch (result.Response)
+            {
+                case NotFound:
+                    return new Result
+                    {
+                        Response = NotFound,
+                        Message = "No tag found with the given entity"
+                    };
+                
+                case OK:
+                    // TODO: UPDATE
+                    return new Result
+                    {
+                        Response = OK,
+                        Message = $"Tag has been updated at index {tag.Id}",
+                        DTO = result.TagDetailsDTO
+                    };
+
+                default:
+                    return new Result
+                    {
+                        Response = Conflict,
+                        Message = "An error occured"
+                    };
+            }
+            
+
+        }
+
+        public async Task<Result> Delete(int id)
+        {
+            var result = await _repo.DeleteAsync(id);
+            switch (result)
+            {
+                case NotFound:
+                    return new Result
+                    {
+                        Response = NotFound,
+                        Message = "No tag found with the given entity"
+                    };
+                
+                case Deleted:
+                    return new Result
+                    {
+                        Response = Deleted,
+                        Message = $"Tag found at index {id}"
+                    };
+
+                default:
+                    return new Result
+                    {
+                        Response = Conflict,
+                        Message = "An error occured"
+                    };
+            }
+        
+            
+            
+        }
         public async Task<Result> CreateAsync(TagCreateDTO tag)
         {
             try

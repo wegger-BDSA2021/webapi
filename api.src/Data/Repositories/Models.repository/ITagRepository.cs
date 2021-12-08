@@ -6,7 +6,7 @@ namespace Data
     public interface ITagRepository
     {
         Task<(Response Response, TagDetailsDTO TagDetailsDTO)> CreateAsync(TagCreateDTO Tag);
-        Task<Response> UpdateAsync(Tag Tag , string newName);
+        Task<Response> UpdateAsync(TagUpdateDTO tagUpdateDTO);
         Task<(Response Response,TagDetailsDTO TagDetailsDTO)> GetTagByIdAsync(int id);
         Task<IReadOnlyCollection<Tag>> GetAllTagsAsync();
         Task<Response> DeleteAsync(int id);
