@@ -10,7 +10,7 @@ namespace Data
         public Task<Response> DeleteAsync(int id);
         public Task<(Response Response, Rating Rating)> ReadAsync(int id);
         public Task<(Response Response, Rating Rating)> ReadAsync(int userId, int resId);
-        public Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(Resource re);
+        public Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(int reId);
 
         
     }

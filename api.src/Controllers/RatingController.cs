@@ -18,11 +18,11 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(Resource re)
+        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(int reId)
         {
             try
             {
-                var result = await ratingRepository.GetAllRatingFormRepositoryAsync(re);
+                var result = await ratingRepository.GetAllRatingFormRepositoryAsync(reId);
 
                 if (result != null)
                 {

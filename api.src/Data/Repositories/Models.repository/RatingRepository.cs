@@ -74,9 +74,9 @@ namespace Data
 
             return (OK, ratingS);
         }
-        public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(Resource re)
+        public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(int reId)
         {
-            return ( await _context.Ratings.Where(r => r.Resource == re).ToListAsync()).AsReadOnly();
+            return ( await _context.Ratings.Where(r => r.Resource.Id == reId).ToListAsync()).AsReadOnly();
         }
         
     }
