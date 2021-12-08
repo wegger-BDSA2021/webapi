@@ -17,6 +17,7 @@ namespace Data
         {
             _context = context;
         }
+
         public async Task<(Response Response, int TagId)> CreateAsync(Tag Tag)
         {
             var entity = new Tag
@@ -29,6 +30,7 @@ namespace Data
 
             return (Created, entity.Id);
         }
+
         public async Task<Response> UpdateAsync(Tag Tag , string newName)
         {
             var entity = await _context.Tags.FindAsync(Tag.Id);
@@ -51,14 +53,18 @@ namespace Data
             return (OK, tag);
 
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
-            // throw new System.Exception();
         }
 
         public async Task<IReadOnlyCollection<Tag>> GetAllTagsAsync()
         {
-            // return await GetAll().ToListAsync();
             return (await _context.Tags.ToListAsync()).AsReadOnly();
         }
+
+        public async Task<IReadOnlyCollection<string>> GetAllTagsAsStringCollectionAsync()
+            => ( await _context.Tags.Select(t => t.Name).ToListAsync()).AsReadOnly();
+        
+
+
         //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( _context.Tags.Where(t => t.Resources == re).ToList<Tag>);
         //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly());
         public async Task<Response> DeleteAsync(int id)
@@ -73,10 +79,10 @@ namespace Data
             return Deleted;
         }
 
-        public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
-        {
-            return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
-        }
+        // public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
+        // {
+        //     return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
+        // }
         /*{
             var tags = from t in _context.Tags
                         where(t => t.Resources = re)

@@ -6,6 +6,8 @@ using HtmlAgilityPack;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using System.Web;
+using System.Text;
+using System.Collections.Concurrent;
 
 namespace ResourceBuilder
 {
@@ -14,13 +16,35 @@ namespace ResourceBuilder
         protected override async Task<ICollection<string>> GetTags(HtmlDocument _doc)
         {
             var _details = await GetVideoDetails();
-            return _details.Tags;
+
+            var sb = new StringBuilder();
+            sb.Append(_details.Description.ToLower() + " ");
+            sb.Append(_details.Title.ToLower() + " ");
+            sb.Append(_details.ChannelTitle.ToLower() + " ");
+
+            if (_details.Tags.Any())
+                _details.Tags.ToList().ForEach(t => sb.Append(t.ToLower() + " "));
+
+            var cleanedText = sb.ToString();
+            var foundTagsConcurrent = new ConcurrentBag<string>();
+
+            Parallel.ForEach
+            (
+                QueryTerms, tag =>
+                {
+                    if (cleanedText.Contains(tag.ToLower()))
+                    {
+                        foundTagsConcurrent.Add(tag);
+                    }
+                }
+            );
+
+            var result = foundTagsConcurrent.ToList();
+            return await Task.FromResult(result);
         }
 
         private async Task<VideoDetails> GetVideoDetails()
         {
-
-            // api key: AIzaSyBiPzfkPlca3Tm3iryIBjTOPj6EdNuFK5s
             using (var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = "AIzaSyBiPzfkPlca3Tm3iryIBjTOPj6EdNuFK5s",
@@ -40,11 +64,11 @@ namespace ResourceBuilder
                     var details = new VideoDetails
                     {
                         VideoId = youTubeVideo.Id,
-                        Description = youTubeVideo.Snippet.Description,
-                        Title = youTubeVideo.Snippet.Title,
-                        ChannelTitle = youTubeVideo.Snippet.ChannelTitle,
+                        Description = youTubeVideo.Snippet.Description ?? " ",
+                        Title = youTubeVideo.Snippet.Title ?? " ",
+                        ChannelTitle = youTubeVideo.Snippet.ChannelTitle ?? " ",
                         PublicationDate = youTubeVideo.Snippet.PublishedAt,
-                        Tags = youTubeVideo.Snippet.Tags
+                        Tags = youTubeVideo.Snippet.Tags ?? new List<string>()
                     };
 
                     return details;

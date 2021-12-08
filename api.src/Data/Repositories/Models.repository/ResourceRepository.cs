@@ -21,7 +21,7 @@ namespace Data
 
         public async Task<(Response Response, ResourceDetailsDTO ResourceDetails)> ReadAsync(int id)
         {
-            var _resourceEntity = await _context.Resources.FindAsync(id);
+            var _resourceEntity = await _context.Resources.Include(r => r.Tags).Include(r => r.Ratings).Include(r => r.Comments).FirstOrDefaultAsync(r => r.Id == id);
             if (_resourceEntity is null)
                 return (NotFound, null);
 
@@ -33,10 +33,10 @@ namespace Data
                 _resourceEntity.TimeOfReference,
                 _resourceEntity.Url,
                 _resourceEntity.HostBaseUrl,
-                _resourceEntity.Tags.Select(t => t.Name).ToList(),
-                _resourceEntity.Ratings.Select(r => r.Rated).ToList(),
-                _resourceEntity.Ratings.Select(r => r.Rated).Average(),
-                _resourceEntity.Comments.Select(c => c.Content).ToList(),
+                _resourceEntity.Tags.Select(t => t.Name).DefaultIfEmpty().ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).DefaultIfEmpty().ToList(),
+                _resourceEntity.Ratings.Select(r => r.Rated).DefaultIfEmpty().Average(),
+                _resourceEntity.Comments.Select(c => c.Content).DefaultIfEmpty().ToList(),
                 _resourceEntity.Deprecated,
                 _resourceEntity.LastCheckedForDeprecation, 
                 _resourceEntity.IsVideo, 
@@ -212,18 +212,34 @@ namespace Data
         public async Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags)
         {
             var tags = await getTagsFromStringsAsync(stringTags);
-            return (await _context.Resources
-                .Include(r => r.Tags)
-                    .Where(r => r.Tags.Any(c => tags.Contains(c)))
+            // return (await _context.Resources
+            //     .Include(r => r.Tags)
+            //         // .Where(r => r.Tags.Any(c => tags.Contains(c)))
+            //         .Where(r => tags.All(c => r.Tags.Contains(c)))
+            //             .Select(
+            //                 r => new ResourceDTO(
+            //                     r.Id,
+            //                     r.Title,
+            //                     r.Description,
+            //                     r.Url,
+            //                     r.Ratings.Select(rt => rt.Rated).Average(),
+            //                     r.Deprecated
+            //         )).ToListAsync())
+            //     .AsReadOnly();
+
+            // performing the query client side :
+            var resources = await _context.Resources.Include(r => r.Tags).Include(r => r.Ratings).ToListAsync();
+            return (resources
+                    .Where(r => tags.Intersect(r.Tags).Count() == tags.Count())
                         .Select(
                             r => new ResourceDTO(
                                 r.Id,
                                 r.Title,
                                 r.Description,
                                 r.Url,
-                                r.Ratings.Select(rt => rt.Rated).Average(),
+                                r.Ratings.Select(rt => rt.Rated).DefaultIfEmpty().Average(),
                                 r.Deprecated
-                    )).ToListAsync())
+                    )).ToList())
                 .AsReadOnly();
         }
 
@@ -283,6 +299,54 @@ namespace Data
             .AsReadOnly();
         }
 
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllVideosAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsVideo == true)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllArticlesAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsVideo == false)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromOfficialDocumentaionAsync()
+        {
+            return (await _context.Resources
+                .Where(r => r.IsOfficialDocumentation == true)
+                    .Select(
+                        r => new ResourceDTO(
+                            r.Id,
+                            r.Title,
+                            r.Description,
+                            r.Url,
+                            r.Ratings.Select(rt => rt.Rated).Average(),
+                            r.Deprecated
+                )).ToListAsync())
+            .AsReadOnly();
+        }
+
         public async Task<(Response Response, double Average)> GetAverageRatingByIdAsync(int resourceId)
         {
             var exists = await _context.Resources.FindAsync(resourceId);
@@ -297,8 +361,8 @@ namespace Data
         // private helper methods
         private async Task<ICollection<Tag>> getTagsFromStringsAsync(IEnumerable<string> tags)
         {
-            var lowerCaseLetters = tags.Select(t => t.ToLower());
-            var tagsFromString = await _context.Tags.Where(t => tags.Contains(t.Name.ToLower())).ToListAsync();
+            var lowerCaseLetters = tags.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().Select(t => t.ToLower().Trim());
+            var tagsFromString = await _context.Tags.Where(t => lowerCaseLetters.Contains(t.Name.ToLower())).ToListAsync();
 
             return tagsFromString;
         }

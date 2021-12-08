@@ -1,3 +1,5 @@
+using api.src.Data.DTOs;
+using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -16,7 +18,8 @@ namespace Utils
             Conflict        => new ConflictObjectResult(result.Message),
             BadRequest      => new BadRequestObjectResult(result.Message),
             OK              => new OkObjectResult(result.DTO),
-            InternalError   => new ObjectResult(result.Message) {StatusCode = 500},
+            Created         => new ObjectResult(result.DTO) { StatusCode = 201 }, 
+            InternalError   => new ObjectResult(result.Message) { StatusCode = 500 },
             _               => throw new NotSupportedException($"{result.Response} not supported")
         };
 
@@ -26,5 +29,16 @@ namespace Utils
         public static bool IsWithin(this double value, int minimum, int maximum)
             => value >= minimum && value <= maximum;
 
+        public static CommentDTO AsCommentDTO(this Comment comment)
+        {
+            return new CommentDTO
+            {
+                Id = comment.Id,
+                User = comment.User,
+                Resource = comment.Resource,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content
+            };
+        }
     }
 }
