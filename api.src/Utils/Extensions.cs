@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 
 namespace Utils
 {
@@ -39,6 +40,14 @@ namespace Utils
                 TimeOfComment = comment.TimeOfComment,
                 Content = comment.Content
             };
+        }
+
+        public static string GetUserId(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
+
+            return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }

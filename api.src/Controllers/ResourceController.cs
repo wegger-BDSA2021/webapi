@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using Utils;
+using System.Security.Claims;
 
 namespace api.src.Controllers
 {
@@ -15,6 +16,9 @@ namespace api.src.Controllers
     {
         private IResourceService _service;
         static readonly string[] scopeRequiredByApi = new string[] { "ReadAccess" };
+
+        // private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
 
         public ResourceController(IResourceService service)
         {
@@ -54,6 +58,8 @@ namespace api.src.Controllers
         [Route("ReadAll")]
         public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllResources()
         {
+            var userId = this.User.GetUserId();
+            System.Console.WriteLine(userId.ToString());
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             var result = await _service.ReadAllAsync();
             return result.ToActionResult();
