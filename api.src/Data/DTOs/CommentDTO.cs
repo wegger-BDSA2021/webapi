@@ -1,8 +1,7 @@
-﻿using Data;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.src.Data.DTOs
+namespace Data
 {
     public record CommentDTO 
     {

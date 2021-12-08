@@ -14,7 +14,7 @@ namespace Repository.Tests
         //private const string _connectionString = "DataSource=:memory";
 
         private readonly SqliteConnection _connection;
-        protected readonly WeggerContext _context;
+        protected readonly WeggerTestContext _context;
 
         protected readonly DateTime _dateForFirstResource;
 
@@ -28,11 +28,11 @@ namespace Repository.Tests
             _connection = new SqliteConnection(connectionString);
             _connection.Open();
 
-            var options = new DbContextOptionsBuilder<WeggerContext>()
+            var options = new DbContextOptionsBuilder<WeggerTestContext>()
                               .UseSqlite(_connection)
                               .Options;
 
-            _context = new WeggerContext(options);
+            _context = new WeggerTestContext(options);
             _context.Database.EnsureCreated();
 
             _dateForFirstResource = DateTime.Now;
@@ -49,19 +49,55 @@ namespace Repository.Tests
         {
             var users = new[] {
                 new User { Id = 1 },
-                // new User { Id = 2, Name = "Paolo Tell", Email = "paolo@itu.dk"},
-                // new User { Id = 3, Name = "Gustav Johansen", Email = "gujo@itu.dk", Tasks = new List<Task>(), },
             };
 
             var resources = new[] {
                 new Resource { 
                     Id = 1,    
-                    Title = "resource_1", 
-                    Description = "test", 
                     UserId = 1,
+                    Title = "resource_1", 
+                    SourceTitle = "some official title",
+                    Description = "test", 
                     TimeOfReference = _dateForFirstResource,
                     Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
-                    LastCheckedForDeprecation = _dateForFirstResource
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource, 
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
+                },
+                new Resource { 
+                    Id = 2,    
+                    UserId = 1,
+                    Title = "resource_2", 
+                    SourceTitle = "another official title",
+                    Description = "test of another", 
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/test2", 
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource,
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
+                }
+            };
+
+            var ratings = new [] {
+                new Rating {
+                    Id = 1,
+                    Rated = 3,
+                    ResourceId = 1,
+                    UserId = 1
+                },
+                new Rating {
+                    Id = 2,
+                    Rated = 5,
+                    ResourceId = 1,
+                    UserId = 1
+                },
+                new Rating {
+                    Id = 3,
+                    Rated = 5,
+                    ResourceId = 2,
+                    UserId = 1
                 }
             };
 
@@ -77,15 +113,14 @@ namespace Repository.Tests
 
             var tags = new[] {
                 new Tag { Id = 1, Name = "dotnet"},
-                // new Tag { Id = 2, Name = "task can wait", Tasks = new List<Task>()},
+                new Tag { Id = 2, Name = "linq"},
             };
 
-            // tags[1].Tasks.Add(tasks[1]);
-            // tasks[1].Tags.Add(tags[1]);
             resources[0].Tags.Add(tags[0]);
 
             context.AddRange(users);
             context.AddRange(tags);
+            context.AddRange(ratings);
             context.AddRange(resources);
             context.AddRange(comments);
 
@@ -107,5 +142,26 @@ namespace Repository.Tests
         {
             Assert.False(_context.Users.Any());
         }
+    }
+
+    public class WeggerTestContext : DbContext, IWeggerContext
+    {
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Resource> Resources => Set<Resource>();
+        public DbSet<Rating> Ratings => Set<Rating>();
+        public DbSet<Tag> Tags => Set<Tag>();
+        public DbSet<Comment> Comments => Set<Comment>();
+
+
+        public WeggerTestContext(DbContextOptions<WeggerTestContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            // ... the seeding method will handle this
+        }
+
     }
 }

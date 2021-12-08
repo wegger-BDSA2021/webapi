@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.src.Controllers;
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Services;
 
 namespace api.src
 {
@@ -25,11 +28,19 @@ namespace api.src
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.AddDbContext<WeggerContext>(options =>
+            //     options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+
+            // for testing the api locally :
+            var _connection = new SqliteConnection("DataSource=:memory");
+            _connection.Open();
             services.AddDbContext<WeggerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+            {
+                options.UseSqlite(_connection);
+            });
+
 
             services.AddScoped<IWeggerContext, WeggerContext>();
             services.AddScoped<IResourceRepository, ResourceRepository>();
@@ -38,12 +49,19 @@ namespace api.src
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
 
+            services.AddScoped<IResourceService, ResourceService>();
+
 
             // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             // services.AddTransient<IEntityRepository, EntityRepository>();
             // continue to use the servies for dependecy injection  
             //  - for repositories
             //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ValidatorActionFilter));
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

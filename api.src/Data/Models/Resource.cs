@@ -11,14 +11,16 @@ namespace Data
     {
         public int Id { get; set; }
 
-        [Required]
         public User User { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
+
+        public string SourceTitle { get; set; }
         
         [Required]
         [StringLength(500)]
@@ -27,12 +29,11 @@ namespace Data
         [Required]
         public DateTime TimeOfReference { get; set; }
 
-        public DateTime TimeOfResourcePublication { get; set; }
-
-        //public int AvaredgeRating { get; set; }
-
         [Required]
         public string Url { get; set; }
+
+        [Required]
+        public string HostBaseUrl { get; set; }
 
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
         
@@ -44,6 +45,12 @@ namespace Data
 
         [Required]
         public DateTime LastCheckedForDeprecation { get; set; }
+
+        [Required]
+        public bool IsVideo { get; set; }
+
+        [Required]
+        public bool IsOfficialDocumentation { get; set; }
 
     }
 }

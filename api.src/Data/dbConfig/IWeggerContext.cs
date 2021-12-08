@@ -2,18 +2,20 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace Data
 {
     public interface IWeggerContext : IDisposable
     {
-        DbSet<User> Users { get; set; }
-        DbSet<Rating> Ratings { get; set; }
-        DbSet<Resource> Resources { get; set; }
-        DbSet<Tag> Tags { get; set; }
-        DbSet<Comment> Comments { get; set; }
+        DbSet<User> Users { get; }
+        DbSet<Rating> Ratings { get; }
+        DbSet<Resource> Resources { get; }
+        DbSet<Tag> Tags { get; }
+        DbSet<Comment> Comments { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
         int SaveChanges();
     }
 }
