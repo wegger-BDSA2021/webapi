@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using static Data.Response;
 
 namespace Data
 {
@@ -13,24 +14,31 @@ namespace Data
             _context = context;
         }
 
-        public async Task<List<Comment>> GetComments()
+        public async Task<IReadOnlyCollection<Comment>> GetComments()
         {
-            return await _context.Comments.ToListAsync();
+            var comments = await _context.Comments.ToListAsync();
+
+            return comments.AsReadOnly();
         }
 
-        public async Task<Comment> GetCommentById(int commentId)
+        public async Task<(Response Response, Comment comment)> GetCommentById(int commentId)
         {
-            return await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+
+            if (comment is null)
+                return (NotFound, null);
+
+            return (OK, comment);
         }
 
-        public async Task<Comment> AddComment(Comment comment)
+        public async Task<(Response Response, Comment comment)> AddComment(Comment comment)
         {
             var result = await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
-            return result.Entity;
+            return (Created, result.Entity);
         }
 
-        public async Task<Comment> DeleteComment(int commentId)
+        public async Task<(Response Response, Comment comment)> DeleteComment(int commentId)
         {
             var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
 
@@ -38,13 +46,13 @@ namespace Data
             {
                 _context.Comments.Remove(result);
                 await _context.SaveChangesAsync();
-                return result;
+                return (Deleted, result);
             }
 
-            return null;
+            return (NotFound, null);
         }
 
-        public async Task<Comment> UpdateComment(Comment comment)
+        public async Task<(Response Response, Comment comment)> UpdateComment(Comment comment)
         {
             var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
 
@@ -57,10 +65,10 @@ namespace Data
 
                 await _context.SaveChangesAsync();
                 
-                return result;
+                return (Updated, result);
             }
 
-            return null;
+            return (NotFound, null);
         }
     }
 }

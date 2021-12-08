@@ -1,4 +1,6 @@
 
+using api.src.Data.DTOs;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Utils
@@ -22,5 +24,16 @@ namespace Utils
         public static bool IsWithin(this double value, int minimum, int maximum)
             => value >= minimum && value <= maximum;
 
+        public static CommentDTO AsCommentDTO(this Comment comment)
+        {
+            return new CommentDTO
+            {
+                Id = comment.Id,
+                User = comment.User,
+                Resource = comment.Resource,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content
+            };
+        }
     }
 }

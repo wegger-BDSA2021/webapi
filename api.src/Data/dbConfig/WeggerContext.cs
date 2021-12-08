@@ -18,6 +18,7 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // ...
+            //builder.ApplyConfigurationsFromAssembly(typeof(WeggerContext).Assembly);
         }
 
     }
