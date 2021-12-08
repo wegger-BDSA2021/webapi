@@ -7,7 +7,7 @@ using ResourceBuilder;
 
 namespace Services
 {
-    public class RatingService : IResourceService
+    public class RatingService : IRatingService
     {
         // should validate input from the ResourceController
         // should use the parser component to create a new resource

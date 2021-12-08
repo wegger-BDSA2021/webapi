@@ -4,18 +4,20 @@ using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using ResourceBuilder;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Services
 {
-    public class TagService : IResourceService
+    public class TagService : ITagService
     {
         // should validate input from the ResourceController
         // should use the parser component to create a new resource
         // contains all business logic 
 
-        private IResourceRepository _repo;
+        private ITagRepository _repo;
 
-        public TagService(IResourceRepository repo)
+        public TagService(ITagRepository repo)
         {
             _repo = repo;
         }
@@ -31,7 +33,7 @@ namespace Services
                 };
             }
 
-            var result = await _repo.ReadAsync(id);
+            var result = await _repo.GetTagByIdAsync(id);
 
             switch (result.Response)
             {
@@ -39,15 +41,15 @@ namespace Services
                     return new Result
                     {
                         Response = NotFound,
-                        Message = "No resource found with the given entity"
+                        Message = "No tag found with the given entity"
                     };
                 
                 case OK:
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Resource found at index {id}",
-                        DTO = result.ResourceDetails
+                        Message = $"Tag found at index {id}",
+                        DTO = result.TagDetailsDTO
                     };
 
                 default:
@@ -59,57 +61,41 @@ namespace Services
             }
         }
 
-        public async Task<Result> CreateAsync(ResourceCreateDTOClient resource)
+        public async Task<Result> CreateAsync(TagCreateDTO tag)
         {
-            // validation of client input :
-            // the actionFilter from MVC will take care of the properties of the DTOs
-            // in the servicelayer, we will handle responses from the repos and similar, 
-            // that can not be detected from the DTOs
-            if (await _repo.LinkExistsAsync(resource.Url))
-            {
-                return new Result
-                    {
-                        Response = Conflict,
-                        Message = "Another resource with the same URL has already been provided"
-                    };
-            }
-
-            var validUrl = ValidateUrl(resource.Url);
-            if (!validUrl)
-            {
-                return new Result
-                    {
-                        Response = BadRequest,
-                        Message = "The provided URL is not valid"
-                    };
-            }
-
-            var builder = new Builder(resource);
-            var director = new Director(builder);
-
             try
             {
-                var product = await director.Make();
-                var created = await _repo.CreateAsync(product);
-                if (created.Response is NotFound)
+                if (tag == null)
                 {
                     return new Result
-                        {
-                            Response = Conflict, 
-                            Message = "The user trying to create the resource does not exist in the current context"
-                        };
+                    {
+                       Response = BadRequest,
+                       Message =  "No tag given"
+                    };
                 }
 
-                return new Result
+                var result = await _repo.CreateAsync(tag);
+                if (result.Response == AllReadyExist){
+                    return new Result
                     {
-                        Response = Created,
-                        Message = "A new resource was succesfully created", 
-                        DTO = created.CreatedResource
+                       Response = AllReadyExist,
+                       Message =  "The tag given allready exist in the database"
                     };
+                }else{
+                    return new Result
+                    {
+                       Response = Created,
+                       Message =  "A new tag was succesfully created",
+                       DTO = result.TagDetailsDTO
+                    };
+                }
+
+                
 
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
+                System.Console.WriteLine(e);
                 return new Result
                     {
                         Response = InternalError,
@@ -118,17 +104,5 @@ namespace Services
             }
 
         }
-
-        private bool ValidateUrl(string _input)
-        {
-            Uri uriResult; 
-            bool isValid = Uri.TryCreate(_input, UriKind.Absolute, out uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-            return isValid;
-        }
-
-
-
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Utils;
 
 namespace api.src.Controllers
 {
@@ -10,11 +11,16 @@ namespace api.src.Controllers
     [Route("api/[controller]")]
     public class TagController : ControllerBase
     {
+        private ITagService _service;
         private readonly ITagRepository tagRepository;
 
         public TagController(ITagRepository tagRepository)
         {
             this.tagRepository = tagRepository;
+        }
+        public TagController(ITagService service)
+        {
+            _service = service;
         }
 
         [HttpGet]
@@ -41,25 +47,10 @@ namespace api.src.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Rating>> GetById(int id)
+        public async Task<ActionResult<TagDetailsDTO>> GetById(int id)
         {
-            try
-            {
-                var result = await tagRepository.GetTagByIdAsync(id);
-
-                if (result.Tag != null)
-                {
-                    return Ok(result.Tag);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
+             var result = await _service.ReadAsync(id);
+            return result.ToActionResult();
         }
 
         // [HttpGet("{id}")]
@@ -85,24 +76,11 @@ namespace api.src.Controllers
         // }
 
         [HttpPost]
-        public async Task<ActionResult<Tag>> Post(Tag tag)
+        [Route("Create")]
+        public async Task<ActionResult<TagCreateDTO>> Post(TagCreateDTO tag)
         {
-            try
-            {
-                if (tag == null)
-                {
-                    return BadRequest();
-                }
-
-                var result = await tagRepository.CreateAsync(tag);
-
-                return CreatedAtAction(nameof(GetById), new { id = result.TagId}, result);
-
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating data to the database");
-            }
+            var result = await _service.CreateAsync(tag);
+            return result.ToActionResult();
         }
 
         [HttpPut("{id}")]

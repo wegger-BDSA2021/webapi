@@ -27,7 +27,7 @@ namespace Repository.Tests
             var actual = await _repo.GetTagByIdAsync(1);
 
             var response = actual.Response;
-            var Tag = actual.Tag;
+            var Tag = actual.TagDetailsDTO;
 
             Assert.Equal(response, OK);
             Assert.Equal(Tag.Id, 1);

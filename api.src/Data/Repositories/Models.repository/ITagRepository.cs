@@ -5,9 +5,9 @@ namespace Data
 {
     public interface ITagRepository
     {
-        Task<(Response Response, int TagId)> CreateAsync(Tag Tag);
+        Task<(Response Response, TagDetailsDTO TagDetailsDTO)> CreateAsync(TagCreateDTO Tag);
         Task<Response> UpdateAsync(Tag Tag , string newName);
-        Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id);
+        Task<(Response Response,TagDetailsDTO TagDetailsDTO)> GetTagByIdAsync(int id);
         Task<IReadOnlyCollection<Tag>> GetAllTagsAsync();
         Task<Response> DeleteAsync(int id);
 

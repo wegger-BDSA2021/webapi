@@ -18,17 +18,28 @@ namespace Data
             _context = context;
         }
 
-        public async Task<(Response Response, int TagId)> CreateAsync(Tag Tag)
+        public async Task<(Response Response, TagDetailsDTO TagDetailsDTO)> CreateAsync(TagCreateDTO Tag)
         {
+            if(_context.Tags.First( t => t.Name == Tag.Name) != null){
+                return (AllReadyExist, null);
+            }
             var entity = new Tag
             {
                 Name = Tag.Name,
-                Resources = Tag.Resources,
+                //Resources = Tag.Resources,
             };
             await _context.Tags.AddAsync(entity);
             await _context.SaveChangesAsync();
 
-            return (Created, entity.Id);
+            //update reascources with tags
+
+            var result = new TagDetailsDTO(
+                entity.Id,
+                entity.Name,
+                entity.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+            );
+
+            return (Created, result);
         }
 
         public async Task<Response> UpdateAsync(Tag Tag , string newName)
@@ -44,14 +55,20 @@ namespace Data
             return Updated;
         }
 
-        public async Task<(Response Response,Tag Tag)> GetTagByIdAsync(int id)
+        public async Task<(Response Response,TagDetailsDTO TagDetailsDTO)> GetTagByIdAsync(int id)
         {
             var tag = await _context.Tags.FindAsync(id);
             if (tag is null)
                 return (NotFound, null);
 
-            return (OK, tag);
+            var result = new TagDetailsDTO(
+                tag.Id,
+                tag.Name,
+                tag.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+            );
 
+            return (OK, result);
+            
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
         }
 

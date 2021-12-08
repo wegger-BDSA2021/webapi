@@ -9,6 +9,7 @@ namespace Data
         BadRequest,
         Conflict, 
         OK,
-        InternalError
+        InternalError,
+        AllReadyExist
     }
 }

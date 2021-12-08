@@ -19,22 +19,19 @@ namespace Data
     */
    // public record RatingDTO(int Id, string Title, string Description, string Url, bool Deprecated);
     public record TagDTO(int Id, string Name, bool Deprecated);
+    public record TagDetailsDTO(int Id, string Name,  IReadOnlyCollection<string> ResourcesNames);
+
 
     public record TagCreateDTO
     {
         [Required]
-        public int Name { get; init; }
-
-        [Required]
-        public int ResourceId { get; init; }
+        public string Name { get; init; }
     }
 
-    public record TagUpdateDTO : RatingCreateDTO
+    public record TagUpdateDTO : TagCreateDTO
     {
         public int Id { get; init; }
-        
         [Required]
-        [Range(0, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int UpdatedRating { get; init; }
+        public int NewName { get; init; }
     }
 }
