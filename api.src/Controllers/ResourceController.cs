@@ -30,8 +30,8 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        [Route("Delete")]
         [HttpDelete]
+        [Route("Delete")]
         public async Task<ActionResult> DeleteResource(int id)
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
