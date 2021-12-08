@@ -51,6 +51,5 @@ namespace Data
 
         [Required]
         public bool IsOfficialDocumentation { get; set; }
-
     }
 }
