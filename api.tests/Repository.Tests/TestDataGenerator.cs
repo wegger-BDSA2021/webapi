@@ -11,7 +11,7 @@ namespace Repository.Tests
     [Xunit.Collection("Sequential")]
     public abstract class TestDataGenerator : IDisposable
     {
-        //private const string _connectionString = "DataSource=:memory";
+        private const string _connectionString = "DataSource=:memory";
 
         private readonly SqliteConnection _connection;
         protected readonly WeggerTestContext _context;
@@ -20,12 +20,14 @@ namespace Repository.Tests
 
         protected TestDataGenerator()
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder
-            { DataSource = ":memory:" };
-            var connectionString = connectionStringBuilder.ToString();
+            // var connectionStringBuilder = new SqliteConnectionStringBuilder
+            // { DataSource = ":memory:" };
+            // var connectionString = connectionStringBuilder.ToString();
 
+            // _connection = new SqliteConnection(_connectionString);
+            // _connection.Open();
 
-            _connection = new SqliteConnection(connectionString);
+            _connection = new SqliteConnection(_connectionString);
             _connection.Open();
 
             var options = new DbContextOptionsBuilder<WeggerTestContext>()
@@ -104,8 +106,8 @@ namespace Repository.Tests
             var comments = new[] {
                 new Comment {
                     Id = 1,
-                    User = users[1],
-                    Resource = resources[1],
+                    UserId = 1, 
+                    ResourceId = 1,
                     TimeOfComment = DateTime.Now,
                     Content = "Content description"
                 }

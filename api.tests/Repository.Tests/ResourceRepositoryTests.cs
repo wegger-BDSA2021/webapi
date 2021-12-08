@@ -37,7 +37,7 @@ namespace Repository.Tests
             Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop", resource.Url);
             Assert.Equal(_dateForFirstResource, resource.TimeOfReference);
             Assert.Equal(_dateForFirstResource, resource.LastCheckedForDeprecation);
-            Assert.Null(resource.Comments.FirstOrDefault());
+            Assert.NotNull(resource.Comments.FirstOrDefault());
             Assert.NotNull(resource.Ratings.FirstOrDefault());
             Assert.Equal(3, resource.Ratings.FirstOrDefault());
             Assert.Equal(4.0, resource.AverageRating);
