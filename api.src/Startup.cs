@@ -36,15 +36,20 @@ namespace api.src
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
             // services.AddDbContext<WeggerContext>(options =>
-            //     options.UseSqlServer(Configuration.GetConnectionString("wegger")));
+            //     options.UseSqlServer(Configuration.GetConnectionString("Wegger")));
 
-            // for testing the api locally :
-            var _connection = new SqliteConnection("DataSource=:memory");
-            _connection.Open();
+            string connection = Configuration.GetConnectionString("Wegger");
+            System.Console.WriteLine(connection);
+
             services.AddDbContext<WeggerContext>(options =>
-            {
-                options.UseSqlite(_connection);
-            });
+                options.UseSqlServer(connection));
+            // for testing the api locally :
+            // var _connection = new SqliteConnection("DataSource=:memory");
+            // _connection.Open();
+            // services.AddDbContext<WeggerContext>(options =>
+            // {
+            //     options.UseSqlite(_connection);
+            // });
 
 
             services.AddScoped<IWeggerContext, WeggerContext>();
