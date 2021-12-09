@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo "Wegger application starting up ..."
+sleep 2
+project="../api.src"
+
+echo "Spinning up MSSQL server in docker container using port 1433 on host mapping to 1433 in container ..."
+sleep 2
+password=$(uuidgen)
+
+# echo "Path to project: "$project
+# echo "Generated pwd for db: " $password
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=${password}" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+database="Wegger"
+connectionstring="Server=localhost;Database=${database};User Id=sa;Password=${password};Trusted_Connection=False;Encrypt=False"
+
+echo "Configuring connection string for application ..."
+sleep 2
+dotnet user-secrets init --project $project
+dotnet user-secrets set "ConnectionStrings:Wegger" "${connectionstring}" --project $project
+
+# echo "Building web API docker image ..."
+# sleep 2
+# docker build -t weggerapi $project
+
+# echo "Spinning up wegger api in docker container ..."
+# sleep 2
+# docker run --rm -p 8080:80 weggerapi
+
+echo "Launching web api ..."
+dotnet run --project $project
+
+# echo "Launching swagger UI in default host browser ..."
+# to launch the app in host browser :
+#explorer.exe https://localhost:8080/swagger
+# echo $database
+# echo $connectionstring
