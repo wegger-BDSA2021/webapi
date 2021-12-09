@@ -4,6 +4,8 @@ echo "Wegger application starting up ..."
 sleep 2
 project="../api.src"
 
+echo ""
+echo ""
 echo "Spinning up MSSQL server in docker container using port 1433 on host mapping to 1433 in container ..."
 sleep 2
 password=$(uuidgen)
@@ -15,6 +17,7 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=${password}" --rm -p 1433:1433 -d 
 database="Wegger"
 connectionstring="Server=localhost;Database=${database};User Id=sa;Password=${password};Trusted_Connection=False;Encrypt=False"
 
+echo ""
 echo "Configuring connection string for application ..."
 sleep 2
 dotnet user-secrets init --project $project
@@ -28,14 +31,15 @@ dotnet user-secrets set "ConnectionStrings:Wegger" "${connectionstring}" --proje
 # sleep 2
 # docker run --rm -p 8080:80 weggerapi
 
+echo ""
 echo "Launching web api in background process ..."
-dotnet run --project $project &
+dotnet run --project $project 
 
-sleep 3
 
-echo "Launching swagger UI in default host browser ..."
-explorer.exe https://localhost:5001/swagger
+# echo ""
+# echo "Launching swagger UI in default host browser ..."
+# explorer.exe https://localhost:5001/swagger
 
-echo "Type q to kill the program and its child ..."
-read
-exit
+# echo "Type q to kill the program and its child ..."
+# read
+# exit
