@@ -13,7 +13,7 @@ password=$(uuidgen)
 # echo "Path to project: "$project
 # echo "Generated pwd for db: " $password
 
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=${password}" --rm -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=${password}" --rm -p 1433:1433 -d --name weggerSQLserver mcr.microsoft.com/mssql/server:2019-latest
 database="Wegger"
 connectionstring="Server=localhost;Database=${database};User Id=sa;Password=${password};Trusted_Connection=False;Encrypt=False"
 
