@@ -18,8 +18,9 @@ namespace Data
         public int Rated { get; set; }
     */
    // public record RatingDTO(int Id, string Title, string Description, string Url, bool Deprecated);
-    public record RatingDTO(int Id, string Title, string Description, string Url, bool Deprecated);
+    public record RatingDTO(int Id, string Title, string Description , bool Deprecated);
 
+    public record RatingDetailsDTO(int Id, int UserId, int ResourceId,int Rated);
     public record RatingCreateDTO
     {
         [Required]

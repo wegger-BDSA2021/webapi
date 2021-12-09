@@ -4,6 +4,8 @@ using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using ResourceBuilder;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Services
 {
@@ -13,9 +15,9 @@ namespace Services
         // should use the parser component to create a new resource
         // contains all business logic 
 
-        private IResourceRepository _repo;
+        private IRatingRepository _repo;
 
-        public RatingService(IResourceRepository repo)
+        public RatingService(IRatingRepository repo)
         {
             _repo = repo;
         }
@@ -39,15 +41,15 @@ namespace Services
                     return new Result
                     {
                         Response = NotFound,
-                        Message = "No resource found with the given entity"
+                        Message = "No tag found with the given entity"
                     };
                 
                 case OK:
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Resource found at index {id}",
-                        DTO = result.ResourceDetails
+                        Message = $"Tag found at index {id}",
+                        DTO = result
                     };
 
                 default:
@@ -58,58 +60,112 @@ namespace Services
                     };
             }
         }
-
-        public async Task<Result> CreateAsync(ResourceCreateDTOClient resource)
+        public async Task<Result> UpdateAsync(TagUpdateDTO tag)
         {
-            // validation of client input :
-            // the actionFilter from MVC will take care of the properties of the DTOs
-            // in the servicelayer, we will handle responses from the repos and similar, 
-            // that can not be detected from the DTOs
-            if (await _repo.LinkExistsAsync(resource.Url))
+            if (tag.Id < 0)
             {
-                return new Result
+                return new Result 
+                {
+                    Response = BadRequest,
+                    Message = "Id can only be a positive integer"
+                };
+            }
+
+            var result = await _repo.UpdateAsync(tag);
+
+            switch (result)
+            {
+                case NotFound:
+                    return new Result
+                    {
+                        Response = NotFound,
+                        Message = "No tag found with the given entity"
+                    };
+                
+                case OK:
+                    // TODO: UPDATE
+                    return new Result
+                    {
+                        Response = OK,
+                        Message = $"Tag at index {tag.Id} has been updated form having the name {tag.Name} to have {tag.NewName}"
+                    };
+
+                default:
+                    return new Result
                     {
                         Response = Conflict,
-                        Message = "Another resource with the same URL has already been provided"
+                        Message = "An error occured"
                     };
             }
+            
 
-            var validUrl = ValidateUrl(resource.Url);
-            if (!validUrl)
+        }
+
+        public async Task<Result> Delete(int id)
+        {
+            var result = await _repo.DeleteAsync(id);
+            switch (result)
             {
-                return new Result
+                case NotFound:
+                    return new Result
                     {
-                        Response = BadRequest,
-                        Message = "The provided URL is not valid"
+                        Response = NotFound,
+                        Message = "No tag found with the given entity"
+                    };
+                
+                case Deleted:
+                    return new Result
+                    {
+                        Response = Deleted,
+                        Message = $"Tag found at index {id}"
+                    };
+
+                default:
+                    return new Result
+                    {
+                        Response = Conflict,
+                        Message = "An error occured"
                     };
             }
-
-            var builder = new Builder(resource);
-            var director = new Director(builder);
-
+        
+            
+            
+        }
+        public async Task<Result> CreateAsync(TagCreateDTO tag)
+        {
             try
             {
-                var product = await director.Make();
-                var created = await _repo.CreateAsync(product);
-                if (created.Response is NotFound)
+                if (tag == null)
                 {
                     return new Result
-                        {
-                            Response = Conflict, 
-                            Message = "The user trying to create the resource does not exist in the current context"
-                        };
+                    {
+                       Response = BadRequest,
+                       Message =  "No tag given"
+                    };
                 }
 
-                return new Result
+                var result = await _repo.CreateAsync(tag);
+                if (result.Response == AllReadyExist){
+                    return new Result
                     {
-                        Response = Created,
-                        Message = "A new resource was succesfully created", 
-                        DTO = created.CreatedResource
+                       Response = AllReadyExist,
+                       Message =  "The tag given allready exist in the database"
                     };
+                }else{
+                    return new Result
+                    {
+                       Response = Created,
+                       Message =  "A new tag was succesfully created",
+                       DTO = result.TagDetailsDTO
+                    };
+                }
+
+                
 
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
+                System.Console.WriteLine(e);
                 return new Result
                     {
                         Response = InternalError,
@@ -118,17 +174,10 @@ namespace Services
             }
 
         }
-
-        private bool ValidateUrl(string _input)
+        public async Task<IReadOnlyCollection<TagDetailsDTO>> getAllTags()
         {
-            Uri uriResult; 
-            bool isValid = Uri.TryCreate(_input, UriKind.Absolute, out uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-            return isValid;
+            return await _repo.GetAllTagsAsync();
         }
-
-
 
     }
 }

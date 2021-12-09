@@ -72,10 +72,17 @@ namespace Data
             // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IReadOnlyCollection<Tag>> GetAllTagsAsync()
-        {
-            return (await _context.Tags.ToListAsync()).AsReadOnly();
-        }
+        public async Task<IReadOnlyCollection<TagDetailsDTO>> GetAllTagsAsync()
+            =>(await _context.Tags
+                    .Select(t => 
+                        new TagDetailsDTO(
+                            t.Id,
+                            t.Name,
+                            t.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+                        ))
+                    .ToListAsync())
+                .AsReadOnly();
+        
 
         public async Task<IReadOnlyCollection<string>> GetAllTagsAsStringCollectionAsync()
             => ( await _context.Tags.Select(t => t.Name).ToListAsync()).AsReadOnly();

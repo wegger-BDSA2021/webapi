@@ -26,24 +26,8 @@ namespace api.src.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<Tag>>> getAllTags()
         {
-            try
-            {
-                var result = await tagRepository.GetAllTagsAsync();
-
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
+            var result = await _service.getAllTags();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -84,34 +68,16 @@ namespace api.src.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Put(int id, string newTagName)
+        public async Task<ActionResult<Response>> Put(TagUpdateDTO tagUpdateDTO)
         {
-            try
-            {
-                /*if (id != rating.Id)
-                {
-                    return BadRequest("Id mismatch");
-                }*/
-
-                var result = await tagRepository.GetTagByIdAsync(id);
-
-                if (result.TagDetailsDTO == null)
-                {
-                    return NotFound("Comment not found");
-                }
-
-                return await tagRepository.UpdateAsync(result.Tag, newTagName);
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data from the database");
-            }
+            var result = await _service.UpdateAsync(tagUpdateDTO);
+            return result.ToActionResult();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Response>> Delete(int id)
         {
-            var result = await _service.CreateAsync(id);
+            var result = await _service.Delete(id);
             return result.ToActionResult();
         }
     }

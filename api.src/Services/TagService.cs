@@ -174,5 +174,10 @@ namespace Services
             }
 
         }
+        public async Task<IReadOnlyCollection<TagDetailsDTO>> getAllTags()
+        {
+            return await _repo.GetAllTagsAsync();
+        }
+
     }
 }
