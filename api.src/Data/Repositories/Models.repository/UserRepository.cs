@@ -23,9 +23,28 @@ namespace Data
             return (OK, userEntity);
         }
 
+        public async Task<(Response, string)> CreateUserAsync(string id)
+        {
+            var exists = await UserExists(id);
+            if (exists)
+                return (BadRequest, null);
+
+            var entity = new User { Id = id };
+
+            await _context.Users.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return (Created, entity.Id);
+        }
+
+        public async Task<Response> DeleteUserAsync(string id)
+        {
+            
+        }
+
         public async Task<bool> UserExists(string id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
                 return false;
 
