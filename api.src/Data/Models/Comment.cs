@@ -11,8 +11,9 @@ namespace Data
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        
-        public int? UserId { get; set; }
+        #nullable enable
+        public string? UserId { get; set; }
+        #nullable disable
 
         public Resource Resource { get; set; }
 
