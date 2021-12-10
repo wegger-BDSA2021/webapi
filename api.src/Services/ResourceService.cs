@@ -178,14 +178,14 @@ namespace Services
                 };
         }
 
-        public async Task<Result> GetAllResourcesFromUserAsync(int id)
+        public async Task<Result> GetAllResourcesFromUserAsync(string id)
         {
-            if (id < 0)
+            if (id.Trim().Length == 0)
             {
                 return new Result 
                     {
                         Response = BadRequest,
-                        Message = "Id can only be a positive integer"
+                        Message = "Id can not be the empty string"
                     };
             }
 
