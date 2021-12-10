@@ -14,7 +14,7 @@ namespace Data
             _context = context;
         }
 
-        public async Task<(Response, User)> GetUserByIdAsync(string id)
+        public async Task<(Response Response, User User)> GetUserByIdAsync(string id)
         {
             var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (userEntity is null)
@@ -23,7 +23,7 @@ namespace Data
             return (OK, userEntity);
         }
 
-        public async Task<(Response, string)> CreateUserAsync(string id)
+        public async Task<(Response Response, string Id)> CreateUserAsync(string id)
         {
             var exists = await UserExists(id);
             if (exists)
@@ -40,12 +40,12 @@ namespace Data
         public async Task<Response> DeleteUserAsync(string id)
         {
             var userEntity = await GetUserByIdAsync(id);
-            if (userEntity.Item1 == NotFound)
+            if (userEntity.Response == NotFound)
                 return NotFound;
 
-            _context.Users.Remove(userEntity.Item2);
+            _context.Users.Remove(userEntity.User);
             await _context.SaveChangesAsync();
-            
+
             return Deleted;
         }
 
