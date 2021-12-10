@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IResourceRepository 
+    public interface IResourceRepository
     {
         Task<(Response Response, ResourceDetailsDTO ResourceDetails)> ReadAsync(int id);
         Task<IReadOnlyCollection<ResourceDTO>> ReadAllAsync();

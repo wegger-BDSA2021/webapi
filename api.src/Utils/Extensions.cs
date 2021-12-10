@@ -34,10 +34,34 @@ namespace Utils
             return new CommentDTO
             {
                 Id = comment.Id,
-                User = comment.User,
-                Resource = comment.Resource,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
                 TimeOfComment = comment.TimeOfComment,
                 Content = comment.Content
+            };
+        }
+
+        public static CommentDetailsDTO AsCommentDetailsDTO(this Comment comment)
+        {
+            return new CommentDetailsDTO
+            {
+                Id = comment.Id,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content
+            };
+        }
+
+        public static CommentUpdateDTO AsCommentUpdateDTO(this Comment comment)
+        {
+            return new CommentUpdateDTO
+            {
+                Id = comment.Id,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content,
             };
         }
     }
