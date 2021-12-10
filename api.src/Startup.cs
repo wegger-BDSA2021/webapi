@@ -60,6 +60,7 @@ namespace api.src
             services.AddScoped<IRatingRepository, RatingRepository>();
 
             services.AddScoped<IResourceService, ResourceService>();
+            services.AddScoped<IUserService, UserService>();
 
 
             // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
