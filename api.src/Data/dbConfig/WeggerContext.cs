@@ -22,6 +22,18 @@ namespace Data
         {
            
             //builder.ApplyConfigurationsFromAssembly(typeof(WeggerContext).Assembly);
+            builder.Entity<User>().HasMany(u => u.Ratings).WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>().HasMany(u => u.Resources).WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
 
             builder.Entity<User>().HasData(
                 new User { Id = "first" },
