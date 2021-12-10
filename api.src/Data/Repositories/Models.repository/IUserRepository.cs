@@ -5,8 +5,8 @@ namespace Data
 {
     public interface IUserRepository
      {
-        Task<User> GetUserByIdAsync(string id);
+        Task<(Response, User)> GetUserByIdAsync(string id);
+        Task<bool> UserExists(string id);
 
-        Task<List<User>> GetAllUsersAsync();
     }
 }

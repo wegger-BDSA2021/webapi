@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-// using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using static Data.Response;
 
 namespace Data
 {
@@ -13,9 +14,13 @@ namespace Data
             _context = context;
         }
 
-        public Task<User> GetUserByIdAsync(string id)
+        public async Task<(Response, User)> GetUserByIdAsync(string id)
         {
-            throw new System.NotImplementedException();
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (userEntity is null)
+                return (NotFound, null);
+
+            return (OK, userEntity);
         }
 
         public async Task<bool> UserExists(string id)
@@ -27,9 +32,5 @@ namespace Data
             return true;
         }
 
-        public Task<List<User>> GetAllUsersAsync()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
