@@ -50,13 +50,13 @@ namespace Repository.Tests
         protected void Seed(DbContext context)
         {
             var users = new[] {
-                new User { Id = 1 },
+                new User { Id = "testUserId" },
             };
 
             var resources = new[] {
                 new Resource { 
                     Id = 1,    
-                    UserId = 1,
+                    UserId = "testUserId",
                     Title = "resource_1", 
                     SourceTitle = "some official title",
                     Description = "test", 
@@ -69,7 +69,7 @@ namespace Repository.Tests
                 },
                 new Resource { 
                     Id = 2,    
-                    UserId = 1,
+                    UserId = "testUserId",
                     Title = "resource_2", 
                     SourceTitle = "another official title",
                     Description = "test of another", 
@@ -87,26 +87,26 @@ namespace Repository.Tests
                     Id = 1,
                     Rated = 3,
                     ResourceId = 1,
-                    UserId = 1
+                    UserId = "testUserId"
                 },
                 new Rating {
                     Id = 2,
                     Rated = 5,
                     ResourceId = 1,
-                    UserId = 1
+                    UserId = "testUserId"
                 },
                 new Rating {
                     Id = 3,
                     Rated = 5,
                     ResourceId = 2,
-                    UserId = 1
+                    UserId = "testUserId"
                 }
             };
 
             var comments = new[] {
                 new Comment {
                     Id = 1,
-                    UserId = 1, 
+                    UserId = "testUserId", 
                     ResourceId = 1,
                     TimeOfComment = DateTime.Now,
                     Content = "Content description"
@@ -163,6 +163,18 @@ namespace Repository.Tests
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // ... the seeding method will handle this
+            builder.Entity<User>().HasMany(u => u.Ratings).WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>().HasMany(u => u.Resources).WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
         }
 
     }

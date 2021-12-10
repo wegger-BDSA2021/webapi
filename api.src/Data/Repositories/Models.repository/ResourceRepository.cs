@@ -148,7 +148,7 @@ namespace Data
 
             entity.Title = resource.Title;
             entity.Description = resource.Description;
-            entity.UserId = (int)resource.UserId;
+            entity.UserId = resource.UserId;
             // entity.TimeOfReference = resource.TimeOfReference;
             entity.Url = resource.Url;
             entity.Tags = await getTagsFromStringsAsync(resource.Tags);
@@ -176,7 +176,7 @@ namespace Data
             .AsReadOnly();
         }
 
-        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId)
+        public async Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(string userId)
         {
             return (await _context.Resources
                 .Where(r => r.UserId == userId)

@@ -60,7 +60,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet("ReadAllFromUser/{id}")]
-        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromUser(int id)
+        public async Task<ActionResult<ICollection<ResourceDTO>>> ReadAllFromUser(string id)
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             var result = await _service.GetAllResourcesFromUserAsync(id);
