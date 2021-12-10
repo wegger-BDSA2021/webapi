@@ -39,7 +39,14 @@ namespace Data
 
         public async Task<Response> DeleteUserAsync(string id)
         {
+            var userEntity = await GetUserByIdAsync(id);
+            if (userEntity.Item1 == NotFound)
+                return NotFound;
+
+            _context.Users.Remove(userEntity.Item2);
+            await _context.SaveChangesAsync();
             
+            return Deleted;
         }
 
         public async Task<bool> UserExists(string id)
