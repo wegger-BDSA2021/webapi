@@ -169,7 +169,7 @@ namespace Repository.Tests
 
             builder.Entity<User>().HasMany(u => u.Resources).WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)

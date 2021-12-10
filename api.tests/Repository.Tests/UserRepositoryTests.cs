@@ -82,7 +82,6 @@ namespace Repository.Tests
             Assert.Equal(Deleted, response);
             Assert.False(_context.Users.Any());
             Assert.False(_context.Ratings.Any());
-            Assert.False(_context.Resources.Any());
             Assert.False(_context.Comments.Any());
         }
 
