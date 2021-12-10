@@ -9,6 +9,7 @@ namespace Data
     public class UserRepository : IUserRepository
     {
         private readonly IWeggerContext _context;
+        
         public UserRepository(IWeggerContext context)
         {
             _context = context;
