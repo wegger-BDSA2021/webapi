@@ -29,6 +29,7 @@ namespace api.src.Controllers
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
 
+            // get the userId from microsoft graph
             string userId = this.User.GetUserId();
 
             var result = await _service.CreateAsync(userId);

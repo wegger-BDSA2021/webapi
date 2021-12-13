@@ -204,11 +204,12 @@ namespace Services
                 }
 
                 var result = await _repo.CreateAsync(rating);
-                if (result.Response == AllReadyExist){
+
+                if (result.Response == Conflict){
                     return new Result
                     {
-                       Response = AllReadyExist,
-                       Message =  "The tag given allready exist in the database"
+                       Response = BadRequest,
+                       Message =  "Invalid rating"
                     };
                 }else{
                     return new Result

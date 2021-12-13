@@ -82,11 +82,18 @@ namespace Services
                         Message = "No tag found with the given entity"
                     };
                 
+                case BadRequest:
+                    return new Result
+                    {
+                        Response = BadRequest,
+                        Message = $"There already exists a tag with name {tag.NewName}"
+                    };
+
                 case Updated:
                     return new Result
                     {
                         Response = Updated,
-                        Message = $"Tag at index {tag.Id} has been updated form having the name {tag.Name} to have {tag.NewName}"
+                        Message = $"Tag at index {tag.Id} has been updated to have name {tag.NewName}"
                     };
 
                 default:
@@ -96,8 +103,6 @@ namespace Services
                         Message = "An error occured"
                     };
             }
-            
-
         }
 
         public async Task<Result> Delete(int id)

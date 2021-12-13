@@ -62,12 +62,14 @@ namespace Data
         [Required]
         public int Id { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
-        public int? ResourceId { get; set; }
+        public int ResourceId { get; set; }
 
         public DateTime? TimeOfComment { get; set; }
 
+        [Required]
         [StringLength(300)]
         public string Content { get; set; }
     }

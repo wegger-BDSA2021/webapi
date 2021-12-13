@@ -54,7 +54,7 @@ namespace Data
                         r.Title,
                         r.Description,
                         r.Url,
-                        r.Ratings.Select(r => r.Rated).Average(),
+                        r.Ratings.Select(r => r.Rated).DefaultIfEmpty().Average(),
                         r.Deprecated
                     ))
                 .ToListAsync())

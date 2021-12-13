@@ -51,6 +51,7 @@ namespace Repository.Tests
         {
             var users = new[] {
                 new User { Id = "testUserId" },
+                new User { Id = "secondUserId" }
             };
 
             var resources = new[] {

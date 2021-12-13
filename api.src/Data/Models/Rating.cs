@@ -15,6 +15,7 @@ namespace Data
         public string? UserId { get; set; }
         #nullable disable
 
+        [ForeignKey("ResourceId")]
         public Resource Resource { get; set; }
 
         [Required]
