@@ -27,7 +27,7 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<CommentDetailsDTO>> GetById(int id)
         {
             var result = await commentService.GetCommentById(id);
@@ -41,23 +41,23 @@ namespace api.src.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CommentDetailsDTO>> Post(CommentCreateDTOServer comment)
+        public async Task<ActionResult<CommentDetailsDTO>> CreateComment(CommentCreateDTOServer comment)
         {
             var result = await commentService.AddComment(comment);
 
             return result.ToActionResult();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<CommentDTO>> Put(int id, Comment comment)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CommentDTO>> UpdateComment(int id, Comment comment)
         {
             var updatedUser = await commentService.UpdateComment(comment.AsCommentUpdateDTO());
 
             return updatedUser.ToActionResult();
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<CommentDTO>> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<CommentDTO>> DeleteComment(int id)
         {
             var commentToDelete = await commentService.DeleteComment(id);
             return commentToDelete.ToActionResult();
