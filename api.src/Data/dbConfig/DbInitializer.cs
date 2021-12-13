@@ -60,14 +60,14 @@ namespace Data
                 {
                     // Id = 1,
                     Rated = 3, 
-                    ResourceId = 1,
+                    // ResourceId = 1,
                     UserId = "first"
                 },
                 new Rating
                 {
                     // Id = 2,
                     Rated = 5, 
-                    ResourceId = 1,
+                    // ResourceId = 1,
                     UserId = "second"
                 }
             };
@@ -106,6 +106,9 @@ namespace Data
             resources[0].Tags.Add(tags[11]);
             resources[0].Tags.Add(tags[10]);
             resources[0].Tags.Add(tags[5]);
+
+            resources[0].Ratings.Add(ratings[0]);
+            resources[0].Ratings.Add(ratings[1]);
 
             context.AddRange(users);
             context.AddRange(tags);
