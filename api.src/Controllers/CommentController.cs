@@ -27,7 +27,7 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<CommentDetailsDTO>> GetById(int id)
         {
             var result = await commentService.GetCommentById(id);
@@ -49,7 +49,7 @@ namespace api.src.Controllers
             return updatedUser.ToActionResult();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<CommentDTO>> Delete(int id)
         {
             var commentToDelete = await commentService.DeleteComment(id);

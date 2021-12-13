@@ -34,7 +34,7 @@ namespace api.src.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<TagCreateDTO>> Post(TagCreateDTO tag)
+        public async Task<ActionResult<TagCreateDTO>> Create(TagCreateDTO tag)
         {
             var result = await _service.CreateAsync(tag);
             return result.ToActionResult();
