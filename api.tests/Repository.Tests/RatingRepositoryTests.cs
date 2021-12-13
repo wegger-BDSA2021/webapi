@@ -16,14 +16,16 @@ namespace Repository.Tests
 
             var actual = await _repo.ReadAsync(1);
             
-            Assert.Equal(actual.Response, NotFound);       
+            Assert.Equal(NotFound, actual.Response);       
         }
+        
+        [Fact]
         public async void Given_recource_with_two_readAllAsync_returns_readonlylist_of_length_0()
         {
             var _repo = new RatingRepository(_context);
             Seed(_context);
             var tworatings = await _repo.GetAllRatingFormResourceAsync(1);
-            Assert.Equal(tworatings.Count(), 2);
+            Assert.Equal(2, tworatings.Count());
         }
         [Fact]
         public async void Given_something_returns_something()
@@ -84,8 +86,8 @@ namespace Repository.Tests
             Assert.Equal(NotFound, invalidRating);
         }
 
-        [Fact]
-        public async void Given_DTO_Rating_between_0_and_6_returns_Updated()
+        //[Fact]
+        /*public async void Given_DTO_Rating_between_0_and_6_returns_Updated()
         {
             throw new NotImplementedException();
         }
@@ -100,7 +102,7 @@ namespace Repository.Tests
         public async void Given_Invalid_DTO_Rating_returns_NotFound()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
     }
 }
