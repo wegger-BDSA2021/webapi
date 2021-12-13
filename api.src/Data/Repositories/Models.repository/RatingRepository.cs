@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Data
         }
         public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> CreateAsync(RatingCreateDTO Rating)
         {
-            if (Rating.Rated > 5 || Rating.Rated > 0)
+            if (Rating.Rated > 5 || Rating.Rated < 0)
                 return (Conflict, null);
             var entity = new Rating
             {
@@ -74,10 +75,19 @@ namespace Data
         public async Task<(Response Response, Rating Rating)> ReadAsync(string userId,int resId)
         {
             var ratingM = await _context.Ratings.Where(r => r.User.Id == userId).ToListAsync();
-            var ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); //might not give null on fail. test
-            if (ratingS is null)
+            if (ratingM is null)
                 return (NotFound, null);
 
+            Rating ratingS = null;
+            
+            try
+            {
+                ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); 
+            }
+            catch (Exception e)
+            {
+                return (NotFound, null);
+            }
             return (OK, ratingS);
         }
         public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormResourceAsync(int reId)

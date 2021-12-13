@@ -11,23 +11,23 @@ namespace Repository.Tests
     public class RatingRepositoryTests : TestDataGenerator
     {
         //TODO create test for CreateAsync and ReadAsync(string,int)
-        /*[Fact]
-        public async void Given_ratingcreatedto_returns_Created_and_RatingDetailsDTO()
+        [Fact]
+        public async void Given_ratingcreateDTO_returns_Created_and_RatingDetailsDTO()
         {
             var _repo = new RatingRepository(_context);
             Seed(_context);
 
             var newDTO = new RatingCreateDTO
             {
-                UserId = Guid.NewGuid().ToString(),
-                ResourceId = 1,
+                UserId = "testUserId",
+                ResourceId = 2,
                 Rated = 2,
             };
 
             var result = await _repo.CreateAsync(newDTO);
 
             var expected = new RatingDetailsDTO(
-                1, 
+                4, 
                 newDTO.UserId, 
                 newDTO.ResourceId,
                 newDTO.Rated
@@ -36,7 +36,28 @@ namespace Repository.Tests
             Assert.Equal(Created,result.Response);
             Assert.Equal(expected,result.RatingDetailsDTO);
 
-        }*/
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(6)]
+        public async void Given_Rating_bigger_outside_valid_range_returns_Conflict_and_null(int Rating)
+        {
+            var _repo = new RatingRepository(_context);
+            Seed(_context);
+            
+            var newDTO = new RatingCreateDTO
+            {
+                UserId = "testUserId",
+                ResourceId = 2,
+                Rated = Rating,
+            };
+
+            var result = await _repo.CreateAsync(newDTO);
+            
+            Assert.Equal(Conflict,result.Response);
+            Assert.Null(result.RatingDetailsDTO);
+        }
 
 
         [Fact]
@@ -151,7 +172,32 @@ namespace Repository.Tests
             
             Assert.Equal(NotFound, invalidRating);
         }
+
+
+        [Fact]
+        public async void Given_Valid_userid_and_resourceid_returns_OK_and_UserRating_on_resource()
+        {
+            var _repo = new RatingRepository(_context);
+            Seed(_context);
+
+            var expectedRating = await _repo.ReadAsync("testUserId", 1);
+            
+            Assert.Equal(OK,expectedRating.Response);
+            Assert.Equal("testUserId",expectedRating.Rating.UserId);
+            Assert.Equal(1,expectedRating.Rating.ResourceId);
+        }
         
+        [Fact ]
+        public async void Given_User_with_no_ratings_on_resource_returns_NotFound_and_null()
+        {
+            var _repo = new RatingRepository(_context);
+            Seed(_context);
+
+            var expectedRating = await _repo.ReadAsync("secondUserId", 1);
+            
+            Assert.Equal(NotFound,expectedRating.Response);
+            Assert.Null(expectedRating.Rating);
+        }
 
     }
 }
