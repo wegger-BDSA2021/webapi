@@ -19,9 +19,9 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(int reId)
+        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingsFromResource(int resourceId)
         {
-            var result = await _service.ReadAllRatingFormRepositoryAsync(reId);
+            var result = await _service.ReadAllRatingFormRepositoryAsync(resourceId);
             return result.ToActionResult();
         }
 
