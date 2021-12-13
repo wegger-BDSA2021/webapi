@@ -62,6 +62,45 @@ namespace Repository.Tests
             var updated = await _repo.ReadAsync(1);
             Assert.Equal(5, updated.Rating.Rated);
         }
+        
+        [Fact]
+        public async void Given_Valid_Rating_Id_Returns_DeletedResponse()
+        {
+            var _ratingrepo = new RatingRepository(_context);
+            Seed(_context);
+            
+            var rating = await _ratingrepo.DeleteAsync(1);
+            
+            
+            Assert.Equal(Deleted,rating);
+        }
+        [Fact] 
+        public async void Given_invalid_Rating_Id_Returns_NotFound()
+        {
+            var _ratingrepo = new RatingRepository(_context);
+            
+            var invalidRating = await _ratingrepo.DeleteAsync(1);
+            
+            Assert.Equal(NotFound, invalidRating);
+        }
+
+        [Fact]
+        public async void Given_DTO_Rating_between_0_and_6_returns_Updated()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [Fact]
+        public async void Given_DTO_Rating_smaller_than_1_and_bigger_than_5_returns_Conflict()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [Fact]
+        public async void Given_Invalid_DTO_Rating_returns_NotFound()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }
