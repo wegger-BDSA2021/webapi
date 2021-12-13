@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.src.Controllers;
+using api.src.Services;
 using Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -35,14 +36,14 @@ namespace api.src
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
-            // services.AddDbContext<WeggerContext>(options =>
-            //     options.UseSqlServer(Configuration.GetConnectionString("Wegger")));
 
             string connection = Configuration.GetConnectionString("Wegger");
             System.Console.WriteLine(connection);
 
             services.AddDbContext<WeggerContext>(options =>
                 options.UseSqlServer(connection));
+
+
             // for testing the api locally :
             // var _connection = new SqliteConnection("DataSource=:memory");
             // _connection.Open();
@@ -60,13 +61,11 @@ namespace api.src
             services.AddScoped<IRatingRepository, RatingRepository>();
 
             services.AddScoped<IResourceService, ResourceService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<ITagService, TagService>();
 
-
-            // services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            // services.AddTransient<IEntityRepository, EntityRepository>();
-            // continue to use the servies for dependecy injection  
-            //  - for repositories
-            //  - for services transfering data back and forth from the repos to the controllers applying the bussines logic 
 
             services.AddMvc(options =>
             {

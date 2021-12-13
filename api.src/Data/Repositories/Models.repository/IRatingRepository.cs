@@ -5,12 +5,13 @@ namespace Data
 {
     public interface IRatingRepository
     {
-        public Task<(Response Response, int RatingId)> CreateAsync(Rating Rating);
-        public Task<Response> UpdateAsync(Rating Rating, int newRating);
-        public Task<Response> DeleteAsync(int id);
-        public Task<(Response Response, Rating Rating)> ReadAsync(int id);
-        public Task<(Response Response, Rating Rating)> ReadAsync(string userId, int resId);
-        public Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(Resource re);
+        Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> CreateAsync(RatingCreateDTO Rating);
+        Task<Response> UpdateAsync(RatingUpdateDTO rating);
+        Task<Response> DeleteAsync(int id);
+        Task<(Response Response, Rating Rating)> ReadAsync(int id);
+        // public Task<(Response Response, Rating Rating)> ReadAsync(int userId, int resId);
+        Task<IReadOnlyCollection<Rating>> GetAllRatingFormResourceAsync(int reId);
+
 
         
     }

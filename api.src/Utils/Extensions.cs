@@ -1,10 +1,10 @@
-// using api.src.Data.DTOs;
 using Data;
 using static Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 
 namespace Utils
 {
@@ -23,9 +23,6 @@ namespace Utils
             _               => throw new NotSupportedException($"{result.Response} not supported")
         };
 
-        // public static ActionResult<T> ToActionResult<T>(this Option<T> option) where T : class
-        //     => option.IsSome ? option.Value : new NotFoundResult();
-
         public static bool IsWithin(this double value, int minimum, int maximum)
             => value >= minimum && value <= maximum;
 
@@ -34,11 +31,44 @@ namespace Utils
             return new CommentDTO
             {
                 Id = comment.Id,
-                User = comment.User,
-                Resource = comment.Resource,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
                 TimeOfComment = comment.TimeOfComment,
                 Content = comment.Content
             };
         }
+
+        public static CommentDetailsDTO AsCommentDetailsDTO(this Comment comment)
+        {
+            return new CommentDetailsDTO
+            {
+                Id = comment.Id,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content
+            };
+        }
+
+        public static CommentUpdateDTO AsCommentUpdateDTO(this Comment comment)
+        {
+            return new CommentUpdateDTO
+            {
+                Id = comment.Id,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
+                TimeOfComment = comment.TimeOfComment,
+                Content = comment.Content,
+            };
+        }
+      
+        public static string GetUserId(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
+
+            return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+      
     }
 }

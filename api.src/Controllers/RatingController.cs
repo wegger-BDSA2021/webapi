@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Utils;
 
 namespace api.src.Controllers
 {
@@ -10,146 +11,46 @@ namespace api.src.Controllers
     [Route("api/[controller]")]
     public class RatingController : ControllerBase
     {
-        private readonly IRatingRepository ratingRepository;
+        private IRatingService _service;
 
-        public RatingController(IRatingRepository ratingRepository)
+        public RatingController(IRatingService service)
         {
-            this.ratingRepository = ratingRepository;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(Resource re)
+        public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(int reId)
         {
-            try
-            {
-                var result = await ratingRepository.GetAllRatingFormRepositoryAsync(re);
-
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
+            var result = await _service.ReadAllRatingFormRepositoryAsync(reId);
+            return result.ToActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Rating>> GetById(int id)
         {
-            try
-            {
-                var result = await ratingRepository.ReadAsync(id);
-
-                if (result.Rating != null)
-                {
-                    return result.Rating;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-            }
+            var result = await _service.ReadAsync(id);
+            return result.ToActionResult();
         }
-
-        // [HttpGet("{id}{id}")]
-        // public async Task<ActionResult<Rating>> GetById(int Uid, int Rid)
-        // {
-        //     try
-        //     {
-        //         var result = await ratingRepository.ReadAsync(Uid,Rid);
-
-        //         if (result.Rating != null)
-        //         {
-        //             return result.Rating;
-        //         }
-        //         else
-        //         {
-        //             return NotFound();
-        //         }
-        //     }
-        //     catch (System.Exception)
-        //     {
-        //         return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-        //     }
-        // }
 
         [HttpPost]
-        public async Task<ActionResult<Rating>> Post(Rating rating)
+        public async Task<ActionResult<Rating>> Post(RatingCreateDTO rating)
         {
-            try
-            {
-                if (rating == null)
-                {
-                    return BadRequest();
-                }
-
-                var result = await ratingRepository.CreateAsync(rating);
-
-                return CreatedAtAction(nameof(GetById), new { id = result.RatingId }, result);
-
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating data to the database");
-            }
+            var result = await _service.CreateAsync(rating);
+            return result.ToActionResult();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Put(int id, Rating rating, int newRate)
+        [HttpPut]
+        public async Task<ActionResult<Response>> Put(RatingUpdateDTO ratingUpdateDTO)
         {
-            try
-            {
-                if (id != rating.Id)
-                {
-                    return BadRequest("Id mismatch");
-                }
-
-                var result = await ratingRepository.ReadAsync(id);
-
-                if (result.Rating == null)
-                {
-                    return NotFound("Comment not found");
-                }
-
-                return await ratingRepository.UpdateAsync(result.Rating, newRate);
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data from the database");
-            }
+            var result = await _service.UpdateAsync(ratingUpdateDTO);
+            return result.ToActionResult();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Response>> Delete(int id)
         {
-            try
-            {
-                var result = await ratingRepository.ReadAsync(id);
-
-                if (result.Rating != null)
-                {
-                    return await ratingRepository.DeleteAsync(id);
-                }
-                else
-                {
-                    return NotFound("Comment not found");
-                }
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data from the database");
-            }
+            var result = await _service.Delete(id);
+            return result.ToActionResult();
         }
     }
 }
