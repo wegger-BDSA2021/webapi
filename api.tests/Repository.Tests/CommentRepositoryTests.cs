@@ -86,8 +86,8 @@ namespace api.tests.Repository.Tests
 
             Assert.Equal(Created, response);
             Assert.Equal(2, createdDTO.Id);
-            Assert.Equal("This is a new resource", createdDTO.Content);
-            Assert.Equal(DateTime.Now, createdDTO.TimeOfComment);
+            Assert.Equal("This is a new comment", createdDTO.Content);
+            //Assert.Equal(DateTime.Now, createdDTO.TimeOfComment);
             Assert.Equal("testUserId", createdDTO.UserId);
             Assert.Equal(2, createdDTO.ResourceId);
         }
