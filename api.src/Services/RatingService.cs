@@ -21,7 +21,7 @@ namespace Services
         {
             _repo = repo;
         }
-
+        
         public async Task<Result> ReadAsync(int id)
         {
             if (id < 0)
@@ -60,9 +60,9 @@ namespace Services
                     };
             }
         }
-        public async Task<Result> UpdateAsync(TagUpdateDTO tag)
+        public async Task<Result> ReadAsync(int userId, int resId)
         {
-            if (tag.Id < 0)
+            if (userId < 0 || resId < 0)
             {
                 return new Result 
                 {
@@ -71,9 +71,10 @@ namespace Services
                 };
             }
 
-            var result = await _repo.UpdateAsync(tag);
 
-            switch (result)
+            var result = await _repo.ReadAsync(userId, resId);
+
+            switch (result.Response)
             {
                 case NotFound:
                     return new Result
@@ -83,11 +84,61 @@ namespace Services
                     };
                 
                 case OK:
+                    return new Result
+                    {
+                        Response = OK,
+                        Message = $"Tag found at index {result.Rating.Id}",
+                        DTO = result
+                    };
+
+                default:
+                    return new Result
+                    {
+                        Response = Conflict,
+                        Message = "An error occured"
+                    };
+            }
+        }
+        public async Task<IReadOnlyCollection<Rating>> ReadAllRatingFormRepositoryAsync(int id)
+        {
+            if (id < 0)
+            {
+                return null;
+            }
+
+            var result = await _repo.GetAllRatingFormRepositoryAsync(id);
+            
+            return result;
+            
+        }
+        public async Task<Result> UpdateAsync(RatingUpdateDTO ratingUpdate)
+        {
+            if (ratingUpdate.Id < 0)
+            {
+                return new Result 
+                {
+                    Response = BadRequest,
+                    Message = "Id can only be a positive integer"
+                };
+            }
+
+            var result = await _repo.UpdateAsync(ratingUpdate);
+
+            switch (result)
+            {
+                case NotFound:
+                    return new Result
+                    {
+                        Response = NotFound,
+                        Message = "No Rating found with the given entity"
+                    };
+                
+                case OK:
                     // TODO: UPDATE
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Tag at index {tag.Id} has been updated form having the name {tag.Name} to have {tag.NewName}"
+                        Message = $"Tag at index {ratingUpdate.Id} has been updated form having the rating {ratingUpdate.Rated} to have {ratingUpdate.UpdatedRating}"
                     };
 
                 default:
@@ -131,11 +182,11 @@ namespace Services
             
             
         }
-        public async Task<Result> CreateAsync(TagCreateDTO tag)
+        public async Task<Result> CreateAsync(RatingCreateDTO rating)
         {
             try
             {
-                if (tag == null)
+                if (rating == null)
                 {
                     return new Result
                     {
@@ -144,7 +195,7 @@ namespace Services
                     };
                 }
 
-                var result = await _repo.CreateAsync(tag);
+                var result = await _repo.CreateAsync(rating);
                 if (result.Response == AllReadyExist){
                     return new Result
                     {
@@ -156,7 +207,7 @@ namespace Services
                     {
                        Response = Created,
                        Message =  "A new tag was succesfully created",
-                       DTO = result.TagDetailsDTO
+                       DTO = result.RatingDetailsDTO
                     };
                 }
 
@@ -174,10 +225,5 @@ namespace Services
             }
 
         }
-        public async Task<IReadOnlyCollection<TagDetailsDTO>> getAllTags()
-        {
-            return await _repo.GetAllTagsAsync();
-        }
-
     }
 }

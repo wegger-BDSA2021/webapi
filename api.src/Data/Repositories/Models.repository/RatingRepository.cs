@@ -14,20 +14,26 @@ namespace Data
         {
             _context = context;
         }
-        public async Task<(Response Response, int RatingId)> CreateAsync(Rating Rating)
+        public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> CreateAsync(RatingCreateDTO Rating)
         {
             if (Rating.Rated > 5 || Rating.Rated > 0)
-                return (Conflict, -1);
+                return (Conflict, null);
             var entity = new Rating
             {
-                User = Rating.User,
-                Resource = Rating.Resource,
+                User = _context.Users.First(u => u.Id == Rating.UserId),
+                Resource = _context.Resources.First(u => u.Id == Rating.ResourceId),
                 Rated = Rating.Rated,
             };
             await _context.Ratings.AddAsync(entity);
             await _context.SaveChangesAsync();
+            var result = new RatingDetailsDTO(
+                entity.Id,
+                entity.UserId,
+                entity.ResourceId,
+                entity.Rated
+            );
 
-            return (Created, entity.Id);
+            return (Created, result);
         }
         public async Task<Response> DeleteAsync(int id)
         {
@@ -40,18 +46,18 @@ namespace Data
 
             return Deleted;
         }
-        public async Task<Response> UpdateAsync(Rating Rating, int newRating)
+        public async Task<Response> UpdateAsync(RatingUpdateDTO Rating)
         {
             var entity = await _context.Ratings.FindAsync(Rating.Id);
             if (entity == null)
                 return NotFound;
-            if (newRating > 5 || newRating > 0)
+            if (Rating.UpdatedRating > 5 || Rating.UpdatedRating > 0)
                 return Conflict;
             
             
             //entity.User = Rating.User; //maybe remove
             //entity.Resource = Rating.Resource; //maybe remove
-            entity.Rated = newRating;
+            entity.Rated = Rating.UpdatedRating;
 
             await _context.SaveChangesAsync();
 

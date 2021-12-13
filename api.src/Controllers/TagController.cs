@@ -12,12 +12,6 @@ namespace api.src.Controllers
     public class TagController : ControllerBase
     {
         private ITagService _service;
-        private readonly ITagRepository tagRepository;
-
-        public TagController(ITagRepository tagRepository)
-        {
-            this.tagRepository = tagRepository;
-        }
         public TagController(ITagService service)
         {
             _service = service;
