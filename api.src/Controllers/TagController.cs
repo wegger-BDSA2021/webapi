@@ -18,7 +18,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyCollection<Tag>>> getAllTags()
+        public async Task<ActionResult<IReadOnlyCollection<TagDetailsDTO>>> getAllTags()
         {
             var result = await _service.getAllTags();
             return result.ToActionResult();
@@ -41,14 +41,14 @@ namespace api.src.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Update(TagUpdateDTO tagUpdateDTO)
+        public async Task<ActionResult> Update(TagUpdateDTO tagUpdateDTO)
         {
             var result = await _service.UpdateAsync(tagUpdateDTO);
             return result.ToActionResult();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Response>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var result = await _service.Delete(id);
             return result.ToActionResult();
