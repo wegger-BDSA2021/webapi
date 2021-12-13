@@ -65,5 +65,100 @@ namespace api.tests.Repository.Tests
 
             Assert.Equal(0, empty.Count);
         }
+
+        [Fact]
+        public async void Given_new_commentDTO_returns_Created_and_correct_DTO()
+        {
+            var _repo = new CommentRepository(_context);
+            Seed(_context);
+
+            var newComment = new CommentCreateDTOServer
+            {
+                UserId = "testUserId",
+                ResourceId = 1,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a new comment",
+            };
+
+            var result = await _repo.AddComment(newComment);
+            var response = result.Response;
+            var createdDTO = result.comment;
+
+            Assert.Equal(NotFound, response);
+            Assert.Equal(3, createdDTO.Id);
+            Assert.Equal("this is a new resource", createdDTO.Content);
+            Assert.Equal(DateTime.Now, createdDTO.TimeOfComment);
+            Assert.Equal("testUserId", createdDTO.UserId);
+            Assert.Equal(2, createdDTO.ResourceId);
+        }
+
+        [Fact]
+        public async void Given_non_existing_commentId_deleteComment_returns_NotFound()
+        {
+            var _repo = new CommentRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.DeleteComment(11);
+
+            Assert.Equal(NotFound, result);
+        }
+
+        [Fact]
+        public async void Given_existing_commentId_deleteComment_returns_Deleted()
+        {
+            var _repo = new CommentRepository(_context);
+            Seed(_context);
+
+            var result = await _repo.DeleteComment(1);
+
+            Assert.Equal(Deleted, result);
+        }
+
+        [Fact]
+        public async void Given_existing_commentId_updateComment_returns_Updated_and_correct_DTO()
+        {
+            var _repo = new CommentRepository(_context);
+            Seed(_context);
+
+            var updatedComment = new CommentUpdateDTO
+            {
+                Id = 1,
+                UserId = "testUserId",
+                ResourceId = 2,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a updated comment!",
+            };
+
+            var response = await _repo.UpdateComment(updatedComment);
+
+            var actual = await _repo.GetCommentById(1);
+
+            Assert.Equal(Updated, response);
+            Assert.Equal(1, actual.comment.Id);
+            Assert.Equal("This is a updated comment!", actual.comment.Content);
+            Assert.Equal(DateTime.Now, actual.comment.TimeOfComment);
+            Assert.Equal("testUserId", actual.comment.UserId);
+            Assert.Equal(2, actual.comment.ResourceId);
+        }
+
+        [Fact]
+        public async void Given_non_existing_commentId_updateComment_returns_NotFound()
+        {
+            var _repo = new CommentRepository(_context);
+            Seed(_context);
+
+            var updatedComment = new CommentUpdateDTO
+            {
+                Id = 9,
+                UserId = "testUserId",
+                ResourceId = 2,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a updated comment!",
+            };
+
+            var response = await _repo.UpdateComment(updatedComment);
+
+            Assert.Equal(NotFound, response);
+        }
     }
 }
