@@ -29,7 +29,7 @@ namespace Utils
         public static bool IsWithin(this double value, int minimum, int maximum)
             => value >= minimum && value <= maximum;
 
-        public static CommentDTO AsCommentDTO(this Comment comment)
+        /*public static CommentDTO AsCommentDTO(this Comment comment)
         {
             return new CommentDTO
             {
@@ -51,7 +51,7 @@ namespace Utils
                 TimeOfComment = comment.TimeOfComment,
                 Content = comment.Content
             };
-        }
+        }*/
 
         public static CommentUpdateDTO AsCommentUpdateDTO(this Comment comment)
         {

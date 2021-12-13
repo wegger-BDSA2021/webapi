@@ -4,34 +4,32 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data
 {
-    //public record CommentDTO(int Id, int UserId, int ResourceId, DateTime TimeOfComment, string Content);
+    public record CommentDTO(int Id, string UserId, int ResourceId, DateTime TimeOfComment, string Content);
 
-    //public record CommentDetailsDTO(int Id, int UserId, int ResourceId, DateTime TimeOfComment, string Content) : CommentDTO(Id, UserId, ResourceId, TimeOfComment, Content);
+    public record CommentDetailsDTO(int Id, string UserId, int ResourceId, DateTime TimeOfComment, string Content) : CommentDTO(Id, UserId, ResourceId, TimeOfComment, Content);
 
-    public record CommentDTO
+    /*public record CommentDTO
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int ResourceId { get; set; }
         public DateTime TimeOfComment { get; set; }
         public string Content { get; set; }
-    }
+    }*/
 
-    public record CommentDetailsDTO
+    /*public record CommentDetailsDTO
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int ResourceId { get; set; }
         public DateTime TimeOfComment { get; set; }
         public string Content { get; set; }
-        public Resource Resource { get; set; }
-        public User User { get; set; }
-    }
+    }*/
 
     public record CommentCreateDTOServer
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ResourceId { get; set; }
@@ -47,7 +45,7 @@ namespace Data
     public record CommentCreateDTOClient
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ResourceId { get; set; }
@@ -62,7 +60,7 @@ namespace Data
         [Required]
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
 
         public int? ResourceId { get; set; }
 

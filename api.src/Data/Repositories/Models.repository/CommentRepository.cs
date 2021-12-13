@@ -16,7 +16,7 @@ namespace Data
             _context = context;
         }
 
-        public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
+        /*public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
         {
             var comments = await _context.Comments.ToListAsync();
 
@@ -28,24 +28,45 @@ namespace Data
             }
 
             return commentsAsDto.AsReadOnly();
-        }
+        }*/
+
+        public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
+        => (await _context.Comments
+                .Select(c =>
+                    new CommentDTO(
+                        c.Id,
+                        c.UserId,
+                        c.ResourceId,
+                        c.TimeOfComment,
+                        c.Content
+                    ))
+                .ToListAsync())
+            .AsReadOnly();
 
         public async Task<(Response Response, CommentDetailsDTO comment)> GetCommentById(int commentId)
         {
-            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            var _commentEntity = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
 
-            if (comment is null)
+            if (_commentEntity is null)
                 return (NotFound, null);
 
-            return (OK, comment.AsCommentDetailsDTO());
+            var result = new CommentDetailsDTO(
+                _commentEntity.Id,
+                _commentEntity.UserId,
+                _commentEntity.ResourceId,
+                _commentEntity.TimeOfComment,
+                _commentEntity.Content
+            );
+
+            return (OK, result);
         }
 
         public async Task<(Response Response, CommentDetailsDTO comment)> AddComment(CommentCreateDTOServer comment)
         {
             var _commentEntity = new Comment
             {
-                UserId = (int)comment.UserId,
-                ResourceId = (int)comment.ResourceId,
+                UserId = comment.UserId,
+                ResourceId = comment.ResourceId,
                 TimeOfComment = (System.DateTime)comment.TimeOfComment,
                 Content = comment.Content
             };
@@ -54,7 +75,15 @@ namespace Data
 
             await _context.SaveChangesAsync();
 
-            return (Created, _commentEntity.AsCommentDetailsDTO());
+            CommentDetailsDTO result = new(
+                _commentEntity.Id,
+                _commentEntity.UserId,
+                _commentEntity.ResourceId,
+                _commentEntity.TimeOfComment,
+                _commentEntity.Content
+            );
+
+            return (Created, result);
         }
 
         public async Task<Response> DeleteComment(int commentId)
@@ -77,7 +106,7 @@ namespace Data
 
             if (result != null)
             {
-                result.UserId = (int)comment.UserId;
+                result.UserId = comment.UserId;
                 result.ResourceId = (int)comment.ResourceId;
                 result.TimeOfComment = (System.DateTime)comment.TimeOfComment;
                 result.Content = comment.Content;
