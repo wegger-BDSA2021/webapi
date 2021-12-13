@@ -21,9 +21,8 @@ namespace api.src.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingFromRec(int reId)
         {
-            
             var result = await _service.ReadAllRatingFormRepositoryAsync(reId);
-            return Ok(result);
+            return result.ToActionResult();
         }
 
         [HttpGet("{id}")]
@@ -33,28 +32,6 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        // [HttpGet("{id}{id}")]
-        // public async Task<ActionResult<Rating>> GetById(int Uid, int Rid)
-        // {
-        //     try
-        //     {
-        //         var result = await ratingRepository.ReadAsync(Uid,Rid);
-
-        //         if (result.Rating != null)
-        //         {
-        //             return result.Rating;
-        //         }
-        //         else
-        //         {
-        //             return NotFound();
-        //         }
-        //     }
-        //     catch (System.Exception)
-        //     {
-        //         return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-        //     }
-        // }
-
         [HttpPost]
         public async Task<ActionResult<Rating>> Post(RatingCreateDTO rating)
         {
@@ -62,7 +39,7 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<Response>> Put(RatingUpdateDTO ratingUpdateDTO)
         {
             var result = await _service.UpdateAsync(ratingUpdateDTO);

@@ -22,7 +22,7 @@ namespace Repository.Tests
         {
             var _repo = new RatingRepository(_context);
             Seed(_context);
-            var tworatings = await _repo.GetAllRatingFormRepositoryAsync(1);
+            var tworatings = await _repo.GetAllRatingFormResourceAsync(1);
             Assert.Equal(tworatings.Count(), 2);
         }
         [Fact]

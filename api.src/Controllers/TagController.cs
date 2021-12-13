@@ -21,37 +21,16 @@ namespace api.src.Controllers
         public async Task<ActionResult<IReadOnlyCollection<Tag>>> getAllTags()
         {
             var result = await _service.getAllTags();
-            return Ok(result);
+            return result.ToActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TagDetailsDTO>> GetById(int id)
         {
-             var result = await _service.ReadAsync(id);
+            var result = await _service.ReadAsync(id);
             return result.ToActionResult();
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<Tag>> GetfromRecourse(Resource Re)
-        // {
-        //     try
-        //     {
-        //         var result = await tagRepository.GetAllTagsFormRepositoryAsync(Re);
-
-        //         if (result != null)
-        //         {
-        //             return Ok(result);
-        //         }
-        //         else
-        //         {
-        //             return NotFound();
-        //         }
-        //     }
-        //     catch (System.Exception)
-        //     {
-        //         return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
-        //     }
-        // }
 
         [HttpPost]
         [Route("Create")]
@@ -62,7 +41,7 @@ namespace api.src.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Put(TagUpdateDTO tagUpdateDTO)
+        public async Task<ActionResult<Response>> Update(TagUpdateDTO tagUpdateDTO)
         {
             var result = await _service.UpdateAsync(tagUpdateDTO);
             return result.ToActionResult();

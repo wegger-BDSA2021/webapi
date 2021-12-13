@@ -99,16 +99,24 @@ namespace Services
                     };
             }
         }
-        public async Task<IReadOnlyCollection<Rating>> ReadAllRatingFormRepositoryAsync(int id)
+        public async Task<Result> ReadAllRatingFormRepositoryAsync(int id)
         {
             if (id < 0)
             {
-                return null;
+                return new Result 
+                {
+                    Response = BadRequest,
+                    Message = "Id can only be a positive integer"
+                };
             }
 
-            var result = await _repo.GetAllRatingFormRepositoryAsync(id);
+            var result = await _repo.GetAllRatingFormResourceAsync(id);
             
-            return result;
+            return new Result 
+                {
+                    Response = OK,
+                    DTO = result
+                };
             
         }
         public async Task<Result> UpdateAsync(RatingUpdateDTO ratingUpdate)

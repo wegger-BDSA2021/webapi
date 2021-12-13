@@ -31,12 +31,6 @@ namespace api.src.Controllers
         public async Task<ActionResult<CommentDetailsDTO>> GetById(int id)
         {
             var result = await commentService.GetCommentById(id);
-
-            if (result == null)
-            {
-                return NotFound();
-            }
-
             return result.ToActionResult();
         }
 
@@ -52,7 +46,6 @@ namespace api.src.Controllers
         public async Task<ActionResult<CommentDTO>> Put(int id, Comment comment)
         {
             var updatedUser = await commentService.UpdateComment(comment.AsCommentUpdateDTO());
-
             return updatedUser.ToActionResult();
         }
 

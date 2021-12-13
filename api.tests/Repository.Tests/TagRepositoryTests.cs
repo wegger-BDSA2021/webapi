@@ -41,43 +41,7 @@ namespace Repository.Tests
 
             var empty = await _repo.GetAllTagsAsync();
             Assert.Equal(empty.Count(), 0);
-        
         }
-        // [Fact]
-        // public async void Given_Resource_returns_tags()
-        // {
-        //     var _repo = new TagRepository(_context);
-        //     Seed(_context);
-
-        //     var actual = await _repo.GetAllTagsFormRepositoryAsync(_context.Resources.Find(1));
-
-        //     Assert.Equal(actual.Count, 1);
-        //     Assert.Equal(actual.First().Id, 1);
-        //     Assert.Equal(actual.First().Name, "dotnet");
-        //     Assert.Equal(actual.First().Resources.Count, 1);
-        //     Assert.Equal(actual.First().Resources.First(), _context.Resources.Find(1));
-        // }
-
-        // [Fact]
-        // public async void Given_something_returns_something()
-        // {
-            // initiate the relevant repo for each unit test
-            //var _repo = new TagRepository(_context);
-            //Seed(_context);
-            
-            //var tag = await _repo.GetTagByIdAsync(1);
-
-            //Assert.Equal("dotnet", tag.);
-            // optionally seed the in-memory sqlite database with some dummy data
-            // see the Seed method in TestDataGenerator
-            //      - in the seed method you can put any kind of data you want to test with 
-
-            
-            //Given
         
-            //When
-        
-            //Then
-        // }
     }
 }

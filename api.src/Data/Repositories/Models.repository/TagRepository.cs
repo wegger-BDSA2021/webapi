@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using static Data.Response;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.EntityFrameworkCore;
-
-//using Utils;
-// using Microsoft.EntityFrameworkCore;
+using static Data.Response;
 
 namespace Data
 {
@@ -26,8 +22,8 @@ namespace Data
             var entity = new Tag
             {
                 Name = Tag.Name,
-                //Resources = Tag.Resources,
             };
+
             await _context.Tags.AddAsync(entity);
             await _context.SaveChangesAsync();
 
@@ -67,9 +63,7 @@ namespace Data
                 tag.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
             );
 
-            return (OK, result);
-            
-            // return await GetAll().FirstOrDefaultAsync(x => x.Id == id);
+            return (OK, result);            
         }
 
         public async Task<IReadOnlyCollection<TagDetailsDTO>> GetAllTagsAsync()
@@ -91,9 +85,6 @@ namespace Data
             => ( await _context.Tags.Select(t => t.Name).ToListAsync()).AsReadOnly();
         
 
-
-        //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( _context.Tags.Where(t => t.Resources == re).ToList<Tag>);
-        //public async Task<List<Tag>> GetAllTagsFormRepositoryAsync(Resource re) => ( ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly());
         public async Task<Response> DeleteAsync(int id)
         {
             var tag = await _context.Tags.FindAsync(id);
@@ -106,18 +97,5 @@ namespace Data
             return Deleted;
         }
 
-        // public async Task<IReadOnlyCollection<Tag>> GetAllTagsFormRepositoryAsync(Resource re)
-        // {
-        //     return ( await _context.Tags.Where(t => t.Resources == re).ToListAsync()).AsReadOnly();
-        // }
-        /*{
-            var tags = from t in _context.Tags
-                        where(t => t.Resources = re)
-                        select new TagDto;
-            return await tags.GetAll().ToListAsync();
-
-            // return await GetAll().ToListAsync();
-            throw new System.Exception();
-        }*/
     }
 }

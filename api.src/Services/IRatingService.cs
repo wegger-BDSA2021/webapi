@@ -15,6 +15,6 @@ public interface IRatingService
     // public Task<Result> ReadAsync(int userId, int resId);
     public Task<Result> UpdateAsync(RatingUpdateDTO ratingUpdate);
     public Task<Result> Delete(int id);
-    public Task<IReadOnlyCollection<Rating>> ReadAllRatingFormRepositoryAsync(int resId);
+    public Task<Result> ReadAllRatingFormRepositoryAsync(int resId);
 
 }

@@ -82,11 +82,10 @@ namespace Services
                         Message = "No tag found with the given entity"
                     };
                 
-                case OK:
-                    // TODO: UPDATE
+                case Updated:
                     return new Result
                     {
-                        Response = OK,
+                        Response = Updated,
                         Message = $"Tag at index {tag.Id} has been updated form having the name {tag.Name} to have {tag.NewName}"
                     };
 
@@ -126,11 +125,9 @@ namespace Services
                         Response = Conflict,
                         Message = "An error occured"
                     };
-            }
-        
-            
-            
+            }    
         }
+
         public async Task<Result> CreateAsync(TagCreateDTO tag)
         {
             try
@@ -161,7 +158,6 @@ namespace Services
                 }
 
                 
-
             }
             catch (System.Exception e)
             {
@@ -174,9 +170,15 @@ namespace Services
             }
 
         }
-        public async Task<IReadOnlyCollection<TagDetailsDTO>> getAllTags()
+        
+        public async Task<Result> getAllTags()
         {
-            return await _repo.GetAllTagsAsync();
+            var tags = await _repo.GetAllTagsAsync();
+            return new Result
+                {
+                    Response = OK,
+                    DTO = tags
+                };
         }
 
     }

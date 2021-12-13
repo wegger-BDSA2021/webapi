@@ -80,7 +80,7 @@ namespace api.src.Services
                 return new Result
                 {
                     Response = NotFound,
-                    Message = "Comment is null"
+                    Message = $"No comment exists with the id {id}"
                 };
             }
 
