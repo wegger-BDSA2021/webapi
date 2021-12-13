@@ -13,13 +13,14 @@ namespace Services
     {
         private IResourceRepository _resourceRepo;
         private ITagRepository _tagRepo;
-        // private IUserRepository _userRepo;
+        private IUserRepository _userRepo;
 
 
-        public ResourceService(IResourceRepository repo, ITagRepository tagRepo)
+        public ResourceService(IResourceRepository resourceRepo, ITagRepository tagRepo, IUserRepository userRepo)
         {
-            _resourceRepo = repo;
+            _resourceRepo = resourceRepo;
             _tagRepo = tagRepo;
+            _userRepo = userRepo;
         }
 
         public async Task<Result> ReadAsync(int id)
@@ -178,18 +179,25 @@ namespace Services
                 };
         }
 
-        public async Task<Result> GetAllResourcesFromUserAsync(int id)
+        public async Task<Result> GetAllResourcesFromUserAsync(string id)
         {
-            if (id < 0)
+            if (id.Trim().Length == 0)
             {
                 return new Result 
                     {
                         Response = BadRequest,
-                        Message = "Id can only be a positive integer"
+                        Message = "Id can not be the empty string"
                     };
             }
 
-            // TODO : check if user exists via user_repo
+            var userExists = await _userRepo.UserExists(id);
+            if (!userExists)
+                return new Result 
+                        {
+                            Response = NotFound,
+                            Message = $"No user found with id {id}"
+                        };
+                
 
             var collection = await _resourceRepo.GetAllFromUserAsync(id);
             return new Result
