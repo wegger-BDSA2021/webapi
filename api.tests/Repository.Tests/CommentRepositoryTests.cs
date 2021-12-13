@@ -38,11 +38,8 @@ namespace api.tests.Repository.Tests
 
             Assert.Equal(OK, response);
             Assert.Equal("Content description", comment.Content);
-            // Assert.Equal(DateTime.Now, comment.TimeOfComment);
+            Assert.Equal(new DateTime(2021, 13, 12), comment.TimeOfComment);
             Assert.Equal(1, comment.Id);
-            /*Assert.Equal("resource_1", comment.Resource.Title);
-            Assert.NotNull(comment.User);
-            Assert.NotNull(comment.Resource);*/
         }
 
         [Fact]
@@ -87,9 +84,9 @@ namespace api.tests.Repository.Tests
             Assert.Equal(Created, response);
             Assert.Equal(2, createdDTO.Id);
             Assert.Equal("This is a new comment", createdDTO.Content);
-            //Assert.Equal(DateTime.Now, createdDTO.TimeOfComment);
+            Assert.Equal(new DateTime(2021, 13, 12), createdDTO.TimeOfComment);
             Assert.Equal("testUserId", createdDTO.UserId);
-            Assert.Equal(2, createdDTO.ResourceId);
+            Assert.Equal(1, createdDTO.ResourceId);
         }
 
         [Fact]
@@ -125,7 +122,7 @@ namespace api.tests.Repository.Tests
                 Id = 1,
                 UserId = "testUserId",
                 ResourceId = 2,
-                TimeOfComment = DateTime.Now,
+                TimeOfComment = new DateTime(2021, 10, 15),
                 Content = "This is a updated comment!",
             };
 
@@ -136,7 +133,7 @@ namespace api.tests.Repository.Tests
             Assert.Equal(Updated, response);
             Assert.Equal(1, actual.comment.Id);
             Assert.Equal("This is a updated comment!", actual.comment.Content);
-            //Assert.Equal(DateTime.Now, actual.comment.TimeOfComment);
+            Assert.Equal(new DateTime(2021, 10, 15), actual.comment.TimeOfComment);
             Assert.Equal("testUserId", actual.comment.UserId);
             Assert.Equal(2, actual.comment.ResourceId);
         }

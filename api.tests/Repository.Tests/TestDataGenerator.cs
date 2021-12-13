@@ -108,7 +108,7 @@ namespace Repository.Tests
                     Id = 1,
                     UserId = "testUserId", 
                     ResourceId = 1,
-                    TimeOfComment = DateTime.Now,
+                    TimeOfComment = new DateTime(2021, 13, 12),
                     Content = "Content description"
                 }
             };
