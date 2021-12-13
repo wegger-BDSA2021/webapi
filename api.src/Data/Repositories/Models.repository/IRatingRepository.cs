@@ -12,6 +12,7 @@ namespace Data
         public Task<(Response Response, Rating Rating)> ReadAsync(int userId, int resId);
         public Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(int reId);
 
+
         
     }
 }

@@ -18,7 +18,7 @@ namespace Data
         public string TitleFromSource { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [StringLength(500)]
@@ -59,7 +59,7 @@ namespace Data
         public string Title { get; init; }
 
         [Required]
-        public int UserId { get; init; }
+        public string UserId { get; init; }
 
         [Required]
         [StringLength(500)]
@@ -77,9 +77,11 @@ namespace Data
     {
         [Required]
         public int Id { get; init; }
+
+        #nullable enable
         public string? Title { get; init; }
         public string? Description { get; init; }
-        public int? UserId { get; init; }
+        public string? UserId { get; init; }
         public DateTime? TimeOfResourcePublication { get; init; }
         public string? Url { get; init; }
         public ISet<string>? Tags { get; init; }

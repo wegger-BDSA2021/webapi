@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Killing wegger containers ..."
+docker kill weggerSQLserver
+
+sleep 2
+echo "Done! Have a nice day :) "

@@ -71,7 +71,7 @@ namespace Data
 
             return (OK, rating);
         }
-        public async Task<(Response Response, Rating Rating)> ReadAsync(int userId,int resId)
+        public async Task<(Response Response, Rating Rating)> ReadAsync(string userId,int resId)
         {
             var ratingM = await _context.Ratings.Where(r => r.User.Id == userId).ToListAsync();
             var ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); //might not give null on fail. test

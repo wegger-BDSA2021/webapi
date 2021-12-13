@@ -5,7 +5,7 @@ namespace Data
 {
     public class User
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public ICollection<Resource> Resources { get ; set; } = new List<Resource>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();

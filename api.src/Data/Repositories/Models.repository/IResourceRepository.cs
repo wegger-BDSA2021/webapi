@@ -14,7 +14,7 @@ namespace Data
         Task<IReadOnlyCollection<ResourceDTO>> GetAllVideosAsync();
         Task<IReadOnlyCollection<ResourceDTO>> GetAllArticlesAsync();
         Task<IReadOnlyCollection<ResourceDTO>> GetAllFromOfficialDocumentaionAsync();
-        Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(int userId);
+        Task<IReadOnlyCollection<ResourceDTO>> GetAllFromUserAsync(string userId);
         Task<IReadOnlyCollection<ResourceDTO>> GetAllFromDomainAsync(string domain);
         Task<IReadOnlyCollection<ResourceDTO>> GetAllWithTagsAsyc(ICollection<string> stringTags);
         Task<IReadOnlyCollection<ResourceDTO>> GetAllWithRatingInRangeAsync(int from, int to);

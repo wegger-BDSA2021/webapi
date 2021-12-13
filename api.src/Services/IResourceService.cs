@@ -10,7 +10,7 @@ public interface IResourceService
     Task<Result> ReadAllAsync();
     Task<Result> DeleteByIdAsync(int id);
     Task<Result> UpdateResourceAsync(ResourceUpdateDTO resource);
-    Task<Result> GetAllResourcesFromUserAsync(int id);
+    Task<Result> GetAllResourcesFromUserAsync(string id);
     Task<Result> GetAllResourcesFromDomainAsync(string domain);
     Task<Result> GetAllResourcesWithinRangeAsync(int from, int to);
     Task<Result> GetAllResourcesWhereTitleContainsAsync(string matcher);

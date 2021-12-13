@@ -37,7 +37,7 @@ namespace Repository.Tests
             Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop", resource.Url);
             Assert.Equal(_dateForFirstResource, resource.TimeOfReference);
             Assert.Equal(_dateForFirstResource, resource.LastCheckedForDeprecation);
-            Assert.Null(resource.Comments.FirstOrDefault());
+            Assert.NotNull(resource.Comments.FirstOrDefault());
             Assert.NotNull(resource.Ratings.FirstOrDefault());
             Assert.Equal(3, resource.Ratings.FirstOrDefault());
             Assert.Equal(4.0, resource.AverageRating);
@@ -100,7 +100,7 @@ namespace Repository.Tests
             var newResource = new ResourceCreateDTOServer
             {
                 TitleFromUser = "this is a new resource",
-                UserId = 1,
+                UserId = "testUserId",
                 Description = "description",
                 TimeOfReference = _dateForFirstResource,
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
@@ -124,7 +124,7 @@ namespace Repository.Tests
             var newResource = new ResourceCreateDTOServer
             {
                 TitleFromUser = "this is a new resource",
-                UserId = 1,
+                UserId = "testUserId",
                 Description = "description",
                 TimeOfReference = _dateForFirstResource,
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/blabla",
@@ -163,7 +163,7 @@ namespace Repository.Tests
             Seed(_context);
 
             var rating = new Rating{
-                UserId = 1,
+                UserId = "testUserId",
                 ResourceId = 1, 
                 Rated = 1, 
             };
@@ -190,7 +190,7 @@ namespace Repository.Tests
             Assert.Equal(4, allWithRatingInRange.FirstOrDefault().AverageRating); 
 
             var rating = new Rating{
-                UserId = 1,
+                UserId = "testUserId",
                 ResourceId = 1, 
                 Rated = 1, 
             };
@@ -209,7 +209,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var result = await _repo.GetAllFromUserAsync(2);
+            var result = await _repo.GetAllFromUserAsync("Idonotexist");
             Assert.NotNull(result);
             Assert.Empty(result);
         }
@@ -220,7 +220,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
             Seed(_context);
 
-            var result = await _repo.GetAllFromUserAsync(1);
+            var result = await _repo.GetAllFromUserAsync("testUserId");
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.Equal(2, result.Count());

@@ -11,10 +11,12 @@ namespace Data
     {
         public int Id { get; set; }
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        #nullable enable
+        public string? UserId { get; set; }
+        #nullable disable
 
         [Required]
         [StringLength(100)]

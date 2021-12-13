@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data
 {
@@ -7,10 +8,12 @@ namespace Data
     {
         public int Id { get; set; }
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        #nullable enable
+        public string? UserId { get; set; }
+        #nullable disable
 
         public Resource Resource { get; set; }
 
