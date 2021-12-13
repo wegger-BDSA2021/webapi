@@ -37,18 +37,9 @@ namespace Repository.Tests
             Assert.Equal(3, rating.Rating.Rated);
             Assert.Equal(1, rating.Rating.Id);
             Assert.Equal(1, rating.Rating.ResourceId);
-            Assert.Equal(1, rating.Rating.UserId);
-            // optionally seed the in-memory sqlite database with some dummy data
-            // see the Seed method in TestDataGenerator
-            //      - in the seed method you can put any kind of data you want to test with 
-
-            
-            //Given
-        
-            //When
-        
-            //Then
+            Assert.Equal("testUserId", rating.Rating.UserId);
         }
+
         [Fact]
         public async void Given_update_returns_new_Ratings()
         {
@@ -56,10 +47,20 @@ namespace Repository.Tests
             Seed(_context);
                         
             var rating = await _repo.ReadAsync(1);
+            Assert.Equal(3, rating.Rating.Rated);
 
-            _repo.UpdateAsync(rating.Rating,5);
+            var dto = new RatingUpdateDTO 
+            {
+                Id = 1,
+                UpdatedRating = 5, 
+            };
 
-            Assert.Equal(5, rating.Rating.Rated);
+            var result = await _repo.UpdateAsync(dto);
+
+            Assert.Equal(Updated, result);
+
+            var updated = await _repo.ReadAsync(1);
+            Assert.Equal(5, updated.Rating.Rated);
         }
 
     }

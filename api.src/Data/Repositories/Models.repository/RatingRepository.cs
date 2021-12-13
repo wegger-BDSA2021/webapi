@@ -51,7 +51,7 @@ namespace Data
             var entity = await _context.Ratings.FindAsync(Rating.Id);
             if (entity == null)
                 return NotFound;
-            if (Rating.UpdatedRating > 5 || Rating.UpdatedRating > 0)
+            if (Rating.UpdatedRating > 5 || Rating.UpdatedRating < 0)
                 return Conflict;
             
             

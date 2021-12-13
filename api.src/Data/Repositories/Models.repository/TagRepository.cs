@@ -73,15 +73,20 @@ namespace Data
         }
 
         public async Task<IReadOnlyCollection<TagDetailsDTO>> GetAllTagsAsync()
-            =>(await _context.Tags
+        {
+            var blob = new List<string>().AsReadOnly();
+            return (await _context.Tags
+                .Include(t => t.Resources)
                     .Select(t => 
                         new TagDetailsDTO(
                             t.Id,
                             t.Name,
-                            t.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+                            // t.Resources.Select(r => r.Title).DefaultIfEmpty().ToList().AsReadOnly()
+                            blob
                         ))
                     .ToListAsync())
                 .AsReadOnly();
+        }
         
 
         public async Task<IReadOnlyCollection<string>> GetAllTagsAsStringCollectionAsync()

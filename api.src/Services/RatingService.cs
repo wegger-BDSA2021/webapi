@@ -72,7 +72,7 @@ namespace Services
             }
 
 
-            var result = await _repo.ReadAsync(userId, resId);
+            var result = await _repo.ReadAsync(userId);
 
             switch (result.Response)
             {
@@ -138,7 +138,7 @@ namespace Services
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Tag at index {ratingUpdate.Id} has been updated form having the rating {ratingUpdate.Rated} to have {ratingUpdate.UpdatedRating}"
+                        Message = $"Rating at index {ratingUpdate.Id} has been updated form having the rating {ratingUpdate.UpdatedRating} to have {ratingUpdate.UpdatedRating}"
                     };
 
                 default:

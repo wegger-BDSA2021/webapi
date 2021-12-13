@@ -20,11 +20,11 @@ namespace Data
    // public record RatingDTO(int Id, string Title, string Description, string Url, bool Deprecated);
     public record RatingDTO(int Id, string Title, string Description , bool Deprecated);
 
-    public record RatingDetailsDTO(int Id, int UserId, int ResourceId,int Rated);
+    public record RatingDetailsDTO(int Id, string UserId, int ResourceId, int Rated);
     public record RatingCreateDTO
     {
         [Required]
-        public int UserId { get; init; }
+        public string UserId { get; init; }
 
         [Required]
         public int ResourceId { get; init; }
@@ -34,7 +34,7 @@ namespace Data
         public int Rated { get; init; }
     }
 
-    public record RatingUpdateDTO : RatingCreateDTO
+    public record RatingUpdateDTO 
     {
         public int Id { get; init; }
         
