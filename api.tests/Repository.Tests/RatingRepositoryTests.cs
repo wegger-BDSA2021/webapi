@@ -10,6 +10,35 @@ namespace Repository.Tests
 {
     public class RatingRepositoryTests : TestDataGenerator
     {
+        //TODO create test for CreateAsync and ReadAsync(string,int)
+        /*[Fact]
+        public async void Given_ratingcreatedto_returns_Created_and_RatingDetailsDTO()
+        {
+            var _repo = new RatingRepository(_context);
+            Seed(_context);
+
+            var newDTO = new RatingCreateDTO
+            {
+                UserId = Guid.NewGuid().ToString(),
+                ResourceId = 1,
+                Rated = 2,
+            };
+
+            var result = await _repo.CreateAsync(newDTO);
+
+            var expected = new RatingDetailsDTO(
+                1, 
+                newDTO.UserId, 
+                newDTO.ResourceId,
+                newDTO.Rated
+                );
+
+            Assert.Equal(Created,result.Response);
+            Assert.Equal(expected,result.RatingDetailsDTO);
+
+        }*/
+
+
         [Fact]
         public async void Given_no_entries_to_read_returns_NotFound()
         {
@@ -20,8 +49,8 @@ namespace Repository.Tests
             Assert.Equal(NotFound, actual.Response);       
         }
         
-        [Fact]
-        public async void Given_recource_with_two_readAllAsync_returns_readonlylist_of_length_0()
+        [Fact] //TODO something is weird here SonarCloud doesnt see the test as valid?
+        public async void Given_recource_with_two_readAllAsync_returns_readonlylist_of_length_2()
         {
             var _repo = new RatingRepository(_context);
             Seed(_context);
@@ -122,6 +151,7 @@ namespace Repository.Tests
             
             Assert.Equal(NotFound, invalidRating);
         }
+        
 
     }
 }
