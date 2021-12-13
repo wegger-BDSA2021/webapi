@@ -44,7 +44,7 @@ namespace Data
         {
             var _commentEntity = new Comment
             {
-                UserId = (int)comment.UserId,
+                UserId = comment.UserId,
                 ResourceId = (int)comment.ResourceId,
                 TimeOfComment = (System.DateTime)comment.TimeOfComment,
                 Content = comment.Content
@@ -77,7 +77,7 @@ namespace Data
 
             if (result != null)
             {
-                result.UserId = (int)comment.UserId;
+                result.UserId = comment.UserId;
                 result.ResourceId = (int)comment.ResourceId;
                 result.TimeOfComment = (System.DateTime)comment.TimeOfComment;
                 result.Content = comment.Content;

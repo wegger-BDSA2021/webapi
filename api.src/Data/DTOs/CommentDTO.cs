@@ -11,7 +11,7 @@ namespace Data
     public record CommentDTO
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int ResourceId { get; set; }
         public DateTime TimeOfComment { get; set; }
         public string Content { get; set; }
@@ -20,7 +20,7 @@ namespace Data
     public record CommentDetailsDTO
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int ResourceId { get; set; }
         public DateTime TimeOfComment { get; set; }
         public string Content { get; set; }
@@ -31,7 +31,7 @@ namespace Data
     public record CommentCreateDTOServer
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ResourceId { get; set; }
@@ -47,7 +47,7 @@ namespace Data
     public record CommentCreateDTOClient
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ResourceId { get; set; }
@@ -62,13 +62,13 @@ namespace Data
         [Required]
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
 
         public int? ResourceId { get; set; }
 
         public DateTime? TimeOfComment { get; set; }
 
         [StringLength(300)]
-        public string? Content { get; set; }
+        public string Content { get; set; }
     }
 }
