@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using static Data.Response;
+using Utils;
 
 namespace Data
 {
@@ -14,61 +16,78 @@ namespace Data
             _context = context;
         }
 
-        public async Task<IReadOnlyCollection<Comment>> GetComments()
+        public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
         {
             var comments = await _context.Comments.ToListAsync();
 
-            return comments.AsReadOnly();
+            List<CommentDTO> commentsAsDto = new List<CommentDTO>();
+
+            foreach (var item in comments)
+            {
+                commentsAsDto.Add(item.AsCommentDTO());
+            }
+
+            return commentsAsDto.AsReadOnly();
         }
 
-        public async Task<(Response Response, Comment comment)> GetCommentById(int commentId)
+        public async Task<(Response Response, CommentDetailsDTO comment)> GetCommentById(int commentId)
         {
             var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
 
             if (comment is null)
                 return (NotFound, null);
 
-            return (OK, comment);
+            return (OK, comment.AsCommentDetailsDTO());
         }
 
-        public async Task<(Response Response, Comment comment)> AddComment(Comment comment)
+        public async Task<(Response Response, CommentDetailsDTO comment)> AddComment(CommentCreateDTOServer comment)
         {
-            var result = await _context.Comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
-            return (Created, result.Entity);
-        }
-
-        public async Task<(Response Response, Comment comment)> DeleteComment(int commentId)
-        {
-            var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
-
-            if (result != null)
+            var _commentEntity = new Comment
             {
-                _context.Comments.Remove(result);
+                UserId = (int)comment.UserId,
+                ResourceId = (int)comment.ResourceId,
+                TimeOfComment = (System.DateTime)comment.TimeOfComment,
+                Content = comment.Content
+            };
+
+            await _context.Comments.AddAsync(_commentEntity);
+
+            await _context.SaveChangesAsync();
+
+            return (Created, _commentEntity.AsCommentDetailsDTO());
+        }
+
+        public async Task<Response> DeleteComment(int commentId)
+        {
+            var deletedComment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+
+            if (deletedComment != null)
+            {
+                _context.Comments.Remove(deletedComment);
                 await _context.SaveChangesAsync();
-                return (Deleted, result);
+                return (Deleted);
             }
 
-            return (NotFound, null);
+            return (NotFound);
         }
 
-        public async Task<(Response Response, Comment comment)> UpdateComment(Comment comment)
+        public async Task<Response> UpdateComment(CommentUpdateDTO comment)
         {
             var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
 
             if (result != null)
             {
-                result.User = comment.User;
-                result.Resource = comment.Resource;
-                result.TimeOfComment = comment.TimeOfComment;
+                result.UserId = (int)comment.UserId;
+                result.ResourceId = (int)comment.ResourceId;
+                result.TimeOfComment = (System.DateTime)comment.TimeOfComment;
                 result.Content = comment.Content;
 
                 await _context.SaveChangesAsync();
                 
-                return (Updated, result);
+                return (Updated);
             }
 
-            return (NotFound, null);
+            return (NotFound);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.src.Controllers;
+using api.src.Services;
 using Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +61,7 @@ namespace api.src
             services.AddScoped<IRatingRepository, RatingRepository>();
 
             services.AddScoped<IResourceService, ResourceService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IUserService, UserService>();
 
 
