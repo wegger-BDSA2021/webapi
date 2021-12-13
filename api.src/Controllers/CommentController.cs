@@ -42,10 +42,10 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<CommentDTO>> Put(int id, Comment comment)
+        [HttpPut]
+        public async Task<ActionResult<CommentDTO>> Put(CommentUpdateDTO comment)
         {
-            var updatedUser = await commentService.UpdateComment(comment.AsCommentUpdateDTO());
+            var updatedUser = await commentService.UpdateComment(comment);
             return updatedUser.ToActionResult();
         }
 
