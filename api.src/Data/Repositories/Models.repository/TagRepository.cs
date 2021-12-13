@@ -43,6 +43,10 @@ namespace Data
             var entity = await _context.Tags.FindAsync(tagUpdateDTO.Id);
             if (entity == null)
                 return NotFound;
+
+            var nameExists = await _context.Tags.Where(t => t.Name.ToLower().Trim() == tagUpdateDTO.NewName.ToLower().Trim()).FirstOrDefaultAsync();
+            if (nameExists != null)
+                return Conflict;
             
             entity.Name = tagUpdateDTO.NewName;
 
