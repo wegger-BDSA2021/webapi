@@ -7,6 +7,7 @@ using Moq;
 using Repository.Tests;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -152,7 +153,7 @@ namespace api.tests.Service.Tests
             //Arrange
             int tagId = -1;
 
-           // _tagRepoMock.Setup(c => c.GetTagByIdAsync(tagId)).ReturnsAsync(BadRequest);
+           //_tagRepoMock.Setup(c => c.GetTagByIdAsync(tagId)).ReturnsAsync(BadRequest);
 
             //Act
             var result = await _tagService.ReadAsync(tagId);
@@ -161,6 +162,44 @@ namespace api.tests.Service.Tests
             Assert.Equal(BadRequest, result.Response);
             Assert.Equal("Id can only be a positive integer",result.Message);
         }
+        [Fact]
+        public async Task ReadAsync_given_non_existing_id_returns_NotFound()
+        {
+            //Arrange
+            int tagId = 42;
+
+            _tagRepoMock.Setup(c => c.GetTagByIdAsync(tagId)).ReturnsAsync((NotFound,null));
+
+            //Act
+            var result = await _tagService.ReadAsync(tagId);
+
+            //Assert
+            Assert.Equal(NotFound, result.Response);
+            Assert.Equal("No tag found with the given entity",result.Message);
+        }
+        
+        //[Fact]
+        /*public async Task ReadAsync_given_existing_id_returns_OK()
+        {
+            //Arrange
+            int tagId = 1;
+            IReadOnlyCollection<string> collection = new ReadOnlyCollection<string>(List<>); 
+
+            var tagDetailsDTO = new TagDetailsDTO
+            (
+                tagId,"testname",collection
+            );
+
+            _tagRepoMock.Setup(c => c.GetTagByIdAsync(tagId)).ReturnsAsync((OK,tagDetailsDTO));
+
+            //Act
+            var result = await _tagService.ReadAsync(tagId);
+
+            //Assert
+            Assert.Equal(OK, result.Response);
+            Assert.Equal($"Tag found at index {tagId}",result.Message);
+            Assert.NotNull(result.DTO);
+        }*/
 
         /*[Fact]
         public async Task Update_given_unknown_id_returns_NotFound()
