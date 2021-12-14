@@ -29,14 +29,9 @@ namespace api.tests.Controller.Tests
         protected HttpClient Client;
         private string _connectionString = "DataSource=:memory";
         private SqliteConnection _connection;
-        protected dynamic token;
 
         public TestFixture(WebApplicationFactory<Startup> factory)
         {
-            token = new ExpandoObject();
-            token.sub = Guid.NewGuid();
-            token.scope = new[] { "ReadAccess" };
-
             Factory = factory;
             SetupClient();
         }
@@ -58,11 +53,10 @@ namespace api.tests.Controller.Tests
 
             Client = Factory.WithWebHostBuilder(builder =>
             {
-
+                
                 builder.ConfigureTestServices(services =>
                 {
-                /* setup whatever services you need to override, 
-                its useful for overriding db context if you're using Entity Framework */
+                    
                     var dbContext = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<WeggerContext>));
                     if (dbContext != null)
                     {
@@ -77,32 +71,16 @@ namespace api.tests.Controller.Tests
 
                     services.AddScoped<IWeggerContext, WeggerContext>();
 
+                    services.AddAuthentication("IntegrationTest")
+                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("IntegrationTest", options => { });
+
                     var sp = services.BuildServiceProvider();
                     using var scope = sp.CreateScope();
                     using var appContext = scope.ServiceProvider.GetRequiredService<WeggerContext>();
                     appContext.Database.OpenConnection();
                     appContext.Database.EnsureCreated();
-
-                    services.AddMvc(options =>
-                    {
-                        var policy = new AuthorizationPolicyBuilder()
-                            .RequireAuthenticatedUser()
-                            .AddAuthenticationSchemes("ReadAccess")
-                            .Build();
-
-                        options.Filters.Add(new AuthorizeFilter(policy));
-                    });
-
-                    services.AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = "ReadAccess";
-                        options.DefaultChallengeScheme = "ReadAccess";
-                        options.DefaultScheme = "ReadAccess";
-                    })
-                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("ReadAccess", options => { });
-
-
                 });
+                
 
             })
             .CreateClient(new WebApplicationFactoryClientOptions

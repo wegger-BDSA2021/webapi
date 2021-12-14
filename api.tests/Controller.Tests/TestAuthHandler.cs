@@ -23,13 +23,14 @@ namespace api.tests.Controller.Tests
         {
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, "ReadAccess"),
-            new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-        };
+                new Claim(ClaimTypes.Name, "Test User"),
+                new Claim(ClaimTypes.NameIdentifier, "Test User"),
+                new Claim("scp", "ReadAccess")
+            };
 
-            var identity = new ClaimsIdentity(claims, "ReadAccess");
+            var identity = new ClaimsIdentity(claims, "IntegrationTest");
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, "ReadAccess");
+            var ticket = new AuthenticationTicket(principal, "IntegrationTest");
 
             var result = AuthenticateResult.Success(ticket);
 
