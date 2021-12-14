@@ -249,15 +249,26 @@ namespace api.tests.Service.Tests
             Assert.NotNull(result.DTO);
         }
 
-        /*[Fact] //TODO test this method at some point
+        [Fact]
         public async Task getAllTags_returnsalltags_from_repo()
         {
             //Arrange
+            IReadOnlyCollection<string> tagDetailsDTOcollection = new ReadOnlyCollection<string>(new List<string>());
+            var tagdetailsDTO = new TagDetailsDTO(1, "testName1", tagDetailsDTOcollection);
+            var tagdetailsDTOSecond = new TagDetailsDTO(2, "testName2", tagDetailsDTOcollection);
+            List<TagDetailsDTO> collection = new List<TagDetailsDTO>();
+            collection.Add(tagdetailsDTO);
+            collection.Add(tagdetailsDTOSecond);
+            _tagRepoMock.Setup(c => c.GetAllTagsAsync()).ReturnsAsync(collection.AsReadOnly());
             
             //Act
+            var result = await _tagService.getAllTags();
             
             //Assert
-        }*/
+            Assert.Equal(OK,result.Response);
+            Assert.NotNull(result.DTO);
+
+        }
         
     }
 }
