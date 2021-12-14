@@ -116,7 +116,7 @@ namespace api.tests.Controller.Tests
 
             //Assert
             Assert.Equal(Deleted, result.Response);
-            Assert.Equal("Comment with id {id} has succesfully benn deleted", result.Message);
+            Assert.Equal("Comment with id 54 has succesfully benn deleted", result.Message);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace api.tests.Controller.Tests
             var actual = await _commentService.UpdateComment(updatedComment);
 
             // Assert
-            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal(Updated, actual.Response);
             Assert.Equal("Comment with id 12 has succefully been updated", actual.Message);
         }
     }
