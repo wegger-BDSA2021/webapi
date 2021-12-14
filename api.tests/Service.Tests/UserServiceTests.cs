@@ -58,5 +58,47 @@ namespace api.tests.Service.Tests
             Assert.Equal(BadRequest, actual.Response);
             Assert.Equal("Id can not be the empty string", actual.Message);
         }
+
+        [Fact]
+        public async void DeleteAsync_given_non_existing_id_returns_NotFound()
+        {
+            //Arrange
+            _userRepoMock.Setup(u => u.DeleteUserAsync("77")).ReturnsAsync(NotFound);
+
+            //Act
+            var actual = await _userService.DeleteAsync("77");
+
+            //Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("User with id 77 does not exists", actual.Message);
+        }
+
+        [Fact]
+        public async void DeleteAsync_given_existing_id_returns_Deleted()
+        {
+            //Arrange
+            _userRepoMock.Setup(u => u.DeleteUserAsync("7")).ReturnsAsync(Deleted);
+
+            //Act
+            var actual = await _userService.DeleteAsync("7");
+
+            //Assert
+            Assert.Equal(Deleted, actual.Response);
+            Assert.Equal("User with id 7 has been deleted", actual.Message);
+        }
+
+        [Fact]
+        public async void DeleteAsync_given_empty_id_returns_BadRequest()
+        {
+            //Arrange
+            _userRepoMock.Setup(u => u.DeleteUserAsync("67")).ReturnsAsync(BadRequest);
+
+            //Act
+            var actual = await _userService.DeleteAsync("67");
+
+            //Assert
+            Assert.Equal(BadRequest, actual.Response);
+            Assert.Equal("Id can not be the empty string", actual.Message);
+        }
     }
 }
