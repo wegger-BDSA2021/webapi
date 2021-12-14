@@ -70,7 +70,7 @@ namespace api.tests.Service.Tests
 
         // Create Async Tests
 
-        [Fact]
+        /*[Fact]
         public async void CreateAsync_given_existing_url_returns_Conflict()
         {
             //Arrange
@@ -106,7 +106,7 @@ namespace api.tests.Service.Tests
             Assert.Equal(Conflict, actual.Response);
             Assert.Equal("Another resource with the same URL has already been provided", actual.Message);
             Assert.Null(actual.DTO);
-        }
+        }*/
 
         [Fact]
         public async void CreateAsync_given_valid_ResourceCreateDTO_returns_Created()
@@ -266,5 +266,9 @@ namespace api.tests.Service.Tests
             Assert.Equal(Deleted, actual.Response);
             Assert.Equal("Resource with id 24 has succesfully been deleted", actual.Message);
         }
+
+        //UpdateResourceAsync Tests
+
+
     }
 }
