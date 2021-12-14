@@ -126,7 +126,7 @@ namespace api.tests.Controller.Tests
 
             // Assert
             Assert.Equal(NotFound, response.Response);
-            Assert.Equal("No comment found with the id 2", response.Message);
+            Assert.Equal("No comment found with the id 9", response.Message);
         }
     }
 }
