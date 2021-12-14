@@ -38,7 +38,7 @@ namespace api.src
 
 
             string connection = Configuration.GetConnectionString("Wegger");
-            System.Console.WriteLine(connection);
+
 
             services.AddDbContext<WeggerContext>(options =>
                 options.UseSqlServer(connection));
