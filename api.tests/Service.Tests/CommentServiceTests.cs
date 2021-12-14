@@ -1,14 +1,7 @@
-﻿using api.src.Controllers;
-using api.src.Services;
+﻿using api.src.Services;
 using Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
-using Repository.Tests;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static Data.Response;
