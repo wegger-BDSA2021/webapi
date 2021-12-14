@@ -85,10 +85,8 @@ namespace api.tests.Controller.Tests
             //Assert
             var result = await _commentService.AddComment(newComment);
 
-            var response = result.Response;
-            var createdDTO = result.DTO;
-
-            Assert.Equal(Created, response);
+            Assert.Equal(Created, result.Response);
+            Assert.Equal("A new comment was succesfully created", result.Message);
         }
 
         [Fact]
