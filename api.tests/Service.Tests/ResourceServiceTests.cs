@@ -74,7 +74,6 @@ namespace api.tests.Service.Tests
         public async void CreateAsync_given_existing_url_returns_Conflict()
         {
             //Arrange
-
             var resourceServer = new ResourceCreateDTOServer
             {
                 TitleFromUser = "this is a new resource",
@@ -96,6 +95,7 @@ namespace api.tests.Service.Tests
                 InitialRating = 4
             };
 
+            _tagRepoMock.Setup(s => s.GetAllTagsAsStringCollectionAsync()).ReturnsAsync(Array.Empty<string>());
             _resourceRepoMock.Setup(r => r.CreateAsync(resourceServer)).ReturnsAsync((Conflict, null));
 
             //Act
@@ -133,6 +133,8 @@ namespace api.tests.Service.Tests
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
                 InitialRating = 4
             };
+
+            _tagRepoMock.Setup(s => s.GetAllTagsAsStringCollectionAsync()).ReturnsAsync(Array.Empty<string>());
 
             _resourceRepoMock.Setup(r => r.CreateAsync(resourceServer)).ReturnsAsync((Created, returnedResource));
 
@@ -205,6 +207,8 @@ namespace api.tests.Service.Tests
                 Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
                 InitialRating = 4
             };
+
+            _tagRepoMock.Setup(s => s.GetAllTagsAsStringCollectionAsync()).ReturnsAsync(Array.Empty<string>());
 
             _resourceRepoMock.Setup(r => r.CreateAsync(resourceServer)).ReturnsAsync((NotFound, null));
 
