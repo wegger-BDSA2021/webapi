@@ -12,6 +12,6 @@ namespace Data
         [Required]
         public string Name { get; set; }
 
-        public ICollection<Resource> Resources { get; set; } = new List<Resource>();
+        public ICollection<Resource> Resources { get; set; } 
     }
 }

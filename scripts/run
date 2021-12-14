@@ -23,6 +23,9 @@ sleep 2
 dotnet user-secrets init --project $project
 dotnet user-secrets set "ConnectionStrings:Wegger" "${connectionstring}" --project $project
 
+
+sleep 4
+
 # echo "Building web API docker image ..."
 # sleep 2
 # docker build -t weggerapi $project

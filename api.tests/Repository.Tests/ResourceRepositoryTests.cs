@@ -60,7 +60,7 @@ namespace Repository.Tests
             var _repo = new ResourceRepository(_context);
 
             var empty = await _repo.ReadAllAsync();
-            Assert.Equal(0, empty.Count());
+            Assert.Empty(empty);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace Repository.Tests
             var tagsList = new[] { "dummy", "dotnet", "linq" };
 
             var resources = await _repo.GetAllWithTagsAsyc(tagsList);
-            Assert.Equal(0, resources.Count());
+            Assert.Empty(resources);
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace Repository.Tests
             Assert.Equal(1, createdDTO.Ratings.Count());
             Assert.Equal(4, createdDTO.AverageRating);
             Assert.Equal(0, createdDTO.Comments.Count());
-            Assert.Equal(false, createdDTO.Deprecated);
+            Assert.False(createdDTO.Deprecated);
             Assert.Equal(_dateForFirstResource, createdDTO.LastCheckedForDeprecation);
         }
 

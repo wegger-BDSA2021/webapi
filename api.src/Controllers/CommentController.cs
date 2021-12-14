@@ -31,12 +31,6 @@ namespace api.src.Controllers
         public async Task<ActionResult<CommentDetailsDTO>> GetById(int id)
         {
             var result = await commentService.GetCommentById(id);
-
-            if (result == null)
-            {
-                return NotFound();
-            }
-
             return result.ToActionResult();
         }
 
@@ -44,20 +38,18 @@ namespace api.src.Controllers
         public async Task<ActionResult<CommentDetailsDTO>> CreateComment(CommentCreateDTOServer comment)
         {
             var result = await commentService.AddComment(comment);
-
             return result.ToActionResult();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<CommentDTO>> UpdateComment(int id, CommentUpdateDTO comment)
+        [HttpPut]
+        public async Task<ActionResult<CommentDTO>> Put(CommentUpdateDTO comment)
         {
             var updatedUser = await commentService.UpdateComment(comment);
-
             return updatedUser.ToActionResult();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CommentDTO>> DeleteComment(int id)
+        public async Task<ActionResult<CommentDTO>> Delete(int id)
         {
             var commentToDelete = await commentService.DeleteComment(id);
             return commentToDelete.ToActionResult();

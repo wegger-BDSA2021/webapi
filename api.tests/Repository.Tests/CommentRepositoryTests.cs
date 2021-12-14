@@ -40,6 +40,9 @@ namespace api.tests.Repository.Tests
             Assert.Equal("Content description", comment.Content);
             //Assert.Equal(new DateTime(2021, 13, 12), comment.TimeOfComment);
             Assert.Equal(1, comment.Id);
+            Assert.Equal("testUserId", comment.UserId);
+            // Assert.NotNull(comment.User);
+            // Assert.NotNull(comment.Resource);
         }
 
         [Fact]

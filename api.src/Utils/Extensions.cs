@@ -23,9 +23,6 @@ namespace Utils
             _               => throw new NotSupportedException($"{result.Response} not supported")
         };
 
-        // public static ActionResult<T> ToActionResult<T>(this Option<T> option) where T : class
-        //     => option.IsSome ? option.Value : new NotFoundResult();
-
         public static bool IsWithin(this double value, int minimum, int maximum)
             => value >= minimum && value <= maximum;
 

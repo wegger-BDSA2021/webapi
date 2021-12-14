@@ -66,7 +66,7 @@ namespace Data
             var _commentEntity = new Comment
             {
                 UserId = comment.UserId,
-                ResourceId = comment.ResourceId,
+                ResourceId = (int)comment.ResourceId,
                 TimeOfComment = (System.DateTime)comment.TimeOfComment,
                 Content = comment.Content
             };

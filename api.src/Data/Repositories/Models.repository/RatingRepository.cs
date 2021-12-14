@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using static Data.Response;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.EntityFrameworkCore;
+using static Data.Response;
 
 namespace Data
 {
@@ -14,21 +14,32 @@ namespace Data
         {
             _context = context;
         }
-        public async Task<(Response Response, int RatingId)> CreateAsync(Rating Rating)
+        
+        public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> CreateAsync(RatingCreateDTO Rating)
         {
-            if (Rating.Rated > 5 || Rating.Rated > 0)
-                return (Conflict, -1);
+            if (Rating.Rated > 5 || Rating.Rated < 0)
+                return (Conflict, null);
+
             var entity = new Rating
             {
-                User = Rating.User,
-                Resource = Rating.Resource,
+                User = _context.Users.First(u => u.Id == Rating.UserId),
+                Resource = _context.Resources.First(u => u.Id == Rating.ResourceId),
                 Rated = Rating.Rated,
             };
+
             await _context.Ratings.AddAsync(entity);
             await _context.SaveChangesAsync();
 
-            return (Created, entity.Id);
+            var result = new RatingDetailsDTO(
+                entity.Id,
+                entity.UserId,
+                entity.ResourceId,
+                entity.Rated
+            );
+
+            return (Created, result);
         }
+
         public async Task<Response> DeleteAsync(int id)
         {
             var rating = await _context.Ratings.FindAsync(id);
@@ -40,23 +51,23 @@ namespace Data
 
             return Deleted;
         }
-        public async Task<Response> UpdateAsync(Rating Rating, int newRating)
+
+        public async Task<Response> UpdateAsync(RatingUpdateDTO Rating)
         {
             var entity = await _context.Ratings.FindAsync(Rating.Id);
             if (entity == null)
                 return NotFound;
-            if (newRating > 5 || newRating > 0)
+            if (Rating.UpdatedRating > 5 || Rating.UpdatedRating < 0)
                 return Conflict;
             
             
-            //entity.User = Rating.User; //maybe remove
-            //entity.Resource = Rating.Resource; //maybe remove
-            entity.Rated = newRating;
+            entity.Rated = Rating.UpdatedRating;
 
             await _context.SaveChangesAsync();
 
             return Updated;
         }
+
         public async Task<(Response Response, Rating Rating)> ReadAsync(int id)
         {
             var rating = await _context.Ratings.FindAsync(id);
@@ -65,18 +76,29 @@ namespace Data
 
             return (OK, rating);
         }
+
         public async Task<(Response Response, Rating Rating)> ReadAsync(string userId,int resId)
         {
             var ratingM = await _context.Ratings.Where(r => r.User.Id == userId).ToListAsync();
-            var ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); //might not give null on fail. test
-            if (ratingS is null)
+            if (ratingM is null)
                 return (NotFound, null);
 
+            Rating ratingS = null;
+            
+            try
+            {
+                ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); 
+            }
+            catch (Exception e)
+            {
+                return (NotFound, null);
+            }
             return (OK, ratingS);
         }
-        public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormRepositoryAsync(Resource re)
+
+        public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormResourceAsync(int reId)
         {
-            return ( await _context.Ratings.Where(r => r.Resource == re).ToListAsync()).AsReadOnly();
+            return ( await _context.Ratings.Where(r => r.Resource.Id == reId).ToListAsync()).AsReadOnly();
         }
         
     }
