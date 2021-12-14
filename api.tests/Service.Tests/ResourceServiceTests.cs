@@ -75,7 +75,7 @@ namespace api.tests.Service.Tests
         {
             //Arrange
 
-            var givenResource = new ResourceCreateDTOServer
+            var givenResourceServer = new ResourceCreateDTOServer
             {
                 TitleFromUser = "this is a new resource",
                 UserId = "testUserId",
@@ -87,10 +87,19 @@ namespace api.tests.Service.Tests
                 LastCheckedForDeprecation = DateTime.Now
             };
 
-            _resourceRepoMock.Setup(r => r.CreateAsync(givenResource)).ReturnsAsync((Conflict, null));
+            var givenResourceClient = new ResourceCreateDTOClient
+            {
+                Title = "this is a new resource",
+                UserId = "testUserId",
+                Description = "description",
+                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
+                InitialRating = 4
+            };
+
+            _resourceRepoMock.Setup(r => r.CreateAsync(givenResourceServer)).ReturnsAsync((Conflict, null));
 
             //Act
-            var actual = await _resourceService.ReadAsync(1);
+            var actual = await _resourceService.CreateAsync(givenResourceClient);
 
             //Assert
             Assert.Equal(Conflict, actual.Response);
@@ -119,7 +128,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.CreateAsync(givenResource)).ReturnsAsync((Created, returnedResource));
 
             //Act
-            var actual = await _resourceService.ReadAsync(9);
+            var actual = await _resourceService.CreateAsync(9);
 
             //Assert
             Assert.Equal(Created, actual.Response);
@@ -143,10 +152,19 @@ namespace api.tests.Service.Tests
                 LastCheckedForDeprecation = DateTime.Now
             };
 
+            var givenResourceClient = new ResourceCreateDTOClient
+            {
+                Title = "this is a new resource",
+                UserId = "testUserId",
+                Description = "description",
+                Url = "http3fs://uml.org",
+                InitialRating = 4
+            };
+
             _resourceRepoMock.Setup(r => r.CreateAsync(givenResource)).ReturnsAsync((BadRequest, null));
 
             //Act
-            var actual = await _resourceService.ReadAsync(1);
+            var actual = await _resourceService.CreateAsync(givenResourceClient);
 
             //Assert
             Assert.Equal(BadRequest, actual.Response);
