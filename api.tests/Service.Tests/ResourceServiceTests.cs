@@ -235,11 +235,36 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(OK, actual.Response);
-            Assert.Equal("Resource found at index 7", actual.Message);
-            Assert.NotNull(actual.DTO);
         }
 
-        
+        // DeleteByIdAsync Tests
 
+        [Fact]
+        public async void DeleteByIdAsync_given_non_existing_id_returns_Notfound()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.DeleteAsync(18)).ReturnsAsync(NotFound);
+
+            //Act
+            var actual = await _resourceService.ReadAsync(18);
+
+            //Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No resource found with id 18", actual.Message);
+        }
+
+        [Fact]
+        public async void DeleteByIdAsync_given_existing_id_returns_Deleted()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.DeleteAsync(24)).ReturnsAsync(Deleted);
+
+            //Act
+            var actual = await _resourceService.ReadAsync(24);
+
+            //Assert
+            Assert.Equal(Deleted, actual.Response);
+            Assert.Equal("Resource with id 24 has succesfully been deleted", actual.Message);
+        }
     }
 }
