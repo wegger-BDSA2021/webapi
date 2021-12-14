@@ -29,10 +29,10 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.GetCommentById(commentId)).ReturnsAsync((OK, commentDetailsDTO));
 
             //Act
-            var comment = await _commentService.GetCommentById(commentId);
+            var actual = await _commentService.GetCommentById(commentId);
 
             //Assert
-            Assert.Equal(OK, comment.Response);
+            Assert.Equal(OK, actual.Response);
             //Assert.Equal(commentDetailsDTO, comment.DTO.GetType());
         }
 
@@ -60,10 +60,10 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.GetComments()).ReturnsAsync(Array.Empty<CommentDTO>());
 
             //Act
-            var empty = await _commentService.GetComments();
+            var actual = await _commentService.GetComments();
 
             //Assert
-            Assert.Equal(OK, empty.Response);
+            Assert.Equal(OK, actual.Response);
         }
 
         [Fact]
@@ -83,10 +83,10 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.AddComment(newComment)).ReturnsAsync((OK, commentDetailsDTO));
 
             //Assert
-            var result = await _commentService.AddComment(newComment);
+            var actual = await _commentService.AddComment(newComment);
 
-            Assert.Equal(Created, result.Response);
-            Assert.Equal("A new comment was succesfully created", result.Message);
+            Assert.Equal(Created, actual.Response);
+            Assert.Equal("A new comment was succesfully created", actual.Message);
         }
 
         [Fact]
@@ -96,11 +96,11 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.DeleteComment(42)).ReturnsAsync(NotFound);
 
             //Act
-            var response = await _commentService.DeleteComment(42);
+            var actual = await _commentService.DeleteComment(42);
 
             //Assert
-            Assert.Equal(NotFound, response.Response);
-            Assert.Equal("No comment found with id 42", response.Message);
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No comment found with id 42", actual.Message);
         }
 
         [Fact]
@@ -110,11 +110,11 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.DeleteComment(54)).ReturnsAsync(Deleted);
 
             //Arrange
-            var result = await _commentService.DeleteComment(54);
+            var actual = await _commentService.DeleteComment(54);
 
             //Assert
-            Assert.Equal(Deleted, result.Response);
-            Assert.Equal("Comment with id 54 has succesfully benn deleted", result.Message);
+            Assert.Equal(Deleted, actual.Response);
+            Assert.Equal("Comment with id 54 has succesfully been deleted", actual.Message);
         }
 
         [Fact]
@@ -133,11 +133,11 @@ namespace api.tests.Controller.Tests
             _commentRepoMock.Setup(c => c.UpdateComment(updatedComment)).ReturnsAsync(NotFound);
 
             // Act
-            var response = await _commentService.UpdateComment(updatedComment);
+            var actual = await _commentService.UpdateComment(updatedComment);
 
             // Assert
-            Assert.Equal(NotFound, response.Response);
-            Assert.Equal("No comment found with the id 9", response.Message);
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No comment found with the id 9", actual.Message);
         }
 
         [Fact]

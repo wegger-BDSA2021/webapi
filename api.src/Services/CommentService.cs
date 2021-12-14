@@ -64,7 +64,7 @@ namespace api.src.Services
             return new Result
             {
                 Response = Deleted,
-                Message = $"Comment with id {id} has succesfully benn deleted"
+                Message = $"Comment with id {id} has succesfully been deleted"
             };
         }
 
