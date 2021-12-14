@@ -38,19 +38,8 @@ namespace api.src
 
 
             string connection = Configuration.GetConnectionString("Wegger");
-            System.Console.WriteLine(connection);
-
             services.AddDbContext<WeggerContext>(options =>
                 options.UseSqlServer(connection));
-
-
-            // for testing the api locally :
-            // var _connection = new SqliteConnection("DataSource=:memory");
-            // _connection.Open();
-            // services.AddDbContext<WeggerContext>(options =>
-            // {
-            //     options.UseSqlite(_connection);
-            // });
 
 
             services.AddScoped<IWeggerContext, WeggerContext>();
