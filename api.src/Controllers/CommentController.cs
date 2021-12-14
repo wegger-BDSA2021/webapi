@@ -21,7 +21,7 @@ namespace api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> Get()
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> Get()
         {
             var result = await commentService.GetComments();
             return result.ToActionResult();
@@ -35,10 +35,9 @@ namespace api.src.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CommentDetailsDTO>> Post(CommentCreateDTOServer comment)
+        public async Task<ActionResult<CommentDetailsDTO>> CreateComment(CommentCreateDTOServer comment)
         {
             var result = await commentService.AddComment(comment);
-
             return result.ToActionResult();
         }
 
