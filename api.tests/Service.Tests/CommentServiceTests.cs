@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Xunit;
 using static Data.Response;
 
-
 namespace api.tests.Controller.Tests
 {
     public class CommentServiceTests
@@ -27,7 +26,7 @@ namespace api.tests.Controller.Tests
             _commentService = new CommentService(_commentRepoMock.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task Given_existing_commentId_getCommentById_returns_OK_and_the_first_comment()
         {
             //Arrange
@@ -41,8 +40,64 @@ namespace api.tests.Controller.Tests
             var comment = await _commentService.GetCommentById(commentId);
 
             //Assert
-            Assert.Equal(comment, _commentRepoMock);
-        }*/
+            Assert.Equal(OK, comment.Response);
+            //Assert.Equal(commentDetailsDTO, comment.DTO.GetType());
+        }
+
+        [Fact]
+        public async void Given_no_entries_getCommentById_returns_NotFound()
+        {
+            //Arrange
+            int commentId = 10;
+
+            _commentRepoMock.Setup(c => c.GetCommentById(commentId)).ReturnsAsync((NotFound, null));
+
+            //Act
+            var actual = await _commentService.GetCommentById(commentId);
+
+            //Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No comment exists with the id 10", actual.Message);
+            Assert.Null(actual.DTO);
+        }
+
+        [Fact]
+        public async void Given_empty_db_getComments_returns_readonlylist_of_length_0()
+        {
+            //Arrange
+            _commentRepoMock.Setup(c => c.GetComments()).ReturnsAsync(Array.Empty<CommentDTO>());
+
+            //Act
+            var empty = await _commentService.GetComments();
+
+            //Assert
+            Assert.Equal(OK, empty.Response);
+        }
+
+        [Fact]
+        public async void Given_new_commentDTO_returns_Created_and_correct_DTO()
+        {
+            //Arrange
+            var newComment = new CommentCreateDTOServer
+            {
+                UserId = "testUserId",
+                ResourceId = 1,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a new comment",
+            };
+
+            //Act
+            var commentDetailsDTO = new CommentDetailsDTO(1, "testUserId", 1, DateTime.Now, "This is a new comment");
+            _commentRepoMock.Setup(c => c.AddComment(newComment)).ReturnsAsync((OK, commentDetailsDTO));
+
+            //Assert
+            var result = await _commentService.AddComment(newComment);
+
+            var response = result.Response;
+            var createdDTO = result.DTO;
+
+            Assert.Equal(Created, response);
+        }
 
         [Fact]
         public async Task Delete_given_non_existing_returns_NotFound()
