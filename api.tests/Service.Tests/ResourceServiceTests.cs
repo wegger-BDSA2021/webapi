@@ -184,7 +184,7 @@ namespace api.tests.Service.Tests
             Assert.Null(actual.DTO);
         }
 
-        /*[Fact]
+        [Fact]
         public async void CreateAsync_given_invalid_user_returns_Conflict()
         {
             //Arrange
@@ -220,15 +220,15 @@ namespace api.tests.Service.Tests
             Assert.Equal(Conflict, actual.Response);
             Assert.Equal("The user trying to create the resource does not exist in the current context", actual.Message);
             Assert.Null(actual.DTO);
-        }*/
+        }
 
         // ReadAllAsync Tests
 
-        /*[Fact]
+        [Fact]
         public async void ReadAllAsync_given_empty_DB_returns_readonlylist_of_length_0()
         {
             //Arrange
-            _resourceRepoMock.Setup(r => r.ReadAllAsync()).ReturnsAsync((OK, ));
+            _resourceRepoMock.Setup(r => r.ReadAllAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
 
             //Act
             var actual = await _resourceService.ReadAsync(7);
@@ -239,28 +239,7 @@ namespace api.tests.Service.Tests
             Assert.NotNull(actual.DTO);
         }
 
-
-
-
-        [Fact]
-        public async void Given_seededDB_readAllAsync_returns_readonlylist_of_length_1()
-        {
-            var _repo = new ResourceRepository(_context);
-            Seed(_context);
-
-            var allResources = await _repo.ReadAllAsync();
-            Assert.Equal(2, allResources.Count());
-            Assert.Equal("resource_1", allResources.First().Title);
-        }
-
-        [Fact]
-        public async void Given_empty_db_readAllAsync_returns_readonlylist_of_length_0()
-        {
-            var _repo = new ResourceRepository(_context);
-
-            var empty = await _repo.ReadAllAsync();
-            Assert.Empty(empty);
-        }*/
+        
 
     }
 }
