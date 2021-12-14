@@ -95,13 +95,14 @@ namespace api.tests.Service.Tests
             Assert.Equal($"Tag at index {tagId} has been updated to have name {tagUpdateDTO.NewName}",result.Message);
         }
         
-       /* [Fact] //TODO why you no work? how do you create a DTO with Mock?
+       [Fact]
         public async Task Given_already_existing_tagName_UpdateAsync_returns_BadRequest_and_message()
         {
             //Arrange
-
+            IReadOnlyCollection<string> collection = null;
             var tagCreateDTO = new TagCreateDTO{Name = "testName"};
-            _tagRepoMock.Setup(c => c.CreateAsync(tagCreateDTO)).ReturnsAsync(Created);
+            var tagdetailsDTO = new TagDetailsDTO(1, "testName", collection);
+            _tagRepoMock.Setup(c => c.CreateAsync(tagCreateDTO)).ReturnsAsync((Created,tagdetailsDTO));
             
             var tagUpdateDTO = new TagUpdateDTO
             {
@@ -117,7 +118,7 @@ namespace api.tests.Service.Tests
             //Assert
             Assert.Equal(BadRequest, result.Response);
             Assert.Equal($"There already exists a tag with name {tagUpdateDTO.NewName}",result.Message);
-        }*/
+        }
 
         [Fact]
         public async Task Delete_given_non_existing_returns_NotFound()
@@ -152,9 +153,7 @@ namespace api.tests.Service.Tests
         {
             //Arrange
             int tagId = -1;
-
-           //_tagRepoMock.Setup(c => c.GetTagByIdAsync(tagId)).ReturnsAsync(BadRequest);
-
+            
             //Act
             var result = await _tagService.ReadAsync(tagId);
 
@@ -178,12 +177,12 @@ namespace api.tests.Service.Tests
             Assert.Equal("No tag found with the given entity",result.Message);
         }
         
-        //[Fact]
-        /*public async Task ReadAsync_given_existing_id_returns_OK()
+        [Fact]
+        public async Task ReadAsync_given_existing_id_returns_OK()
         {
             //Arrange
             int tagId = 1;
-            IReadOnlyCollection<string> collection = new ReadOnlyCollection<string>(List<>); 
+            IReadOnlyCollection<string> collection = null;
 
             var tagDetailsDTO = new TagDetailsDTO
             (
@@ -199,29 +198,66 @@ namespace api.tests.Service.Tests
             Assert.Equal(OK, result.Response);
             Assert.Equal($"Tag found at index {tagId}",result.Message);
             Assert.NotNull(result.DTO);
-        }*/
+        }
 
-        /*[Fact]
-        public async Task Update_given_unknown_id_returns_NotFound()
+        [Fact]
+        public async Task CreateAsync_given_null_tag_returns_BadRequest()
         {
-            // Arrange
-            var updatedComment = new CommentUpdateDTO
-            {
-                Id = 9,
-                UserId = "testUserId",
-                ResourceId = 2,
-                TimeOfComment = DateTime.Now,
-                Content = "This is a updated comment!",
-            };
+            //Arrange
+            
+            //Act
+            var result = await _tagService.CreateAsync(null);
+            
+            //Assert
+            Assert.Equal(BadRequest,result.Response);
+            Assert.Equal("No tag given",result.Message);
+        }
 
-            _commentRepoMock.Setup(c => c.UpdateComment(updatedComment)).ReturnsAsync(NotFound);
+        [Fact]
+        public async Task CreateAsync_Given_Allreadycreated_tag_returns_AllReadyExist()
+        {
+            //Arrange
+            IReadOnlyCollection<string> collection = null;
+            var tagCreateDTO = new TagCreateDTO{Name = "testName"};
+            var tagdetailsDTO = new TagDetailsDTO(1, "testName", collection);
+            
+            _tagRepoMock.Setup(c => c.CreateAsync(tagCreateDTO)).ReturnsAsync((Created,tagdetailsDTO));
+            _tagRepoMock.Setup(c => c.CreateAsync(tagCreateDTO)).ReturnsAsync((AllReadyExist,null));
 
-            // Act
-            var response = await _commentService.UpdateComment(updatedComment);
+            //Act
+            var result = await _tagService.CreateAsync(tagCreateDTO);
 
-            // Assert
-            Assert.Equal(NotFound, response.Response);
-            Assert.Equal("No comment found with the id 9", response.Message);
+            //Assert
+            Assert.Equal(AllReadyExist, result.Response);
+            Assert.Equal("The tag given already exist in the database",result.Message);
+        }
+
+        [Fact]
+        public async Task CreateAsync_Given_valid_new_tag_returns_Created_and_DTO()
+        {
+            //Arrange
+            IReadOnlyCollection<string> collection = null;
+            var tagCreateDTO = new TagCreateDTO{Name = "testName"};
+            var tagdetailsDTO = new TagDetailsDTO(1, "testName", collection);
+            _tagRepoMock.Setup(c => c.CreateAsync(tagCreateDTO)).ReturnsAsync((Created,tagdetailsDTO));
+            
+            //Act
+            var result = await _tagService.CreateAsync(tagCreateDTO);
+            //Assert
+            Assert.Equal(Created,result.Response);
+            Assert.Equal("A new tag was successfully created", result.Message);
+            Assert.NotNull(result.DTO);
+        }
+
+        /*[Fact] //TODO test this method at some point
+        public async Task getAllTags_returnsalltags_from_repo()
+        {
+            //Arrange
+            
+            //Act
+            
+            //Assert
         }*/
+        
     }
 }

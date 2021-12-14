@@ -151,13 +151,13 @@ namespace Services
                     return new Result
                     {
                        Response = AllReadyExist,
-                       Message =  "The tag given allready exist in the database"
+                       Message =  "The tag given already exist in the database"
                     };
                 }else{
                     return new Result
                     {
                        Response = Created,
-                       Message =  "A new tag was succesfully created",
+                       Message =  "A new tag was successfully created",
                        DTO = result.TagDetailsDTO
                     };
                 }
