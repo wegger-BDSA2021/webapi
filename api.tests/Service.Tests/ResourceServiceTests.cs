@@ -70,7 +70,7 @@ namespace api.tests.Service.Tests
 
         // Create Async Tests
 
-        /*[Fact]
+        [Fact]
         public async void CreateAsync_given_existing_url_returns_Conflict()
         {
             //Arrange
@@ -106,7 +106,7 @@ namespace api.tests.Service.Tests
             Assert.Equal(Conflict, actual.Response);
             Assert.Equal("Another resource with the same URL has already been provided", actual.Message);
             Assert.Null(actual.DTO);
-        }*/
+        }
 
         [Fact]
         public async void CreateAsync_given_valid_ResourceCreateDTO_returns_Created()
@@ -184,7 +184,7 @@ namespace api.tests.Service.Tests
             Assert.Null(actual.DTO);
         }
 
-        [Fact]
+        /*[Fact]
         public async void CreateAsync_given_invalid_user_returns_Conflict()
         {
             //Arrange
@@ -220,7 +220,7 @@ namespace api.tests.Service.Tests
             Assert.Equal(Conflict, actual.Response);
             Assert.Equal("The user trying to create the resource does not exist in the current context", actual.Message);
             Assert.Null(actual.DTO);
-        }
+        }*/
 
         // ReadAllAsync Tests
 
