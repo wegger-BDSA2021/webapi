@@ -16,9 +16,12 @@ namespace Data
 
         public async Task<(Response Response, TagDetailsDTO TagDetailsDTO)> CreateAsync(TagCreateDTO Tag)
         {
-            if(_context.Tags.First( t => t.Name == Tag.Name) != null){
+            var exists = await _context.Tags.FirstOrDefaultAsync(t => t.Name == Tag.Name);
+            if (exists != null)
+            {
                 return (AllReadyExist, null);
             }
+
             var entity = new Tag
             {
                 Name = Tag.Name,
@@ -32,7 +35,8 @@ namespace Data
             var result = new TagDetailsDTO(
                 entity.Id,
                 entity.Name,
-                entity.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+                // entity.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
+                new List<string>()
             );
 
             return (Created, result);
@@ -57,7 +61,7 @@ namespace Data
 
         public async Task<(Response Response,TagDetailsDTO TagDetailsDTO)> GetTagByIdAsync(int id)
         {
-            var tag = await _context.Tags.FindAsync(id);
+            var tag = await _context.Tags.Include(t => t.Resources).FirstOrDefaultAsync(t => t.Id == id);
             if (tag is null)
                 return (NotFound, null);
 
