@@ -10,7 +10,6 @@ namespace api.tests.Controller.Tests
 {
     public class CommentServiceTests
     {
-
         private readonly CommentService _commentService;
         private readonly Mock<ICommentRepository> _commentRepoMock = new();
 
@@ -107,6 +106,20 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
+        public async void Given_existing_commentId_deleteComment_returns_Deleted()
+        {
+            //Arrange
+            _commentRepoMock.Setup(c => c.DeleteComment(54)).ReturnsAsync(Deleted);
+
+            //Arrange
+            var result = await _commentService.DeleteComment(54);
+
+            //Assert
+            Assert.Equal(Deleted, result.Response);
+            Assert.Equal("Comment with id {id} has succesfully benn deleted", result.Message);
+        }
+
+        [Fact]
         public async Task Update_given_unknown_id_returns_NotFound()
         {
             // Arrange
@@ -127,6 +140,29 @@ namespace api.tests.Controller.Tests
             // Assert
             Assert.Equal(NotFound, response.Response);
             Assert.Equal("No comment found with the id 9", response.Message);
+        }
+
+        [Fact]
+        public async void Given_existing_commentId_updateComment_returns_Updated()
+        {
+            // Arrange
+            var updatedComment = new CommentUpdateDTO
+            {
+                Id = 12,
+                UserId = "testUserId",
+                ResourceId = 2,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a updated comment!",
+            };
+
+            _commentRepoMock.Setup(c => c.UpdateComment(updatedComment)).ReturnsAsync(Updated);
+
+            // Act
+            var actual = await _commentService.UpdateComment(updatedComment);
+
+            // Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("Comment with id 12 has succefully been updated", actual.Message);
         }
     }
 }
