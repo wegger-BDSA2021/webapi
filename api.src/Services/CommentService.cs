@@ -1,8 +1,5 @@
 ﻿using Data;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static Data.Response;
 
@@ -67,7 +64,7 @@ namespace api.src.Services
             return new Result
             {
                 Response = Deleted,
-                Message = $"Comment with id {id} has succesfully benn deleted"
+                Message = $"Comment with id {id} has succesfully been deleted"
             };
         }
 
