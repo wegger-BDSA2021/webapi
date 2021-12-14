@@ -231,7 +231,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.ReadAllAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
 
             //Act
-            var actual = await _resourceService.ReadAsync(7);
+            var actual = await _resourceService.ReadAllAsync();
 
             //Assert
             Assert.Equal(OK, actual.Response);
@@ -246,7 +246,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.DeleteAsync(18)).ReturnsAsync(NotFound);
 
             //Act
-            var actual = await _resourceService.ReadAsync(18);
+            var actual = await _resourceService.DeleteByIdAsync(18);
 
             //Assert
             Assert.Equal(NotFound, actual.Response);
@@ -260,7 +260,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.DeleteAsync(24)).ReturnsAsync(Deleted);
 
             //Act
-            var actual = await _resourceService.ReadAsync(24);
+            var actual = await _resourceService.DeleteByIdAsync(24);
 
             //Assert
             Assert.Equal(Deleted, actual.Response);
