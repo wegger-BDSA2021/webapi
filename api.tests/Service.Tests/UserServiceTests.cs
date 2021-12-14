@@ -91,10 +91,10 @@ namespace api.tests.Service.Tests
         public async void DeleteAsync_given_empty_id_returns_BadRequest()
         {
             //Arrange
-            _userRepoMock.Setup(u => u.DeleteUserAsync("67")).ReturnsAsync(BadRequest);
+            _userRepoMock.Setup(u => u.DeleteUserAsync("")).ReturnsAsync(BadRequest);
 
             //Act
-            var actual = await _userService.DeleteAsync("67");
+            var actual = await _userService.DeleteAsync("");
 
             //Assert
             Assert.Equal(BadRequest, actual.Response);
