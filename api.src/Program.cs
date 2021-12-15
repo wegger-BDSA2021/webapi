@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Data;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,8 @@ namespace api.src
         {
             var host = CreateHostBuilder(args).Build();
 
+            Thread.Sleep(100);
+          
             SeedDb(host);
 
             host.Run();

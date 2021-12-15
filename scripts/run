@@ -10,39 +10,44 @@ echo "Spinning up MSSQL server in docker container using port 1433 on host mappi
 sleep 2
 password=$(uuidgen)
 
-# echo "Path to project: "$project
-# echo "Generated pwd for db: " $password
+echo ""
+echo ""
+echo "Generated pwd for db: " $password
+echo ""
+echo ""
 
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=${password}" --rm -p 1433:1433 -d --name weggerSQLserver mcr.microsoft.com/mssql/server:2019-latest
 database="Wegger"
-connectionstring="Server=localhost;Database=${database};User Id=sa;Password=${password};Trusted_Connection=False;Encrypt=False"
+connectionstring="Server=172.17.0.2;Database=${database};User Id=sa;Password=${password};Trusted_Connection=False;Encrypt=False"
 
+echo ""
 echo ""
 echo "Configuring connection string for application ..."
 sleep 2
 dotnet user-secrets init --project $project
 dotnet user-secrets set "ConnectionStrings:Wegger" "${connectionstring}" --project $project
-
+echo ""
+echo ""
 
 sleep 4
 
-# echo "Building web API docker image ..."
-# sleep 2
-# docker build -t weggerapi $project
-
-# echo "Spinning up wegger api in docker container ..."
-# sleep 2
-# docker run --rm -p 8080:80 weggerapi
-
+echo "Building web API docker image ..."
+sleep 2
+docker build -t weggerapi:final $project
 echo ""
-echo "Launching web api in background process ..."
-dotnet run --project $project 
+echo ""
 
+echo "Spinning up wegger api in docker container ..."
+sleep 2
+docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" -p 8080:80 -d --name weggerapiContainer weggerapi:final
+echo ""
+echo ""
 
 # echo ""
-# echo "Launching swagger UI in default host browser ..."
-# explorer.exe https://localhost:5001/swagger
+# echo "Launching web api in background process ..."
+# dotnet run --project $project 
 
-# echo "Type q to kill the program and its child ..."
-# read
-# exit
+
+echo "Launching swagger UI in default host browser ..."
+explorer.exe https://localhost:8080/swagger
+

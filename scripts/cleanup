@@ -2,6 +2,7 @@
 
 echo "Killing wegger containers ..."
 docker kill weggerSQLserver
+docker kill weggerapiContainer
 
 sleep 2
 echo "Done! Have a nice day :) "

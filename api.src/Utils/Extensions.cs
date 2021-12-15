@@ -20,6 +20,7 @@ namespace Utils
             OK              => new OkObjectResult(result.DTO),
             Created         => new ObjectResult(result.DTO) { StatusCode = 201 }, 
             InternalError   => new ObjectResult(result.Message) { StatusCode = 500 },
+            AllReadyExist   => new ConflictObjectResult(result.Message),
             _               => throw new NotSupportedException($"{result.Response} not supported")
         };
 
