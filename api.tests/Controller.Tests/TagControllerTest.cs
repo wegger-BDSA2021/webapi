@@ -123,14 +123,26 @@ namespace api.tests.Controller.Tests
             //Assert
             Assert.Equal(HttpStatusCode.NotFound,response.StatusCode);
         }
-        
-        /*public async void Put_returns_HttpStatusCode_Conflict()
+        [Fact]
+        public async void Delete_returns_HttpStatusCode_NoContent()
         {
-            var tagId = -1;
-            var response = await Client.PutAsync($"/api/Tag/{tagId}",content);
-        }*/
-
-
+            //Arrange
+            var tagId = 1;
+            //Act
+            var response = await Client.DeleteAsync($"/api/Tag/{tagId}");
+            //Assert
+            Assert.Equal(HttpStatusCode.NoContent,response.StatusCode);
+        }
+        [Fact]
+        public async void Delete_returns_HttpStatusCode_NotFound()
+        {
+            //Arrange
+            var tagId = 42;
+            //Act
+            var response = await Client.DeleteAsync($"/api/Tag/{tagId}");
+            //Assert
+            Assert.Equal(HttpStatusCode.NotFound,response.StatusCode);
+        }
 
     }
 }
