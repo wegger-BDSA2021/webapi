@@ -37,7 +37,7 @@ namespace api.tests.Controller.Tests
             var response = await Client.GetAsync("/api/Comment{1}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
+        }*/
 
         [Fact]
         public void Post_returns_HttpStatusCode_OK()
@@ -60,8 +60,8 @@ namespace api.tests.Controller.Tests
             var response = Client.PostAsync("/api/Comment", byteContent).Result;
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }*/
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
 
         /*
         [Fact]
