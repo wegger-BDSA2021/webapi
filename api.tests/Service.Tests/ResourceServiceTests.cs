@@ -376,7 +376,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.GetAllFromDomainAsync("domain")).ReturnsAsync(Array.Empty<ResourceDTO>());
 
             //Act
-            var actual = await _resourceService.GetAllResourcesFromUserAsync("domain");
+            var actual = await _resourceService.GetAllResourcesFromDomainAsync("domain");
 
             //Assert
             Assert.Equal(OK, actual.Response);
