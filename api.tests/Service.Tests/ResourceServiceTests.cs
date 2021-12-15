@@ -2,6 +2,7 @@
 using Moq;
 using Services;
 using System;
+using System.Collections.Generic;
 using Xunit;
 using static Data.Response;
 
@@ -397,6 +398,102 @@ namespace api.tests.Service.Tests
             //Assert
             Assert.Equal(OK, actual.Response);
             Assert.Equal("Collection with 0 resources found with average rating between 1 and 2", actual.Message);
+        }
+
+        //GetAllResourcesWhereTitleContainsAsync Tests
+
+        [Fact]
+        public async void GetAllResourcesWhereTitleContainsAsync_given_unknown_title_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllWhereTitleContainsAsync("Test")).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesWhereTitleContainsAsync("Test");
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found where title contains Test", actual.Message);
+        }
+
+        //GetAllResourcesMarkedDeprecatedAsync Tests
+
+        [Fact]
+        public async void GetAllResourcesMarkedDeprecatedAsync_given_empty_db_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllDeprecatedAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesMarkedDeprecatedAsync();
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found, that has been marked as deprecated", actual.Message);
+        }
+
+        //GetAllArticleResourcesAsync Tests
+
+        [Fact]
+        public async void GetAllArticlesAsync_given_empty_db_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllArticlesAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllArticleResourcesAsync();
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 article resources found", actual.Message);
+        }
+
+        //GetAllVideoResourcesAsync Tests
+
+        [Fact]
+        public async void GetAllVideoResourcesAsync_given_empty_db_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllArticlesAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllArticleResourcesAsync();
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 video resources found", actual.Message);
+        }
+
+        // GetAllFromOfficialDocumentationAsync Tests
+
+        [Fact]
+        public async void GetAllFromOfficialDocumentationAsync_given_empty_db_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllFromOfficialDocumentaionAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllFromOfficialDocumentationAsync();
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found from official documentations", actual.Message);
+        }
+
+        // GetAllResourcesWithProvidedTags Tests
+
+        [Fact]
+        public async void GetAllResourcesWithProvidedTags_given_no_tags_returns_BadRequest()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllWithTagsAsyc(Array.Empty<string>())).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesWithProvidedTags(Array.Empty<string>());
+
+            //Assert
+            Assert.Equal(BadRequest, actual.Response);
+            Assert.Equal("You need to provide a minimum of one tag to search for", actual.Message);
         }
     }
 }
