@@ -96,7 +96,7 @@ namespace Data
             {
                 ratingS = ratingM.Where(r => r.Resource.Id == resId).First(); 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return (NotFound, null);
             }

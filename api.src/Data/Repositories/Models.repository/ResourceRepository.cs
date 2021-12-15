@@ -146,14 +146,8 @@ namespace Data
             if (entity is null)
                 return NotFound;
 
-            entity.Title = resource.Title;
-            entity.Description = resource.Description;
-            entity.UserId = resource.UserId;
-            // entity.TimeOfReference = resource.TimeOfReference;
-            entity.Url = resource.Url;
-            entity.Tags = await getTagsFromStringsAsync(resource.Tags);
             entity.Deprecated = (bool)resource.Deprecated;
-            entity.LastCheckedForDeprecation = (System.DateTime)resource.LastCheckedForDeprecation;
+            entity.LastCheckedForDeprecation = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

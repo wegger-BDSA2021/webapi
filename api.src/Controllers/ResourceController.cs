@@ -39,7 +39,14 @@ namespace api.src.Controllers
             return result.ToActionResult();
         }
 
-        // TODO : update resource endpoint ...
+        [HttpPut]
+        [Route("Update")]
+        public async Task<ActionResult> UpdateResource(ResourceUpdateDTO resource)
+        {
+            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
+            var result = await _service.UpdateResourceAsync(resource);
+            return result.ToActionResult();
+        }
 
 
         [HttpGet("{id}")]

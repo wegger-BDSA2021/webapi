@@ -158,11 +158,10 @@ namespace Services
             return new Result 
                 {
                     Response = Deleted,
-                    Message = $"Resource with id {id} has succesfully benn deleted"
+                    Message = $"Resource with id {id} has succesfully been deleted"
                 };
         }
 
-        // TODO : cascading update, and reading new tags ...
         public async Task<Result> UpdateResourceAsync(ResourceUpdateDTO resource)
         {
             var response = await _resourceRepo.UpdateAsync(resource);
