@@ -40,7 +40,7 @@ namespace api.tests.Controller.Tests
         }*/
 
         [Fact]
-        public void Post_returns_HttpStatusCode_OK()
+        public async void Post_returns_HttpStatusCode_OK()
         {
             //Arrange
             var newComment = new CommentCreateDTOServer
@@ -51,13 +51,22 @@ namespace api.tests.Controller.Tests
                 Content = "This is a new comment",
             };
 
-            var myContent = JsonConvert.SerializeObject(newComment);
+            /*var myContent = JsonConvert.SerializeObject(newComment);
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");*/
+
+            var json = JsonConvert.SerializeObject(newComment);
+
+            var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+
+            var client = new HttpClient();
+
+            var response = await client.PostAsync("/api/Comment", stringContent);
+
 
             //Act
-            var response = Client.PostAsync("/api/Comment", byteContent).Result;
+            //var response = Client.PostAsync("/api/Comment", json).Result;
 
             //Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
