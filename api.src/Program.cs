@@ -19,7 +19,7 @@ namespace api.src
             var host = CreateHostBuilder(args).Build();
 
             Thread.Sleep(100);
-
+          
             SeedDb(host);
 
             host.Run();
