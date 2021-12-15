@@ -269,6 +269,103 @@ namespace api.tests.Service.Tests
 
         //UpdateResourceAsync Tests
 
+        [Fact]
+        public async void UpdateResourceAsync_given_unknown_id_returns_NotFound()
+        {
+            //Arrange
+            var resource = new ResourceUpdateDTO
+            {
+                Id = 27,
+                Title = "this is a new resource",
+                UserId = "testUserId",
+                Description = "description",
+                TimeOfResourcePublication = DateTime.Now,
+                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
+                Deprecated = false,
+                LastCheckedForDeprecation = DateTime.Now
+            };
 
+            _resourceRepoMock.Setup(r => r.UpdateAsync(resource)).ReturnsAsync(NotFound);
+
+            //Act
+            var actual = await _resourceService.UpdateResourceAsync(resource);
+
+            //Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No resource found with the id 27", actual.Message);
+        }
+
+
+        [Fact]
+        public async void UpdateResourceAsync_given_exsisting_id_returns_Updated()
+        {
+            //Arrange
+            var resource = new ResourceUpdateDTO
+            {
+                Id = 14,
+                Title = "this is a new resource",
+                UserId = "testUserId",
+                Description = "description",
+                TimeOfResourcePublication = DateTime.Now,
+                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
+                Deprecated = false,
+                LastCheckedForDeprecation = DateTime.Now
+            };
+
+            _resourceRepoMock.Setup(r => r.UpdateAsync(resource)).ReturnsAsync(Updated);
+
+            //Act
+            var actual = await _resourceService.UpdateResourceAsync(resource);
+
+            //Assert
+            Assert.Equal(Updated, actual.Response);
+            Assert.Equal("Resource with id 14 has succefully been updated", actual.Message);
+        }
+
+        // GetAllResourcesFromUserAsync Tests
+
+        [Fact]
+        public async void GetAllResourcesFromUserAsync_given_id_with_length_0_returns_BadRequest()
+        {
+            //Arrange
+            string id = "";
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesFromUserAsync(id);
+
+            //Assert
+            Assert.Equal(BadRequest, actual.Response);
+            Assert.Equal("Id can not be the empty string", actual.Message);
+        }
+
+        [Fact]
+        public async void GetAllResourcesFromUserAsync_given_unknown_user_returns_NotFound()
+        {
+            //Arrange
+            _userRepoMock.Setup(r => r.UserExists("33")).ReturnsAsync(false);
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesFromUserAsync("33");
+
+            //Assert
+            Assert.Equal(NotFound, actual.Response);
+            Assert.Equal("No user found with id 33", actual.Message);
+        }
+
+        [Fact]
+        public async void GetAllResourcesFromUserAsync_given_valid_user_and_id_returns_OK()
+        {
+            //Arrange
+            _userRepoMock.Setup(r => r.UserExists("57")).ReturnsAsync(true);
+            _resourceRepoMock.Setup(r => r.GetAllFromUserAsync("57")).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesFromUserAsync("57");
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found from user with id 57", actual.Message);
+        }
     }
 }
