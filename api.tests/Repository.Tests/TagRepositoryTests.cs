@@ -35,8 +35,6 @@ namespace Repository.Tests
             
             Assert.Equal(NotFound, actual);
         }
-        
-        /*[Fact] //TODO this returns Created instead of NotFound
         public async void Given_no_entries_returns_NotFound_creat()
         {
             var _repo = new TagRepository(_context);
@@ -51,7 +49,7 @@ namespace Repository.Tests
             Assert.Equal(NotFound, actual.Response);
             //Assert.Equal(null, actual.TagDetailsDTO);  //Do we do this       
 
-        }*/
+        }
         [Fact]
         public async void Given_no_entries_returns_NotFound_delete()
         {
@@ -101,8 +99,8 @@ namespace Repository.Tests
 
             Assert.Equal(tagStrings,actual); //read only might fuck me here
             Assert.Equal(tagStrings.Count,actual.Count);
-            Assert.True(tjeckOne);
-            Assert.True(tjeckTwo);
+            Assert.Equal(true,tjeckOne);
+            Assert.Equal(true,tjeckTwo);
         } 
 
         [Fact]

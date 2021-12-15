@@ -33,7 +33,7 @@ namespace Repository.Tests
             Assert.Equal("resource_1", resource.Title);
             Assert.Equal("dotnet", resource.Tags.First());
             Assert.Equal("test", resource.Description);
-            Assert.False(resource.Deprecated);
+            Assert.Equal(false, resource.Deprecated);
             Assert.Equal("https://github.com/wegger-BDSA2021/webapi/tree/develop", resource.Url);
             Assert.Equal(_dateForFirstResource, resource.TimeOfReference);
             Assert.Equal(_dateForFirstResource, resource.LastCheckedForDeprecation);
