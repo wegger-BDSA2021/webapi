@@ -16,6 +16,8 @@ RUN dotnet build "api.src.csproj" -c Release -o /app
 FROM build AS publish
 RUN dotnet publish "api.src.csproj" -c Release -o /app
 
+# RUN dotnet tool install --tool-path /app dotnet-certificate-tool
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
