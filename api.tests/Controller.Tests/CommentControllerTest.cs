@@ -8,7 +8,7 @@ using Xunit;
 
 namespace api.tests.Controller.Tests
 {
-    /*[Xunit.Collection("Sequential")]
+    [Xunit.Collection("Sequential")]
     public class CommentControllerTest : TestFixture
     {
         public CommentControllerTest(WebApplicationFactory<Startup> factory) : base(factory) { }
@@ -24,7 +24,12 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void GetById_returns_HttpStatusCode_OK()
         {
-            var response = await Client.GetAsync("/api/Comment{1}");
+            //Arrange
+            int toDelete = 1;
+
+            JsonContent content = JsonContent.Create(toDelete);
+
+            var response = await Client.GetAsync("/api/Comment/1");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -51,7 +56,7 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
-        public async void Update_returns_HttpStatusCode_OK()
+        public async void Update_returns_HttpStatusCode_NoContent()
         {
             //Arrange
             var comment = new CommentUpdateDTO
@@ -69,15 +74,15 @@ namespace api.tests.Controller.Tests
             var response = await Client.PutAsync("/api/Comment", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
-        public async void Delete_returns_HttpStatusCode_OK()
+        public async void Delete_returns_HttpStatusCode_NoContent()
         {
-            var response = await Client.DeleteAsync("/api/Comment{1}");
+            var response = await Client.DeleteAsync("/api/Comment/1");
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
-    }*/
+    }
 }
