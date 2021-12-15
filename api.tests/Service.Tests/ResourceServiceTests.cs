@@ -277,13 +277,7 @@ namespace api.tests.Service.Tests
             var resource = new ResourceUpdateDTO
             {
                 Id = 27,
-                Title = "this is a new resource",
-                UserId = "testUserId",
-                Description = "description",
-                TimeOfResourcePublication = DateTime.Now,
-                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
                 Deprecated = false,
-                LastCheckedForDeprecation = DateTime.Now
             };
 
             _resourceRepoMock.Setup(r => r.UpdateAsync(resource)).ReturnsAsync(NotFound);
@@ -304,13 +298,7 @@ namespace api.tests.Service.Tests
             var resource = new ResourceUpdateDTO
             {
                 Id = 14,
-                Title = "this is a new resource",
-                UserId = "testUserId",
-                Description = "description",
-                TimeOfResourcePublication = DateTime.Now,
-                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
                 Deprecated = false,
-                LastCheckedForDeprecation = DateTime.Now
             };
 
             _resourceRepoMock.Setup(r => r.UpdateAsync(resource)).ReturnsAsync(Updated);

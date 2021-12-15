@@ -162,7 +162,6 @@ namespace Services
                 };
         }
 
-        // TODO : cascading update, and reading new tags ...
         public async Task<Result> UpdateResourceAsync(ResourceUpdateDTO resource)
         {
             var response = await _resourceRepo.UpdateAsync(resource);

@@ -77,15 +77,8 @@ namespace Data
     {
         [Required]
         public int Id { get; init; }
-
-        #nullable enable
-        public string? Title { get; init; }
-        public string? Description { get; init; }
-        public string? UserId { get; init; }
-        public DateTime? TimeOfResourcePublication { get; init; }
-        public string? Url { get; init; }
-        public ISet<string>? Tags { get; init; }
-        public Boolean? Deprecated { get; init; }
-        public DateTime? LastCheckedForDeprecation { get; init; }
+        
+        [Required]
+        public Boolean Deprecated { get; init; }
     }
 }
