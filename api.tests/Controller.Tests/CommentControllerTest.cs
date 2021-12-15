@@ -8,7 +8,7 @@ using Xunit;
 
 namespace api.tests.Controller.Tests
 {
-    /*[Xunit.Collection("Sequential")]
+    [Xunit.Collection("Sequential")]
     public class CommentControllerTest : TestFixture
     {
         public CommentControllerTest(WebApplicationFactory<Startup> factory) : base(factory) { }
@@ -79,5 +79,5 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-    }*/
+    }
 }
