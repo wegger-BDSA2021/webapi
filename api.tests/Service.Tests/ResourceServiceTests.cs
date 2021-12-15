@@ -454,7 +454,7 @@ namespace api.tests.Service.Tests
         public async void GetAllVideoResourcesAsync_given_empty_db_returns_count_0()
         {
             //Arrange
-            _resourceRepoMock.Setup(r => r.GetAllArticlesAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
+            _resourceRepoMock.Setup(r => r.GetAllVideosAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
 
             //Act
             var actual = await _resourceService.GetAllVideoResourcesAsync();
