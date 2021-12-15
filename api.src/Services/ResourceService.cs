@@ -158,7 +158,7 @@ namespace Services
             return new Result 
                 {
                     Response = Deleted,
-                    Message = $"Resource with id {id} has succesfully benn deleted"
+                    Message = $"Resource with id {id} has succesfully been deleted"
                 };
         }
 
