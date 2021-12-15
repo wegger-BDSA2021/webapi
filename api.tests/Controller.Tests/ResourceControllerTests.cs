@@ -24,11 +24,11 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
-        public async void GetById_returns_HttpStatusCode_OK()
+        public async void GetById_returns_HttpStatusCode_NotFound()
         {
             var response = await Client.GetAsync("/api/Resource{1}");
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
