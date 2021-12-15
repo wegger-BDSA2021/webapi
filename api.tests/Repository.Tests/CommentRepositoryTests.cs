@@ -1,12 +1,7 @@
 ﻿using Data;
 using Repository.Tests;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Utils;
 using Xunit;
 using static Data.Response;
 
