@@ -413,7 +413,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(OK, actual.Response);
-            Assert.Equal("Collection with 0 resources found where title contains Test", actual.Message);
+            Assert.Equal("Collection with 0 resources found where title contains 'Test'", actual.Message);
         }
 
         //GetAllResourcesMarkedDeprecatedAsync Tests
@@ -457,7 +457,7 @@ namespace api.tests.Service.Tests
             _resourceRepoMock.Setup(r => r.GetAllArticlesAsync()).ReturnsAsync(Array.Empty<ResourceDTO>());
 
             //Act
-            var actual = await _resourceService.GetAllArticleResourcesAsync();
+            var actual = await _resourceService.GetAllVideoResourcesAsync();
 
             //Assert
             Assert.Equal(OK, actual.Response);
