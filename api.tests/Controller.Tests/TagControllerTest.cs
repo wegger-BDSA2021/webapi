@@ -70,7 +70,7 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
-        public async void Post_returns_HttpStatusCode_InternalServerError_already_existing_post()
+        public async void Post_returns_HttpStatusCode_Conflict_already_existing_post()
         {
             //Arrange
             var tag = new TagCreateDTO
@@ -84,7 +84,7 @@ namespace api.tests.Controller.Tests
             var conflictResponse = await Client.PostAsync("/api/Tag/Create", content);
             
             //Assert
-            Assert.Equal(HttpStatusCode.InternalServerError,conflictResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict,conflictResponse.StatusCode);
         }
 
         [Fact]
