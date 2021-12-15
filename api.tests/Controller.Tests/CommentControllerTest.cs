@@ -74,7 +74,7 @@ namespace api.tests.Controller.Tests
             var response = await Client.PutAsync("/api/Comment", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace api.tests.Controller.Tests
         {
             var response = await Client.DeleteAsync("/api/Comment/1");
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
     }
 }
