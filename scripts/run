@@ -12,7 +12,6 @@ password=$(uuidgen)
 
 echo ""
 echo ""
-# echo "Path to project: "$project
 echo "Generated pwd for db: " $password
 echo ""
 echo ""
@@ -40,8 +39,7 @@ echo ""
 
 echo "Spinning up wegger api in docker container ..."
 sleep 2
-# docker run -v "${HOME}/.microsoft/usersecrets/" -it --rm -p 8080:80 --name weggerapi weggerapi
-docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" -it --rm -p 8080:80 --name weggerapiContainer weggerapi:final
+docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" -p 8080:80 -d --name weggerapiContainer weggerapi:final
 echo ""
 echo ""
 
@@ -50,10 +48,6 @@ echo ""
 # dotnet run --project $project 
 
 
-# echo ""
-# echo "Launching swagger UI in default host browser ..."
-# explorer.exe https://localhost:5001/swagger
+echo "Launching swagger UI in default host browser ..."
+explorer.exe https://localhost:8080/swagger
 
-# echo "Type q to kill the program and its child ..."
-# read
-# exit
