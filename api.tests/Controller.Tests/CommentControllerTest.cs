@@ -55,9 +55,7 @@ namespace api.tests.Controller.Tests
             JsonContent content = JsonContent.Create(comment);
 
             //Act
-            //var response = Client.PostAsync("/api/Comment", json).Result;
-
-            HttpResponseMessage response = await Client.PostAsync("/api/Comment", content);
+            var response = await Client.PostAsync("/api/Comment", content);
 
             //Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
