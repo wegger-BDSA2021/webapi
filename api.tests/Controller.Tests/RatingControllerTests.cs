@@ -20,7 +20,7 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void Get_Ratings_From_Resource_returns_HttpStatusCode_OK()
         {
-            var response = await Client.GetAsync("/api/Rating/Resource/1");
+            var response = await Client.GetAsync("/api/Rating");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
