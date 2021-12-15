@@ -28,7 +28,7 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void Delete_returns_HttpStatusCode_NoContent()
         {
-            var response = await Client.DeleteAsync("/api/User/Delete/testUserId");
+            var response = await Client.DeleteAsync("/api/User/testUserId");
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
