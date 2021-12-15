@@ -22,8 +22,7 @@ namespace api.src.Controllers
             _service = service;
         }
 
-        [HttpGet("{resourceId}")]
-        [Route("Resource")]
+        [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<Rating>>> RatingsFromResource(int resourceId)
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
