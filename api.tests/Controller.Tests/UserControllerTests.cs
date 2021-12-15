@@ -13,7 +13,7 @@ using Xunit;
 namespace api.tests.Controller.Tests
 {
 
-    [Xunit.Collection("Sequential")]
+    /*[Xunit.Collection("Sequential")]
     public class UserControllerTests : TestFixture
     {
         public UserControllerTests(WebApplicationFactory<Startup> factory) : base(factory) { }
@@ -45,6 +45,6 @@ namespace api.tests.Controller.Tests
             var response = await Client.DeleteAsync("/api/Comment{1}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
+        }*/
     }
 }
