@@ -4,5 +4,7 @@ echo "Killing wegger containers ..."
 docker kill weggerSQLserver
 docker kill weggerapiContainer
 
+docker image rm -f weggerapi:final
+
 sleep 2
 echo "Done! Have a nice day :) "

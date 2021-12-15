@@ -39,7 +39,7 @@ echo ""
 
 echo "Spinning up wegger api in docker container ..."
 sleep 2
-docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" -p 8080:80 -d --name weggerapiContainer weggerapi:final
+docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" --rm -p 8080:80 -d --name weggerapiContainer weggerapi:final
 echo ""
 echo ""
 echo "Please wait a couple of seconds ..."
