@@ -42,12 +42,16 @@ sleep 2
 docker run -e "ASPNETCORE_ENVIRONMENT=Development" -v "${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets" -p 8080:80 -d --name weggerapiContainer weggerapi:final
 echo ""
 echo ""
+echo "Please wait a couple of seconds ..."
+echo ""
+echo ""
 
 # echo ""
 # echo "Launching web api in background process ..."
 # dotnet run --project $project 
 
+sleep 5
 
 echo "Launching swagger UI in default host browser ..."
-explorer.exe https://localhost:8080/swagger
+explorer.exe http://localhost:8080/swagger
 
