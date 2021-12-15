@@ -27,7 +27,7 @@ namespace api.tests.Controller.Tests
     {
         protected readonly WebApplicationFactory<Startup> Factory;
         protected HttpClient Client;
-        private string _connectionString = "DataSource=:memory";
+        private string _connectionString = "Filename=:memory:";
         private SqliteConnection _connection;
 
         public TestFixture(WebApplicationFactory<Startup> factory)
@@ -79,6 +79,9 @@ namespace api.tests.Controller.Tests
                     using var appContext = scope.ServiceProvider.GetRequiredService<WeggerContext>();
                     appContext.Database.OpenConnection();
                     appContext.Database.EnsureCreated();
+
+                    Seed(appContext);
+                    
                 });
                 
 
@@ -87,6 +90,91 @@ namespace api.tests.Controller.Tests
             {
                 AllowAutoRedirect = false
             });
+        }
+
+        private void Seed(DbContext context)
+        {
+            var _dateForFirstResource = DateTime.Now;
+
+            var users = new[] {
+                new User { Id = "testUserId" },
+                new User { Id = "secondUserId" }
+            };
+
+            var resources = new[] {
+                new Resource { 
+                    Id = 1,    
+                    UserId = "testUserId",
+                    Title = "resource_1", 
+                    SourceTitle = "some official title",
+                    Description = "test", 
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop", 
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource, 
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
+                },
+                new Resource { 
+                    Id = 2,    
+                    UserId = "testUserId",
+                    Title = "resource_2", 
+                    SourceTitle = "another official title",
+                    Description = "test of another", 
+                    TimeOfReference = _dateForFirstResource,
+                    Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop/test2", 
+                    HostBaseUrl = "www.github.com",
+                    LastCheckedForDeprecation = _dateForFirstResource,
+                    IsVideo = false, 
+                    IsOfficialDocumentation = false, 
+                }
+            };
+
+            var ratings = new [] {
+                new Rating {
+                    Id = 1,
+                    Rated = 3,
+                    ResourceId = 1,
+                    UserId = "testUserId"
+                },
+                new Rating {
+                    Id = 2,
+                    Rated = 5,
+                    ResourceId = 1,
+                    UserId = "testUserId"
+                },
+                new Rating {
+                    Id = 3,
+                    Rated = 5,
+                    ResourceId = 2,
+                    UserId = "testUserId"
+                }
+            };
+
+            var comments = new[] {
+                new Comment {
+                    Id = 1,
+                    UserId = "testUserId", 
+                    ResourceId = 1,
+                    TimeOfComment = DateTime.Now,
+                    Content = "Content description"
+                }
+            };
+
+            var tags = new[] {
+                new Tag { Id = 1, Name = "dotnet"},
+                new Tag { Id = 2, Name = "linq"},
+            };
+
+            resources[0].Tags.Add(tags[0]);
+
+            context.AddRange(users);
+            context.AddRange(tags);
+            context.AddRange(ratings);
+            context.AddRange(resources);
+            context.AddRange(comments);
+
+            context.SaveChanges();
         }
 
     }

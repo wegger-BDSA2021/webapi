@@ -87,10 +87,10 @@ namespace Repository.Tests
             
             var rating = await _repo.ReadAsync(1);
 
-            Assert.Equal(3, rating.Rating.Rated);
-            Assert.Equal(1, rating.Rating.Id);
-            Assert.Equal(1, rating.Rating.ResourceId);
-            Assert.Equal("testUserId", rating.Rating.UserId);
+            Assert.Equal(3, rating.RatingDetailsDTO.Rated);
+            Assert.Equal(1, rating.RatingDetailsDTO.Id);
+            Assert.Equal(1, rating.RatingDetailsDTO.ResourceId);
+            Assert.Equal("testUserId", rating.RatingDetailsDTO.UserId);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Repository.Tests
             Seed(_context);
                         
             var rating = await _repo.ReadAsync(1);
-            Assert.Equal(3, rating.Rating.Rated);
+            Assert.Equal(3, rating.RatingDetailsDTO.Rated);
 
             var dto = new RatingUpdateDTO 
             {
@@ -113,7 +113,7 @@ namespace Repository.Tests
             Assert.Equal(Updated, result);
 
             var updated = await _repo.ReadAsync(1);
-            Assert.Equal(5, updated.Rating.Rated);
+            Assert.Equal(5, updated.RatingDetailsDTO.Rated);
         }
         
         [Fact]
@@ -183,8 +183,8 @@ namespace Repository.Tests
             var expectedRating = await _repo.ReadAsync("testUserId", 1);
             
             Assert.Equal(OK,expectedRating.Response);
-            Assert.Equal("testUserId",expectedRating.Rating.UserId);
-            Assert.Equal(1,expectedRating.Rating.ResourceId);
+            Assert.Equal("testUserId",expectedRating.RatingDetailsDTO.UserId);
+            Assert.Equal(1,expectedRating.RatingDetailsDTO.ResourceId);
         }
         
         [Fact ]
@@ -196,7 +196,7 @@ namespace Repository.Tests
             var expectedRating = await _repo.ReadAsync("secondUserId", 1);
             
             Assert.Equal(NotFound,expectedRating.Response);
-            Assert.Null(expectedRating.Rating);
+            Assert.Null(expectedRating.RatingDetailsDTO);
         }
 
     }

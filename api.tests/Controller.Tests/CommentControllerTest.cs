@@ -1,64 +1,88 @@
-﻿using api.src.Controllers;
-using api.src.Services;
+﻿using api.src;
 using Data;
-using Moq;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Http.Json;
 using Xunit;
-using static Data.Response;
 
 namespace api.tests.Controller.Tests
 {
-    public class CommentControllerTest
+    [Xunit.Collection("Sequential")]
+    public class CommentControllerTest : TestFixture
     {
-        /*[Fact]
-        public async Task Update_given_unknown_id_returns_NotFound()
+        public CommentControllerTest(WebApplicationFactory<Startup> factory) : base(factory) { }
+
+        [Fact]
+        public async void Get_returns_HttpStatusCode_OK()
         {
-            //Arrange
-            var toCreate = new CommentUpdateDTO();
-            var created = new CommentDetailsDTO(4, "testUserId", 6, DateTime.Now, "Content of comment");
-            var repository = new Mock<ICommentRepository>();
-            repository.Setup(c => c.UpdateComment(toCreate)).ReturnsAsync(NotFound);
-            var controller = new CommentController(repository.Object);
+            var response = await Client.GetAsync("/api/Comment");
 
-            //Act
-            var response = await controller.UpdateComment(toCreate);
-
-            //Assert
-            
-        }*/
-
-        /*private readonly Mock<ICommentRepository> _repository;
-        private readonly Mock<ICommentService> _myService;
-        private CommentController _controller;
-
-        public CommentControllerTest()
-        {
-            _repository = new Mock<ICommentRepository>();
-            _myService = new Mock<ICommentService>(_repository.Object);
-            _controller = new CommentController(_myService.Object);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task Update_given_unknown_id_returns_NotFound()
+        public async void GetById_returns_HttpStatusCode_OK()
         {
             //Arrange
-            var toDelete = new CommentDetailsDTO(4, "testUserId", 6, DateTime.Now, "Content of comment");
+            int toDelete = 1;
 
-            _myService.Setup(c => c.DeleteComment(4)).ReturnsAsync(new Services.Result
+            JsonContent content = JsonContent.Create(toDelete);
+
+            var response = await Client.GetAsync("/api/Comment/1");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Post_returns_HttpStatusCode_Created()
+        {
+            //Arrange
+            var comment = new CommentCreateDTOServer
             {
-                Response = NotFound,
-                Message = $"No comment found with id 4"
-            });
+                UserId = "testUserId",
+                ResourceId = 1,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a new comment",
+            };
+
+            JsonContent content = JsonContent.Create(comment);
 
             //Act
-            var response = await _controller.DeleteComment(4);
+            var response = await Client.PostAsync("/api/Comment", content);
 
             //Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
 
-        }*/
+        [Fact]
+        public async void Update_returns_HttpStatusCode_NoContent()
+        {
+            //Arrange
+            var comment = new CommentUpdateDTO
+            {
+                Id = 1,
+                UserId = "testUserId",
+                ResourceId = 1,
+                TimeOfComment = DateTime.Now,
+                Content = "This is a updated comment",
+            };
+
+            JsonContent content = JsonContent.Create(comment);
+
+            //Act
+            var response = await Client.PutAsync("/api/Comment", content);
+
+            //Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Delete_returns_HttpStatusCode_NoContent()
+        {
+            var response = await Client.DeleteAsync("/api/Comment/1");
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
     }
 }

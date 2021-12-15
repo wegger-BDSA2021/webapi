@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using api.src;
+using Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -18,6 +22,15 @@ namespace api.tests.Controller.Tests
             // Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("IntegrationTest");
             var response = await Client.GetAsync("/api/Resource/ReadAll");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Test_seeding()
+        {
+            var response = await Client.GetStringAsync("/api/Resource/ReadAll");
+            var collection = JsonSerializer.Deserialize<List<ResourceDTO>>(response);
+
+            Assert.Equal(2, collection.Count());
         }
     }
 }
