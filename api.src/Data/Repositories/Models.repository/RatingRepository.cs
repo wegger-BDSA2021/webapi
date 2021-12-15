@@ -68,16 +68,23 @@ namespace Data
             return Updated;
         }
 
-        public async Task<(Response Response, Rating Rating)> ReadAsync(int id)
+        public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> ReadAsync(int id)
         {
             var rating = await _context.Ratings.FindAsync(id);
             if (rating is null)
                 return (NotFound, null);
 
-            return (OK, rating);
+            var result = new RatingDetailsDTO(
+                rating.Id,
+                rating.UserId,
+                rating.ResourceId,
+                rating.Rated
+            );
+
+            return (OK, result);
         }
 
-        public async Task<(Response Response, Rating Rating)> ReadAsync(string userId,int resId)
+        public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> ReadAsync(string userId,int resId)
         {
             var ratingM = await _context.Ratings.Where(r => r.User.Id == userId).ToListAsync();
             if (ratingM is null)
@@ -93,7 +100,13 @@ namespace Data
             {
                 return (NotFound, null);
             }
-            return (OK, ratingS);
+            var result = new RatingDetailsDTO(
+                ratingS.Id,
+                ratingS.UserId,
+                ratingS.ResourceId,
+                ratingS.Rated
+            );
+            return (OK, result);
         }
 
         public async Task<IReadOnlyCollection<Rating>> GetAllRatingFormResourceAsync(int reId)
