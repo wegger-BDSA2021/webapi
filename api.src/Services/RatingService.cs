@@ -41,14 +41,14 @@ namespace Services
                     return new Result
                     {
                         Response = NotFound,
-                        Message = "No tag found with the given entity"
+                        Message = "No Rating found with the given entity"
                     };
                 
                 case OK:
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Tag found at index {id}",
+                        Message = $"Rating found at index {id}",
                         DTO = result
                     };
 
@@ -80,14 +80,14 @@ namespace Services
                     return new Result
                     {
                         Response = NotFound,
-                        Message = "No tag found with the given entity"
+                        Message = "No Rating found with the given entity"
                     };
                 
                 case OK:
                     return new Result
                     {
                         Response = OK,
-                        Message = $"Tag found at index {result.RatingDetailsDTO.Id}",
+                        Message = $"Rating found at index {result.RatingDetailsDTO.Id}",
                         DTO = result.RatingDetailsDTO
                     };
 
@@ -141,17 +141,17 @@ namespace Services
                         Message = "No Rating found with the given entity"
                     };
                 
-                case OK:
+                case Updated:
                     return new Result
                     {
-                        Response = OK,
+                        Response = Updated,
                         Message = $"Rating at index {ratingUpdate.Id} has been updated form having the rating {ratingUpdate.UpdatedRating} to have {ratingUpdate.UpdatedRating}"
                     };
                 case Conflict:
                     return new Result
                     {
                         Response = BadRequest,
-                        Message = "Invalid rating"
+                        Message = "Invalid Rating"
                     };
                 default:
                     return new Result
@@ -173,7 +173,7 @@ namespace Services
                     return new Result
                     {
                         Response = NotFound,
-                        Message = "No rating found with the given entity"
+                        Message = "No Rating found with the given entity"
                     };
                 
                 case Deleted:
@@ -203,25 +203,32 @@ namespace Services
                     return new Result
                     {
                        Response = BadRequest,
-                       Message =  "No tag given"
+                       Message =  "No Rating given"
                     };
                 }
 
                 var result = await _repo.CreateAsync(rating);
-
-                if (result.Response == Conflict){
-                    return new Result
-                    {
-                       Response = BadRequest,
-                       Message =  "Invalid rating"
-                    };
-                }else{
-                    return new Result
-                    {
-                       Response = Created,
-                       Message =  "A new rating was succesfully created",
-                       DTO = result.RatingDetailsDTO
-                    };
+                switch (result.Response)
+                {
+                    case Conflict:
+                        return new Result
+                        {
+                           Response = BadRequest,
+                           Message =  "Invalid Rating"
+                        };
+                    case Created:
+                        return new Result
+                        {
+                           Response = Created,
+                           Message =  "A new Rating was succesfully created",
+                           DTO = result.RatingDetailsDTO
+                        };
+                    default:
+                        return new Result
+                        {
+                            Response = Conflict,
+                            Message = "An error occured"
+                        };
                 }
 
                 
@@ -233,7 +240,7 @@ namespace Services
                 return new Result
                     {
                         Response = InternalError,
-                        Message = "Could not process the provided rating ... sorry about that. Try again later."
+                        Message = "Could not process the provided Rating ... sorry about that. Try again later."
                     };
             }
 

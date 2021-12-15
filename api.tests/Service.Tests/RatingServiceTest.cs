@@ -37,7 +37,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(NotFound, response.Response);
-            Assert.Equal("No comment found with id 42", response.Message);
+            Assert.Equal("No Rating found with the given entity", response.Message);
         }
         [Fact]
         public async Task Given_OOB_rating_UpdateAsync_returns_BadRequest_and_message()
@@ -49,14 +49,14 @@ namespace api.tests.Service.Tests
                 UpdatedRating = 69, 
             };
 
-            _RatingRepoMock.Setup(c => c.UpdateAsync(dto)).ReturnsAsync(BadRequest);
+            _RatingRepoMock.Setup(c => c.UpdateAsync(dto)).ReturnsAsync(Conflict);
 
             //Act
             var result = await _ratingService.UpdateAsync(dto);
 
             //Assert
             Assert.Equal(BadRequest, result.Response);
-            Assert.Equal("Invalid rating",result.Message);
+            Assert.Equal("Invalid Rating",result.Message);
         }
         [Fact]
         public async Task Given_negative_ratingId_UpdateAsync_returns_BadRequest_and_message()
@@ -144,7 +144,7 @@ namespace api.tests.Service.Tests
             
             //Assert
             Assert.Equal(NotFound,response.Response);
-            Assert.Equal("No rating found with the given entity",response.Message);
+            Assert.Equal("No Rating found with the given entity",response.Message);
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(NotFound, result.Response);
-            Assert.Equal("No tag found with the given entity",result.Message);
+            Assert.Equal("No Rating found with the given entity",result.Message);
         }
         
         [Fact]
@@ -181,7 +181,6 @@ namespace api.tests.Service.Tests
         {
             //Arrange
             int ratingId = 1;
-            IReadOnlyCollection<string> collection = null;
 
             var DDTO = new RatingDetailsDTO
             (
@@ -198,7 +197,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(OK, result.Response);
-            Assert.Equal($"Tag found at index {ratingId}",result.Message);
+            Assert.Equal($"Rating found at index {ratingId}",result.Message);
             Assert.NotNull(result.DTO);
         }
 
@@ -212,33 +211,31 @@ namespace api.tests.Service.Tests
             
             //Assert
             Assert.Equal(BadRequest,result.Response);
-            Assert.Equal("No tag given",result.Message);
+            Assert.Equal("No Rating given",result.Message);
         }
         [Fact]
         public async Task CreateAsync_Given_invalid_new_rating_returns_badrequest_and_null()
         {
             //Arrange
-            IReadOnlyCollection<string> collection = null;
             var newDTO = new RatingCreateDTO
             {
                 UserId = "testUserId",
                 ResourceId = 2,
                 Rated = 69
             };
-            _RatingRepoMock.Setup(c => c.CreateAsync(newDTO)).ReturnsAsync((BadRequest,null));
+            _RatingRepoMock.Setup(c => c.CreateAsync(newDTO)).ReturnsAsync((Conflict,null));
             
             //Act
             var result = await _ratingService.CreateAsync(newDTO);
             //Assert
             Assert.Equal(BadRequest,result.Response);
-            Assert.Equal( "Invalid rating", result.Message);
+            Assert.Equal( "Invalid Rating", result.Message);
             Assert.Null(result.DTO);
         }
         [Fact]
         public async Task CreateAsync_Given_valid_new_rating_returns_Created_and_DTO()
         {
             //Arrange
-            IReadOnlyCollection<string> collection = null;
             var newDTO = new RatingCreateDTO
             {
                 UserId = "testUserId",
@@ -258,7 +255,7 @@ namespace api.tests.Service.Tests
             var result = await _ratingService.CreateAsync(newDTO);
             //Assert
             Assert.Equal(Created,result.Response);
-            Assert.Equal( "A new rating was succesfully created", result.Message);
+            Assert.Equal( "A new Rating was succesfully created", result.Message);
             Assert.NotNull(result.DTO);
         }
         public async Task ReadAsync_given_negative_resid_returns_BadRequest()
@@ -288,7 +285,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(NotFound, result.Response);
-            Assert.Equal("No tag found with the given entity",result.Message);
+            Assert.Equal("No Rating found with the given entity",result.Message);
         }
         
         [Fact]
@@ -312,7 +309,7 @@ namespace api.tests.Service.Tests
 
             //Assert
             Assert.Equal(OK, result.Response);
-            Assert.Equal($"Tag found at index {1}",result.Message);
+            Assert.Equal($"Rating found at index {1}",result.Message);
             Assert.NotNull(result.DTO);
         }
         [Fact]
