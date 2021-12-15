@@ -18,14 +18,6 @@ namespace api.tests.Controller.Tests
         public RatingControllerTests(WebApplicationFactory<Startup> factory) : base(factory) { }
 
         [Fact]
-        public async void Get_Ratings_From_Resource_returns_HttpStatusCode_OK()
-        {
-            var response = await Client.GetAsync("/api/Rating");
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [Fact]
         public async void Post_returns_HttpStatusCode_Created()
         {
             //Arrange
@@ -49,11 +41,10 @@ namespace api.tests.Controller.Tests
         public async void Update_returns_HttpStatusCode_NoContent()
         {
             //Arrange
-            var rating = new RatingCreateDTO
+            var rating = new RatingUpdateDTO
             {
-                UserId = "testUserId",
-                ResourceId = 1,
-                Rated = 3
+                Id = 1,
+                UpdatedRating = 4
             };
 
             JsonContent content = JsonContent.Create(rating);
