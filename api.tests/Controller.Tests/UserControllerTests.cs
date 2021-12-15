@@ -12,8 +12,7 @@ using Xunit;
 
 namespace api.tests.Controller.Tests
 {
-
-    /*[Xunit.Collection("Sequential")]
+    [Xunit.Collection("Sequential")]
     public class UserControllerTests : TestFixture
     {
         public UserControllerTests(WebApplicationFactory<Startup> factory) : base(factory) { }
@@ -21,30 +20,17 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void Post_returns_HttpStatusCode_Created()
         {
-            //Arrange
-            var user = new User
-            { 
-                Id = "testId",
-                Resources = null,
-                Comments = null,
-                Ratings = null
-            };
+            var response = await Client.PostAsync("/api/User/Create", null);
 
-            JsonContent content = JsonContent.Create(user);
-            
-            //Act
-            var response = await Client.PostAsync("/api/Comment", content);
-
-            //Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
-        public async void Delete_returns_HttpStatusCode_OK()
+        public async void Delete_returns_HttpStatusCode_NoContent()
         {
-            var response = await Client.DeleteAsync("/api/Comment{1}");
+            var response = await Client.DeleteAsync("/api/User/Delete/testUserId");
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }*/
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
     }
 }
