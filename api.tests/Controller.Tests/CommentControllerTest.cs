@@ -24,11 +24,6 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void GetById_returns_HttpStatusCode_OK()
         {
-            //Arrange
-            int toDelete = 1;
-
-            JsonContent content = JsonContent.Create(toDelete);
-
             var response = await Client.GetAsync("/api/Comment/1");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
