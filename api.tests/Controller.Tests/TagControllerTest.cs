@@ -123,6 +123,45 @@ namespace api.tests.Controller.Tests
             //Assert
             Assert.Equal(HttpStatusCode.NotFound,response.StatusCode);
         }
+        
+        [Fact]
+        public async void Put_returns_HttpStatusCode_BadRequest_when_negative_Id_provided()
+        {
+            //Arrange
+            var tagUpdate = new TagUpdateDTO
+            {
+                Id = -1,
+                NewName = "testNewName"
+            };
+            
+            JsonContent contentUpdate = JsonContent.Create(tagUpdate);
+            
+            //Act
+            var response = await Client.PutAsync($"/api/Tag/{tagUpdate.Id}",contentUpdate);
+            
+            //Assert
+            Assert.Equal(HttpStatusCode.BadRequest,response.StatusCode);
+        }
+        
+        [Fact]
+        public async void Put_returns_HttpStatusCode_Conflict_when_new_name_isnt_new()
+        {
+            //Arrange
+            var tagUpdate = new TagUpdateDTO
+            {
+                Id = 1,
+                NewName = "dotnet"
+            };
+            
+            JsonContent contentUpdate = JsonContent.Create(tagUpdate);
+            
+            //Act
+            var response = await Client.PutAsync($"/api/Tag/{tagUpdate.Id}",contentUpdate);
+            
+            //Assert
+            Assert.Equal(HttpStatusCode.Conflict,response.StatusCode);
+        }
+        
         [Fact]
         public async void Delete_returns_HttpStatusCode_NoContent()
         {
