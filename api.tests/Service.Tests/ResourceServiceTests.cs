@@ -359,13 +359,44 @@ namespace api.tests.Service.Tests
             _userRepoMock.Setup(r => r.UserExists("57")).ReturnsAsync(true);
             _resourceRepoMock.Setup(r => r.GetAllFromUserAsync("57")).ReturnsAsync(Array.Empty<ResourceDTO>());
 
-
             //Act
             var actual = await _resourceService.GetAllResourcesFromUserAsync("57");
 
             //Assert
             Assert.Equal(OK, actual.Response);
             Assert.Equal("Collection with 0 resources found from user with id 57", actual.Message);
+        }
+
+        // GetAllResourcesFromDomainAsync Tests
+
+        [Fact]
+        public async void GetAllResourcesFromDomainAsync_given_empty_domain_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllFromDomainAsync("domain")).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesFromUserAsync("domain");
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found from domain", actual.Message);
+        }
+
+        //GetAllResourcesWithinRangeAsync Tests
+
+        [Fact]
+        public async void GetAllResourcesWithinRangeAsync_given_empty_db_returns_count_0()
+        {
+            //Arrange
+            _resourceRepoMock.Setup(r => r.GetAllWithRatingInRangeAsync(1, 2)).ReturnsAsync(Array.Empty<ResourceDTO>());
+
+            //Act
+            var actual = await _resourceService.GetAllResourcesWithinRangeAsync(1, 2);
+
+            //Assert
+            Assert.Equal(OK, actual.Response);
+            Assert.Equal("Collection with 0 resources found with average rating between 1 and 2", actual.Message);
         }
     }
 }
