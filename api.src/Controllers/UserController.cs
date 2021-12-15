@@ -37,6 +37,7 @@ namespace api.src.Controllers
         }
 
         [HttpDelete]
+        [Route("Delete")]
         public async Task<ActionResult> DeleteUser(string id)
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
