@@ -56,7 +56,7 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
-        public async void Update_returns_HttpStatusCode_OK()
+        public async void Update_returns_HttpStatusCode_NoContent()
         {
             //Arrange
             var comment = new CommentUpdateDTO
@@ -78,7 +78,7 @@ namespace api.tests.Controller.Tests
         }
 
         [Fact]
-        public async void Delete_returns_HttpStatusCode_OK()
+        public async void Delete_returns_HttpStatusCode_NoContent()
         {
             var response = await Client.DeleteAsync("/api/Comment/1");
 
