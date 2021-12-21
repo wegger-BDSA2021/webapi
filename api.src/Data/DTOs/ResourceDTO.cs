@@ -8,7 +8,6 @@ namespace Data
 
     public record ResourceDetailsDTO(int Id, string Title, string SourceTitle, string Description, DateTime TimeOfReference, string Url, string HostBaseUrl, IReadOnlyCollection<string> Tags, IReadOnlyCollection<int> Ratings, double AverageRating, IReadOnlyCollection<string> Comments, bool Deprecated, DateTime LastCheckedForDeprecation, bool IsVideo, bool IsOfficialDocumentation) : ResourceDTO(Id, Title, Description, Url, AverageRating, Deprecated);
 
-    // the one being built by the resourcebuilder, and consumed by the resource_repo
     public record ResourceCreateDTOServer
     {
         [Required]
@@ -51,7 +50,6 @@ namespace Data
         public bool IsOfficialDocumentation { get; set; }
     }
 
-    // the dto consumed by the api controller
     public record ResourceCreateDTOClient
     {
         [Required]

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using static Data.Response;
 using Microsoft.EntityFrameworkCore;
-using Utils;
 using System;
 
 namespace Data
@@ -137,8 +136,6 @@ namespace Data
             return Deleted;
         }
 
-
-        // TODO : this needs a serious overhaul ...
         public async Task<Response> UpdateAsync(ResourceUpdateDTO resource)
         {
             var entity = await _context.Resources.FirstOrDefaultAsync(r => r.Id == resource.Id);
@@ -351,8 +348,6 @@ namespace Data
             return(OK, result);
         }
 
-
-        // private helper methods
         private async Task<ICollection<Tag>> getTagsFromStringsAsync(IEnumerable<string> tags)
         {
             var lowerCaseLetters = tags.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().Select(t => t.ToLower().Trim());

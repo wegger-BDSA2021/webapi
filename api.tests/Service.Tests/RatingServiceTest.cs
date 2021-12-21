@@ -1,14 +1,5 @@
-using api.src.Controllers;
-using api.src.Services;
-using Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Repository.Tests;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Data;
 using System.Threading.Tasks;
 using Xunit;
 using static Data.Response;
@@ -325,21 +316,6 @@ namespace api.tests.Service.Tests
             Assert.Equal(BadRequest, result.Response);
             Assert.Equal("Id can only be a positive integer",result.Message);
         }
-        //TODO last test of succesfull return of ReadAllRatingFormRepositoryAsync
-        /* 
-        [Fact]
-        public async Task GetAllRatingFormResourceAsync_given_negative_id_returns_Ok_and_DTOS()
-        {
-            //Arrange
-            int ratingId = 1;
-            
-            //Act
-            var result = await _ratingService.ReadAllRatingFormRepositoryAsync(ratingId);
-
-            //Assert
-            Assert.Equal(BadRequest, result.Response);
-            Assert.Equal("Id can only be a positive integer",result.Message);
-        }*/
 
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Data;
 
@@ -14,7 +13,6 @@ namespace ResourceBuilder
         
         public async Task<ResourceCreateDTOServer> Make()
         {
-            // _builder.CheckIfUrlIsValid();
             await _builder.RetrieveHtml();
             _builder.SetUrl();
             _builder.SetHostBaseUrl();
@@ -29,11 +27,6 @@ namespace ResourceBuilder
 
             return _builder.GetResult();
         }
-
-        // public async Task<ResourceProduct> UpdateResource()
-        // {
-        //     throw new NotImplementedException();
-        // }
 
     }
 

@@ -15,20 +15,6 @@ namespace Data
             _context = context;
         }
 
-        /*public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
-        {
-            var comments = await _context.Comments.ToListAsync();
-
-            List<CommentDTO> commentsAsDto = new List<CommentDTO>();
-
-            foreach (var item in comments)
-            {
-                commentsAsDto.Add(item.AsCommentDTO());
-            }
-
-            return commentsAsDto.AsReadOnly();
-        }*/
-
         public async Task<IReadOnlyCollection<CommentDTO>> GetComments()
         => (await _context.Comments
                 .Select(c =>

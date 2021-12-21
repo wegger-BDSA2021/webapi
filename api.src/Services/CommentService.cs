@@ -1,9 +1,8 @@
 ﻿using Data;
-using Services;
 using System.Threading.Tasks;
 using static Data.Response;
 
-namespace api.src.Services
+namespace Services
 {
     public class CommentService : ICommentService
     {

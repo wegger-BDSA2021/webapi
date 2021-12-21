@@ -8,20 +8,6 @@ namespace ResourceBuilder
     abstract class Template
     {
         protected string url;
-
-        // instead of this, retrieve tags from tagRepository
-        // protected static string[] QueryTerms { get; } =
-        // {
-        //     "anglesharp", "docker",
-        //     "dotnet" , ".NET",
-        //     "web scraping", "syntax",
-        //     "xpath", "html",
-        //     "github", "htmlagilitypack",
-        //     "c#", "pascal", "DTO",
-        //     "design pattern", "stopwatch",
-        //     "linq", "c", "c++"
-        // };
-
         protected static ICollection<string> QueryTerms { get; set; }
 
         #pragma warning disable 1998

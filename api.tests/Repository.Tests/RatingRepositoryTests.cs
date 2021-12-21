@@ -1,9 +1,6 @@
-using System;
 using Xunit;
 using System.Linq;
-using System.Collections.Generic;
 using Data;
-using SQLitePCL;
 using static Data.Response;
 
 namespace Repository.Tests

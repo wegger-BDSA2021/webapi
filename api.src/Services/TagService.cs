@@ -1,21 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using Data;
 using static Data.Response;
-using Microsoft.AspNetCore.Mvc;
-using ResourceBuilder;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Services
 {
     public class TagService : ITagService
     {
-        // should validate input from the ResourceController
-        // should use the parser component to create a new resource
-        // contains all business logic 
-
-        private ITagRepository _repo;
+        private readonly ITagRepository _repo;
 
         public TagService(ITagRepository repo)
         {

@@ -2,7 +2,6 @@
 using Moq;
 using Services;
 using System;
-using System.Collections.Generic;
 using Xunit;
 using static Data.Response;
 
@@ -20,7 +19,6 @@ namespace api.tests.Service.Tests
             _resourceService = new ResourceService(_resourceRepoMock.Object, _tagRepoMock.Object, _userRepoMock.Object);
         }
 
-        //ReadAsync Tests
 
         [Fact]
         public async void ReadAsync_given_invalid_id__returns_BadRequest()
@@ -185,45 +183,6 @@ namespace api.tests.Service.Tests
             Assert.Null(actual.DTO);
         }
 
-        /*[Fact]
-        public async void CreateAsync_given_invalid_user_returns_Conflict()
-        {
-            //Arrange
-            var resourceServer = new ResourceCreateDTOServer
-            {
-                TitleFromUser = "this is a new resource",
-                UserId = "testUserId",
-                Description = "description",
-                TimeOfReference = DateTime.Now,
-                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
-                InitialRating = 4,
-                Deprecated = false,
-                LastCheckedForDeprecation = DateTime.Now
-            };
-
-            var resourceClient = new ResourceCreateDTOClient
-            {
-                Title = "this is a new resource",
-                UserId = "testUserId",
-                Description = "description",
-                Url = "https://github.com/wegger-BDSA2021/webapi/tree/develop",
-                InitialRating = 4
-            };
-
-            _tagRepoMock.Setup(s => s.GetAllTagsAsStringCollectionAsync()).ReturnsAsync(Array.Empty<string>());
-
-            _resourceRepoMock.Setup(r => r.CreateAsync(resourceServer)).ReturnsAsync((NotFound, null));
-
-            //Act
-            var actual = await _resourceService.CreateAsync(resourceClient);
-
-            //Assert
-            Assert.Equal(Conflict, actual.Response);
-            Assert.Equal("The user trying to create the resource does not exist in the current context", actual.Message);
-            Assert.Null(actual.DTO);
-        }*/
-
-        // ReadAllAsync Tests
 
         [Fact]
         public async void ReadAllAsync_given_empty_DB_returns_readonlylist_of_length_0()
@@ -238,7 +197,6 @@ namespace api.tests.Service.Tests
             Assert.Equal(OK, actual.Response);
         }
 
-        // DeleteByIdAsync Tests
 
         [Fact]
         public async void DeleteByIdAsync_given_non_existing_id_returns_Notfound()
@@ -268,7 +226,6 @@ namespace api.tests.Service.Tests
             Assert.Equal("Resource with id 24 has succesfully been deleted", actual.Message);
         }
 
-        //UpdateResourceAsync Tests
 
         [Fact]
         public async void UpdateResourceAsync_given_unknown_id_returns_NotFound()
@@ -311,7 +268,6 @@ namespace api.tests.Service.Tests
             Assert.Equal("Resource with id 14 has succefully been updated", actual.Message);
         }
 
-        // GetAllResourcesFromUserAsync Tests
 
         [Fact]
         public async void GetAllResourcesFromUserAsync_given_id_with_length_0_returns_BadRequest()
