@@ -52,5 +52,11 @@ sleep 10
 echo "Launching swagger UI in default host browser ..."
 explorer.exe http://localhost:8080/swagger/index.html
 
+echo ""
+echo ""
+echo "Run the clean up script in the current directory to kill containers and remove images when you are done."
+echo ""
+echo ""
+
 
 

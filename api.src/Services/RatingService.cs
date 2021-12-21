@@ -41,7 +41,7 @@ namespace Services
                     {
                         Response = OK,
                         Message = $"Rating found at index {id}",
-                        DTO = result
+                        DTO = result.RatingDetailsDTO
                     };
 
                 default:

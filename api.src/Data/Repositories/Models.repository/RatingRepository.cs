@@ -70,7 +70,7 @@ namespace Data
 
         public async Task<(Response Response, RatingDetailsDTO RatingDetailsDTO)> ReadAsync(int id)
         {
-            var rating = await _context.Ratings.FindAsync(id);
+            var rating = await _context.Ratings.FirstOrDefaultAsync(r => r.Id == id);
             if (rating is null)
                 return (NotFound, null);
 
