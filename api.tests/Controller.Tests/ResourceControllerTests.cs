@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text.Json;
+﻿using System.Net;
 using api.src;
-using Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -14,14 +9,7 @@ namespace api.tests.Controller.Tests
     public class ResourceControllerTests : TestFixture
     {
         public ResourceControllerTests(WebApplicationFactory<Startup> factory) : base(factory) { }
-        /*       [Fact]
-        public async void Get_returns_HttpStatusCode_OK()
-        {
-            var response = await Client.GetAsync("/api/Resource/ReadAllWithTags");
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        */
         [Fact]
         public async void GetAllFromOfficialDocumentationAsync_returns_HttpStatusCode_OK()
         {
@@ -29,6 +17,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllVideoResourcesAsync_returns_HttpStatusCode_OK()
         {
@@ -36,6 +25,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllArticleResourcesAsync_returns_HttpStatusCode_OK()
         {
@@ -43,6 +33,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllResourcesMarkedDeprecatedAsync_returns_HttpStatusCode_OK()
         {
@@ -79,6 +70,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllResourcesFromUserAsync_returns_HttpStatusCode_OK()
         {     
@@ -88,6 +80,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllResourcesFromUserAsync_returns_HttpStatusCode_BadRequest()
         {     
@@ -97,6 +90,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
         [Fact]
         public async void GetAllResourcesFromUserAsync_returns_HttpStatusCode_NotFound()
         {     
@@ -106,6 +100,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
+
         [Fact]
         public async void ReadSingleResource_returns_HttpStatusCode_OK()
         {     
@@ -123,6 +118,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
         [Fact]
         public async void ReadSingleResource_returns_HttpStatusCode_NotFound()
         {     
@@ -138,21 +134,7 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        /*
-        [Fact]
-        public async void UpdateResource_returns_HttpStatusCode_OK()
-        {
-            var resource = new ResourceUpdateDTO
-            {
-                Id = 1,
-                Deprecated = false,
-            };
 
-            var response = await Client.GetAsync($"/api/Resource/Update/{resource}");
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-*/
         [Fact]
         public async void Get_returns_HttpStatusCode_OK()
         {
@@ -169,17 +151,6 @@ namespace api.tests.Controller.Tests
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-        /*
-        [Fact]
-        public async void GetById_given_negative_returns_HttpStatusCode_BadRequest()
-        {
-            var Resourceid = 0;
-            Resourceid -= 5;
-
-            var response = await Client.GetAsync($"/api/Resource{Resourceid}");
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }*/
         
     }
 }

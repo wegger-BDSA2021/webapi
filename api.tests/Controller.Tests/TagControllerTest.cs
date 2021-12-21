@@ -1,7 +1,6 @@
 ﻿using api.src;
 using Data;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -105,6 +104,7 @@ namespace api.tests.Controller.Tests
             //Assert
             Assert.Equal(HttpStatusCode.NoContent,response.StatusCode);
         }
+
         [Fact]
         public async void Put_returns_HttpStatusCode_NotFound()
         {
@@ -172,6 +172,7 @@ namespace api.tests.Controller.Tests
             //Assert
             Assert.Equal(HttpStatusCode.NoContent,response.StatusCode);
         }
+
         [Fact]
         public async void Delete_returns_HttpStatusCode_NotFound()
         {

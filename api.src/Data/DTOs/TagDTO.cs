@@ -7,7 +7,6 @@ namespace Data
     public record TagDTO(int Id, string Name);
     public record TagDetailsDTO(int Id, string Name,  IReadOnlyCollection<string> ResourcesNames);
 
-
     public record TagCreateDTO
     {
         [Required]

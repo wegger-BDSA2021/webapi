@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using api.src;
 using Data;
@@ -19,7 +18,6 @@ namespace api.tests.Controller.Tests
         [Fact]
         public async void Test_auth()
         {
-            // Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("IntegrationTest");
             var response = await Client.GetAsync("/api/Resource/ReadAll");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }

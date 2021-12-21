@@ -1,10 +1,17 @@
 #!/bin/bash
 
 echo "Killing wegger containers ..."
+echo ""
+sleep 2
 docker kill weggerSQLserver
 docker kill weggerapiContainer
 
+echo ""
+echo "Removing docker images (keeping the MSSQL server image) ..."
+sleep 2
 docker image rm -f weggerapi:final
 
 sleep 2
+echo ""
 echo "Done! Have a nice day :) "
+echo ""

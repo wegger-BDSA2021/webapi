@@ -2,7 +2,7 @@ using Data;
 
 namespace Services
 {
-    public record Result
+    public struct Result
     {
         public Response Response { get; init; }
         public string Message { get; init; }

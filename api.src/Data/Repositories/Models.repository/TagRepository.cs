@@ -30,12 +30,9 @@ namespace Data
             await _context.Tags.AddAsync(entity);
             await _context.SaveChangesAsync();
 
-            //update reascources with tags
-
             var result = new TagDetailsDTO(
                 entity.Id,
                 entity.Name,
-                // entity.Resources.Select(r => r.Title).DefaultIfEmpty().ToList()
                 new List<string>()
             );
 

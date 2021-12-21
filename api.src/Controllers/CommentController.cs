@@ -1,15 +1,14 @@
-﻿using api.src.Services;
+﻿using Services;
 using Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utils;
 
-namespace api.src.Controllers
+namespace Controllers
 {
     [Authorize]
     [ApiController]

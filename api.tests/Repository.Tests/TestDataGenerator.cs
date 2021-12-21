@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Microsoft.Data.Sqlite;
@@ -20,13 +19,6 @@ namespace Repository.Tests
 
         protected TestDataGenerator()
         {
-            // var connectionStringBuilder = new SqliteConnectionStringBuilder
-            // { DataSource = ":memory:" };
-            // var connectionString = connectionStringBuilder.ToString();
-
-            // _connection = new SqliteConnection(_connectionString);
-            // _connection.Open();
-
             _connection = new SqliteConnection(_connectionString);
             _connection.Open();
 
@@ -163,7 +155,6 @@ namespace Repository.Tests
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // ... the seeding method will handle this
             builder.Entity<User>().HasMany(u => u.Ratings).WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);

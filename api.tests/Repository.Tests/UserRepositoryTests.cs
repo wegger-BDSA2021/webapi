@@ -1,7 +1,6 @@
 using System;
 using Xunit;
 using System.Linq;
-using System.Collections.Generic;
 using Data;
 using static Data.Response;
 
@@ -43,7 +42,6 @@ namespace Repository.Tests
 
             Assert.Equal(Created, actual.Response);
             Assert.Equal(guid, actual.Id);
-            //Assert.Equal(2, _context.Users.Count());
         }
 
         [Fact]
@@ -68,7 +66,6 @@ namespace Repository.Tests
             var response = await _repo.DeleteUserAsync(guid);
 
             Assert.Equal(NotFound, response);
-            //Assert.Equal(1, _context.Users.Count());
         }
 
         [Fact]
@@ -80,7 +77,6 @@ namespace Repository.Tests
             var response = await _repo.DeleteUserAsync("testUserId");
 
             Assert.Equal(Deleted, response);
-            //Assert.False(_context.Users.Any());
             Assert.False(_context.Ratings.Any());
             Assert.False(_context.Comments.Any());
         }

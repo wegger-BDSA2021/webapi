@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Data;
 using static Data.Response;
-using Microsoft.AspNetCore.Mvc;
 using ResourceBuilder;
 using System.Linq;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ namespace Services
 {
     public class ResourceService : IResourceService
     {
-        private IResourceRepository _resourceRepo;
-        private ITagRepository _tagRepo;
-        private IUserRepository _userRepo;
+        private readonly IResourceRepository _resourceRepo;
+        private readonly ITagRepository _tagRepo;
+        private readonly IUserRepository _userRepo;
 
 
         public ResourceService(IResourceRepository resourceRepo, ITagRepository tagRepo, IUserRepository userRepo)

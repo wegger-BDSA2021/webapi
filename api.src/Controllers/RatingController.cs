@@ -6,15 +6,16 @@ using Microsoft.Identity.Web.Resource;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utils;
+using Services;
 
-namespace api.src.Controllers
+namespace Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RatingController : ControllerBase
     {
-        private IRatingService _service;
+        private readonly IRatingService _service;
         static readonly string[] scopeRequiredByApi = new string[] { "ReadAccess" };
 
         public RatingController(IRatingService service)

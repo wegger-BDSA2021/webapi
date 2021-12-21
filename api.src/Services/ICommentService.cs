@@ -1,8 +1,7 @@
 ﻿using Data;
-using Services;
 using System.Threading.Tasks;
 
-namespace api.src.Services
+namespace Services
 {
     public interface ICommentService
     {

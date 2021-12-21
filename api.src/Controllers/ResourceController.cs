@@ -5,15 +5,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using Utils;
+using Services;
 
-namespace api.src.Controllers
+namespace Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ResourceController : ControllerBase
     {
-        private IResourceService _service;
+        private readonly IResourceService _service;
         static readonly string[] scopeRequiredByApi = new string[] { "ReadAccess" };
 
         public ResourceController(IResourceService service)
